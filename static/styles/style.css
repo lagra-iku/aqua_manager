@@ -1,0 +1,32 @@
+:root {
+    --pricolor: #1EBE9B;
+  }
+
+body {
+   font-family:Verdana, Geneva, Tahoma, sans-serif;
+   height: 100%;
+  }
+
+header{
+    background-color: var(--pricolor);
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+    min-height: 15vh;
+}
+
+#app-name{
+    font-size: 3.5em;
+    font-weight: 900;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.logo{
+    width: 100px;
+    height: 100px;
+}
+
+main{
+    height: 80vh;
+}
+
+footer{
+    height: 5vh;
+}
