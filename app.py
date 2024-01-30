@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def request():
-    return render_template('request.html')
+    return render_template('request/new.html')
 
 @app.route('/dashboard')
 def dashboard():

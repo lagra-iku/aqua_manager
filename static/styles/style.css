@@ -2,13 +2,18 @@
     --pricolor: #1EBE9B;
   }
 
+.txt-teal{
+    color: var(--pricolor); 
+}
 body {
-   font-family:Verdana, Geneva, Tahoma, sans-serif;
+   font-family: "Montserrat", Verdana, Geneva, Tahoma, sans-serif;
    height: 100%;
   }
 
 header{
     background-color: var(--pricolor);
+    background-image: url(../images/bg_gradient.jpg);
+    background-position: center;
     box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
     min-height: 15vh;
 }
@@ -23,10 +28,21 @@ header{
     height: 100px;
 }
 
-main{
+.height80{
     height: 80vh;
 }
 
 footer{
     height: 5vh;
+}
+
+.sm-image{
+    width:150px;
+    height:auto;
+    margin: auto;
+}
+
+.btn-primary{
+    background-color: #006965;
+    border-color: #006965;
 }
