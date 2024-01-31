@@ -1,26 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../../static/styles/admin_style.css">
-    <title>Admin Page</title>
-</head>
-<body>
+{% extends 'index.html' %}
+
+{% block content %}    
+
     <div class="header">
         <h1>Water Manufacturing Admin Page</h1>
         <div class="factory-worker-info">
-            <p>Name: {{ factory_worker.name }}</p>
-            <p>ID: {{ factory_worker.id }}</p>
-            <p>Date and Time: {{ current_datetime }}</p>
+            <h2>Welcome, Tinubu Shettima</h2>
+            <p>Wednesday, 31st, 2024</p>
         </div>
     </div>
 
     <div class="main-content">
         <!-- Add Production and View Analytics buttons -->
         <div class="action-buttons">
-            <a href="{{ url_for('add_production') }}" class="button">Add Production</a>
-            <a href="{{ url_for('view_analytics') }}" class="button">View Analytics</a>
+            <button type="Add Production" class="btn btn-primary">Add Production</button>
+            <button type="View Analytics" class="btn btn-primary">View Analytics</button>
         </div>
 
         <!-- Customer List Table -->
@@ -40,7 +34,7 @@
                 <!-- Add customer data dynamically here -->
                 {% for customer in customer_list %}
                     <tr>
-                        <td><a href="{{ url_for('edit_request', id=customer.id) }}">Edit</a></td>
+                        <!-- td><a href="{{ url_for('edit_request', id=customer.id) }}">Edit</a></td -->
                         <td>{{ customer.name }}</td>
                         <td>{{ customer.phone_number }}</td>
                         <td>{{ customer.water_type }}</td>
@@ -51,6 +45,8 @@
                 {% endfor %}
             </tbody>
         </table>
+        <div class="col-sm-4 order-sm-last text-center my-5">
+            <img src="../static/images/bg_bottle.png" alt="" class="sm-image d-none d-lg-block d-xl-block d-xxl-block">
+        </div>
     </div>
-</body>
-</html>
+{% endblock %}

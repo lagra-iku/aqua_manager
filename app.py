@@ -19,8 +19,9 @@ cursor = db.cursor()
 cursor.execute("CREATE DATABASE IF NOT EXISTS requests")
 cursor.execute("USE requests")
 
-# Create table if not exists
+# Create tables if not exists
 cursor.execute("CREATE TABLE IF NOT EXISTS requests (id  INT(11) NOT NULL AUTO_INCREMENT, name VARCHAR (255), location VARCHAR (255), phonenum VARCHAR (30), PRIMARY KEY(id))")
+cursor.execute("CREATE TABLE IF NOT EXISTS production_records (id INT(11) NOT NULL AUTO_INCREMENT, product_name VARCHAR(255), quantity INT, production_date DATE, PRIMARY KEY(id))")
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -57,9 +58,32 @@ def edit_entry(id):
 def dashboard():
     return render_template('dashboard.html')
 
-@app.route('/admin')
+@app.route('/admin', method=('GET', 'POST'))
 def admin():
+    customer_list = request
     return render_template('admin/home.html')
+
+@app.route('/add_production', methods=['GET', 'POST'])
+def add_production():
+    if request.method == 'POST':
+        product_name = request.form.get('product_name')
+        quantity = request.form.get('quantity')
+
+        # Get the current date
+        production_date = datetime.now().date()
+
+        # Insert the new production data into the production_records table
+        cursor.execute("INSERT INTO production_records (product_name, quantity, production_date) VALUES (%s, %s, %s)", (product_name, quantity, production_date))
+        db.commit()
+
+        # Redirect to a success page or any other page
+        return redirect(url_for('add_production'))
+
+    return render_template('admin/add_production.html')
+
+@app.route('/view_analytics', methods=['GET', 'POST'])
+def view_analytics():
+    return redirect(url_for('dashboard'))
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000, debug=True)
