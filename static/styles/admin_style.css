@@ -1,0 +1,74 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+}
+
+.header {
+    background-color: #4CAF50;
+    color: white;
+    text-align: center;
+    padding: 15px;
+}
+
+.factory-worker-info {
+    margin-top: 10px;
+}
+
+.main-content {
+    margin: 20px;
+}
+
+.action-buttons {
+    margin-bottom: 20px;
+}
+
+.button {
+    background-color: #008CBA;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.customer-list {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.customer-list th, .customer-list td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.customer-list th {
+    background-color: #4CAF50;
+    color: white;
+}
+
+/* Style for the main content area 
+.main-content {
+ Add any styling you want for the main content area */
+
+/* Style for the action buttons */
+.action-buttons {
+    margin-top: 20px; /* Adjust the top margin as needed */
+}
+
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    text-decoration: none;
+    color: #fff;
+    background-color: #007bff; /* Use your desired button color */
+    border-radius: 5px;
+    transition: background-color 0.3s ease; /* Add a smooth transition effect */
+
+    /* Additional styles can be added based on your design preferences */
+}
+
+.button:hover {
+    background-color: #0056b3; /* Change the background color on hover */
+}

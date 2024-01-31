@@ -1,13 +1,56 @@
-{% extends 'index.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../static/styles/admin_style.css">
+    <title>Admin Page</title>
+</head>
+<body>
+    <div class="header">
+        <h1>Water Manufacturing Admin Page</h1>
+        <div class="factory-worker-info">
+            <p>Name: {{ factory_worker.name }}</p>
+            <p>ID: {{ factory_worker.id }}</p>
+            <p>Date and Time: {{ current_datetime }}</p>
+        </div>
+    </div>
 
-{% block content %}
-<div class="container">
-    <h1>This is admin page</h1>
-    <h2>Lists of Contributors</h2>
-    <ol><li>Nweke Grace</li>
-    <li>Ahunanya Bright</li></ol>
-    
+    <div class="main-content">
+        <!-- Add Production and View Analytics buttons -->
+        <div class="action-buttons">
+            <a href="{{ url_for('add_production') }}" class="button">Add Production</a>
+            <a href="{{ url_for('view_analytics') }}" class="button">View Analytics</a>
+        </div>
 
-
-</div>
-{% endblock %}
+        <!-- Customer List Table -->
+        <table class="customer-list">
+            <thead>
+                <tr>
+                    <th>Edit</th>
+                    <th>Name</th>
+                    <th>Phone Number</th>
+                    <th>Water Type</th>
+                    <th>Quantity</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Add customer data dynamically here -->
+                {% for customer in customer_list %}
+                    <tr>
+                        <td><a href="{{ url_for('edit_request', id=customer.id) }}">Edit</a></td>
+                        <td>{{ customer.name }}</td>
+                        <td>{{ customer.phone_number }}</td>
+                        <td>{{ customer.water_type }}</td>
+                        <td>{{ customer.quantity }}</td>
+                        <td>{{ customer.date }}</td>
+                        <td>{{ customer.status }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
