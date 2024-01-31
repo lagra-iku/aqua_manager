@@ -6,29 +6,29 @@
         <div class="col-sm-8 ">
             <h2 class="">Edit Form</h2>
             <p class="txt-teal mb-5">Use this form to request for water to be deivered at your location</p>
-            <form action="/edit/{{ request.id}}" method="POST">
+            <form action="/edit/{{ entry.id }}" method="POST">
                 <p class="fw-bold">What will you like to order?</p>
                 <div class="form-check form-check-inline mb-3">
-                    <input class="form-check-input" type="checkbox" id="bottle" value="{{ request.bottle }}">
+                    <input class="form-check-input" type="checkbox" id="bottle" value="{{ entry.bottle }}">
                     <label class="form-check-label" for="bottle">Bottled Water  <span class="fw-lighter">(Each Pack = 24 pieces)</span></label>
                 </div>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="checkbox" id="sachet" value="{{ request.sachet }}">
+                    <input class="form-check-input" type="checkbox" id="sachet" value="{{ entry.sachet }}">
                     <label class="form-check-label" for="sachet">Sachet Water <span class=".text-black-50
 
                         ">(Each Pack = 20 pieces)</span></label><br>
                 </div>
                 <div class="form-group">
                     <label for="name" class="fw-bold">Your Name:</label>
-                    <input type="text" id="name" name="name" class="form-control" value="{{ request.name }}" required><br>
+                    <input type="text" id="name" name="name" class="form-control" value="{{ entry.name }}" required><br>
                 </div>
                 <div class="form-group">
                     <label for="location" class="fw-bold">Your Location:</label>
-                    <input type="text" id="location" name="location" class="form-control" value="{{ request.location }}" required><br>
+                    <input type="text" id="location" name="location" class="form-control" value="{{ entry.location }}" required><br>
                 </div>
                 <div class="form-group">
                     <label for="phonenum" class="fw-bold">Your Phone Number:</label>
-                    <input type="text" id="phonenum" name="phonenum" class="form-control" value="{{ request.phonenum }}" required><br>
+                    <input type="text" id="phonenum" name="phonenum" class="form-control" value="{{ entry.phonenum }}" required><br>
                 </div>
                 <div class="float-md-end ">
                     <button type="submit" class="btn btn-primary" value="Update">Submit Request</button>

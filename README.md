@@ -11,7 +11,7 @@ The challenge is not just to create a technological solution but to forge a reli
 
 ## HOW TO RUN THE APP LOCALLY
 - Clone the app
-- Ensure Python and Flask are installed on your VSCODE
+- Ensure Python and Flask and sql-connector-python are installed on your VSCODE
 - Run the app (run python app.py via terminal)
 
 &copy; Copyright 2024 by lagra-iku & Olisajiokem
