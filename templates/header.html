@@ -2,11 +2,21 @@
     <div class="container p-3">
         <div class="row align-items-end">
             <div class="col-sm-3">
-                <img src="../static/images/logo_new.png" alt="" class="logo">
+                <a href="{{ url_for('dashboard') }}"><img src="../static/images/logo_new.png" alt="" class="logo"></a>
+                <p>{{ curr_date }}</p>
             </div>
-            <div class="col-sm-9 text-left align-bottom">
-                <h1 id="app-name">Aqua Manager</h1>
+            <div class="col-sm-9 text-left">
+                <div class="row justify-content-center">
+                    <h3 id="app-name">Aqua Manager</h3>
+                </div>
+                <div class="row d-inline-block">
+                    <nav class="nav justify-content-center">
+                        <a class="nav-link text-white" href="{{ url_for('index') }}">Customer</a>
+                        <a class="nav-link text-white" href="{{ url_for('admin') }}">Admin</a>
+                        <a class="nav-link text-white" href="{{ url_for('dashboard') }}">Dashboard</a>
+                      </nav>                     
+                </div>
             </div>
-          </div>
+        </div>
     </div>
 </header>

@@ -1,6 +1,41 @@
 {% extends 'index.html' %}
 
 {% block content %}
-    <h2>Welcome to the Dashboard Page</h2>
-    <p>This is the content of the dashboard page.</p>
+<div class="container mb-5">
+    <h3 class="mb-3">Dashboard</h3>
+    <div class="row mb-5">
+        <div class="col-sm-2 bg-dark text-white text-center me-3 p-3 rounded">
+            <h4 class="fs-1 fw-bolder">500</h4>
+            <p>Bottled Water</p>
+        </div>
+        <div class="col-sm-2 bg-dark text-white text-center me-3 p-3 rounded">
+            <h4 class="fs-1 fw-bolder">1500</h4>
+            <p>sachet Water</p>
+        </div>
+    </div>
+    <p class="fst-italic">Awaiting delivery requests</p>
+    <div class="row">
+        <div class="col-sm-1 border border-dark bg-dark text-white"><h5>Actions</h5></div>
+        <div class="col-sm-1 border border-dark bg-dark text-white"><h5>id</h5></div>
+        <div class="col-sm-3 border border-dark bg-dark text-white"><h5>Name</h5></div>
+        <div class="col-sm-3 border border-dark bg-dark text-white"><h5>Location</h5></div>
+        <div class="col-sm-3 border border-dark bg-dark text-white"><h5>Phone Number</h5></div>
+    </div>
+    {% for item in x %}
+    <div class="row">
+        <div class="col-sm-1 border border-dark py-1">Edit</div>
+        {% for elem in item %}
+            {% if loop.index == 1 %}
+                <div class="col-sm-1 border border-dark  py-1">              
+                    {{ elem }}
+                </div>
+            {% else %}
+            <div class="col-sm-3 border border-dark py-1">              
+                {{ elem }}
+           </div>
+           {% endif %}
+        {% endfor %}
+    </div>
+    {% endfor %}
+</div>
 {% endblock %}
