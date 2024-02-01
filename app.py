@@ -40,16 +40,16 @@ def edit_entry(id):
     cursor.execute("SELECT * FROM requests WHERE id = %s", (id,))
     entry = cursor.fetchone()
     if request.method == 'POST':
-       name = request.form['name']
-       location = request.form['location']
-       phonenum = request.form['phonenum']
+       name = request.form.get['name']
+       location = request.form.get['location']
+       phonenum = request.form.get['phonenum']
 
         # Update data in MySQL
        cursor.execute("UPDATE requests SET name = %s, location = %s, phonenum = %s WHERE id = %s", (name, location, phonenum, id))
        db.commit()
-
-       return redirect(url_for('dashboard'))
-    return render_template('request/edit.html', entry=entry)
+       db.close()
+       return "updated successfully"
+    return render_template('request/edit.html', x=entry)
 
 
 @app.route('/dashboard')

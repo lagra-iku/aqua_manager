@@ -9,9 +9,12 @@ The challenge is not just to create a technological solution but to forge a reli
 ## WHERE TO FIND THE APP ONLINE
 
 
-## HOW TO RUN THE APP LOCALLY
+## HOW TO RUN THE APP LOCALLY using VSCODE
 - Clone the app
 - Ensure Python and Flask and sql-connector-python are installed on your VSCODE
+- Install and setup your MySql Server
+    - Create a database called requests
+    - Install MySQL extension on VSCODE
 - Run the app (run python app.py via terminal)
 
 &copy; Copyright 2024 by lagra-iku & Olisajiokem
