@@ -124,7 +124,7 @@ def edit_production(id):
         db.commit()
        # db.close()
         return redirect(url_for('production_content'))
-    return render_template('production_records/add_production.html', product_edit=product_edit, curr_date=curr_date)
+    return render_template('admin/add_production.html', product_edit=product_edit, curr_date=curr_date)
 
 
 if __name__ == "__main__":

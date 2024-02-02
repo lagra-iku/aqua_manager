@@ -8,7 +8,7 @@
     <div class="main-content">
         <!-- Display Production Content Data -->
         <div class="container mb-5">
-            <h1 class="mb-3">Display Requests</h1>
+        <h1 class="mb-3">Display Requests</h1>
             <div class="row">
                 <div class="col-sm-1 border border-dark bg-dark text-white"><h5>Actions</h5></div>
                 <div class="col-sm-1 border border-dark bg-dark text-white"><h5>id</h5></div>
@@ -20,7 +20,7 @@
             {% for item in production_content_data %}
     
             <div class="row">
-                <div class="col-sm-1 border border-dark py-1"><a class="" href="{{ url_for('edit_entry', id=item[0]) }}">Edit</a></div>
+                <div class="col-sm-1 border border-dark py-1"><a class="" href="{{ url_for('edit_production', id=item[0]) }}">Edit</a></div>
                 {% for elem in item %}
                     {% if loop.index == 1 %}
                         <div class="col-sm-1 border border-dark  py-1">              
