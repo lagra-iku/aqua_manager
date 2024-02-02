@@ -34,13 +34,13 @@
                 <!-- Add customer data dynamically here -->
                 {% for customer in customer_list %}
                     <tr>
-                        <!-- td><a href="{{ url_for('edit_request', id=customer.id) }}">Edit</a></td
+                        <td><a href="{{ url_for('edit_request', id=customer.id) }}">Edit</a></td
                         <td>{{ customer.name }}</td>
                         <td>{{ customer.phone_number }}</td>
                         <td>{{ customer.water_type }}</td>
                         <td>{{ customer.quantity }}</td>
                         <td>{{ customer.date }}</td>
-                        <td>{{ customer.status }}</td> -->
+                        <td>{{ customer.status }}</td>
                     </tr>
                 {% endfor %}
             </tbody>

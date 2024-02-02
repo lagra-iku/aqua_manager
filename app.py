@@ -8,8 +8,8 @@ app = Flask(__name__)
 
 db = mysql.connector.connect(
     host="127.0.0.1",
-    user="Olisajioke",
-     password="@Lt@ir@@7"
+    user="",
+     password=""
 )
 # Connect to MySQL
 if not db.is_connected():
