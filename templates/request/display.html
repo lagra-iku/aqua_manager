@@ -36,7 +36,7 @@
         </div>
         <div class="row">
             <div class="col-sm-10">
-                {% for item in req %}
+                {% for item in req|sort(attribute="modified_date") %}
                 <div class="row">
                     {% for elem in item %}
                         {% if loop.index == 3 %}
