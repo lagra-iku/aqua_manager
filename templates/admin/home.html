@@ -15,36 +15,11 @@
         <div class="action-buttons">
             <a href="{{ url_for('add_production') }}" class="btn btn-primary">Add Production</a>
             <a href="{{ url_for('dashboard') }}" class="btn btn-primary">View Analytics</a>
+            <a href="{{ url_for('dashboard') }}" class="btn btn-primary">Check Available Products</a>
+            <a href="{{ url_for('dashboard') }}" class="btn btn-primary">Check Available Drivers</a>
+            <a href="{{ url_for('dashboard') }}" class="btn btn-primary">Check Active Machines</a>
         </div>
         <br><br>
-        <!-- Customer List Table -->
-        <table class="customer-list">
-            <thead>
-                <tr>
-                    <th>Edit</th>
-                    <th>Name</th>
-                    <th>Phone Number</th>
-                    <th>Water Type</th>
-                    <th>Quantity</th>
-                    <th>Date</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Add customer data dynamically here -->
-                {% for customer in entry %}
-                    <tr>
-                        <td><a href="{{ url_for('edit_entry')}}">Edit</a></td>
-                        <td>{{ customer.name }}</td>
-                        <td>{{ customer.phone_number }}</td>
-                        <td>{{ customer.water_type }}</td>
-                        <td>{{ customer.quantity }}</td>
-                        <td>{{ customer.date }}</td>
-                        <td>{{ customer.status }}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
         <div class="col-sm-4 order-sm-last text-center my-5">
             <img src="../static/images/bg_bottle.png" alt="" class="sm-image d-none d-lg-block d-xl-block d-xxl-block">
         </div>
