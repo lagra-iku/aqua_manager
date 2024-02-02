@@ -6,20 +6,14 @@ import mysql.connector
 
 app = Flask(__name__)
 
+curr_date = datetime.now().strftime("%d-%b-%Y %I:%M %p")
+
 db = mysql.connector.connect(
     host="127.0.0.1",
-    user="",
-     password=""
+    user="lagra",
+    password="root"
 )
-# Connect to MySQL
-if not db.is_connected():
-    db = mysql.connector.connect(
-        host="127.0.0.1",
-        user="",
-        password=""
-    )
 
-curr_date = datetime.now().strftime("%d-%b-%Y %I:%M %p")
 cursor = db.cursor()
 
 # Create database if not exists
@@ -34,12 +28,14 @@ cursor.execute("CREATE TABLE IF NOT EXISTS production_records (id INT(11) NOT NU
 def index():
     
     if request.method == 'POST':
+        bottle_qty = request.form['bottle_qty']
+        sachet_qty = request.form['sachet_qty']
         name = request.form['name']
         location = request.form['location']
         phonenum = request.form['phonenum']
 
         # Insert data into MySQL
-        cursor.execute("INSERT INTO requests (name, location, phonenum) VALUES (%s, %s, %s)", (name, location, phonenum))
+        cursor.execute("INSERT INTO requests (name, location, phonenum, bottle_qty, sachet_qty) VALUES (%s, %s, %s, %s, %s)", (name, location, phonenum, bottle_qty, sachet_qty))
         db.commit()
 
         return redirect(url_for('display_entries'))
@@ -57,7 +53,6 @@ def edit_entry(id):
         # Update data in MySQL
        cursor.execute("UPDATE requests SET name = %s, location = %s, phonenum = %s WHERE id = %s", (name, location, phonenum, id))
        db.commit()
-       db.close()
        return redirect(url_for('display_entries'))
     return render_template('request/edit.html', x=entry, curr_date=curr_date)
 
@@ -70,7 +65,7 @@ def display_entries():
 
 @app.route('/dashboard')
 def dashboard():
-    cursor.execute("SELECT * FROM requests")
+    cursor.execute("SELECT id, name, location, phonenum, status FROM requests")
     entry = cursor.fetchall()
     return render_template('dashboard.html', x=entry, curr_date=curr_date)
 
