@@ -1,50 +1,25 @@
+<pre>{{ entry }}</pre>
 {% extends 'index.html' %}
 
 {% block content %}    
 
     <div class="header">
-        <h1>Water Manufacturing Admin Page</h1>
+        <h1>Water Production Admin Page</h1>
         <div class="factory-worker-info">
-            <h2>Welcome, Tinubu Shettima</h2>
-            <p>Wednesday, 31st, 2024</p>
+            <h2>Welcome, ##Factory Worker</h2>
         </div>
     </div>
-
+    <br><br>
     <div class="main-content">
         <!-- Add Production and View Analytics buttons -->
         <div class="action-buttons">
-            <button type="Add Production" class="btn btn-primary">Add Production</button>
-            <button type="View Analytics" class="btn btn-primary">View Analytics</button>
+            <a href="{{ url_for('add_production') }}" class="btn btn-dark">Add Production</a>
+            <a href="{{ url_for('dashboard') }}" class="btn btn-dark">View Analytics</a>
+            <a href="{{ url_for('dashboard') }}" class="btn btn-dark">Check Available Products</a>
+            <a href="{{ url_for('dashboard') }}" class="btn btn-dark">Check Available Drivers</a>
+            <a href="{{ url_for('dashboard') }}" class="btn btn-dark">Check Active Machines</a>
         </div>
-
-        <!-- Customer List Table -->
-        <table class="customer-list">
-            <thead>
-                <tr>
-                    <th>Edit</th>
-                    <th>Name</th>
-                    <th>Phone Number</th>
-                    <th>Water Type</th>
-                    <th>Quantity</th>
-                    <th>Date</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Add customer data dynamically here -->
-                {% for customer in customer_list %}
-                    <tr>
-                        <!-- td><a href="{{ url_for('edit_request', id=customer.id) }}">Edit</a></td
-                        <td>{{ customer.name }}</td>
-                        <td>{{ customer.phone_number }}</td>
-                        <td>{{ customer.water_type }}</td>
-                        <td>{{ customer.quantity }}</td>
-                        <td>{{ customer.date }}</td>
-                        <td>{{ customer.status }}</td> -->
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <br><br>
         <div class="col-sm-4 order-sm-last text-center my-5">
             <img src="../static/images/bg_bottle.png" alt="" class="sm-image d-none d-lg-block d-xl-block d-xxl-block">
         </div>
