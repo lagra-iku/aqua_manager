@@ -122,14 +122,14 @@ def edit_production(id):
     product_edit = cursor.fetchone()
     if request.method == 'POST':
         product_name = request.form.get('product_name')
-        product_quantity = request.form.get('product_quantity')
+        quantity = request.form.get('quantity')
         factory_worker = request.form.get('factory_worker')
         production_date = datetime.now().date()
-        cursor.execute("UPDATE production_records SET product_name = %s, product_quantity = %s, factory_worker = %s, production_date = %s WHERE id = %s", (product_name, product_quantity, factory_worker, production_date, id))
+        cursor.execute("UPDATE production_records SET product_name = %s, quantity = %s, factory_worker = %s, production_date = %s WHERE id = %s", (product_name, quantity, factory_worker, production_date, id))
         db.commit()
        # db.close()
         return redirect(url_for('production_content'))
-    return render_template('admin/add_production.html', product_edit=product_edit, curr_date=curr_date)
+    return render_template('admin/edit_production.html', x=product_edit, curr_date=curr_date)
 
 
 if __name__ == "__main__":
