@@ -42,7 +42,7 @@ def index():
         cursor.execute("INSERT INTO requests (name, location, phonenum) VALUES (%s, %s, %s)", (name, location, phonenum))
         db.commit()
 
-        return redirect(url_for('dashboard'))
+        return redirect(url_for('display_entries'))
     return render_template('request/new.html', curr_date=curr_date)
 
 @app.route('/edit/<int:id>', methods=['GET', 'POST'])
@@ -58,7 +58,7 @@ def edit_entry(id):
        cursor.execute("UPDATE requests SET name = %s, location = %s, phonenum = %s WHERE id = %s", (name, location, phonenum, id))
        db.commit()
        db.close()
-       return "updated successfully"
+       return redirect(url_for('display_entries'))
     return render_template('request/edit.html', x=entry, curr_date=curr_date)
 
 @app.route('/requests', methods=['GET', 'POST'])
