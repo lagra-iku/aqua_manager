@@ -13,8 +13,8 @@
     <div class="main-content">
         <!-- Add Production and View Analytics buttons -->
         <div class="action-buttons">
-            <button type="Add Production" class="btn btn-primary">Add Production</button>
-            <button type="View Analytics" class="btn btn-primary">View Analytics</button>
+            <a href="{{ url_for('add_production') }}" class="btn btn-primary">Add Production</a>
+            <a href="{{ url_for('dashboard') }}" class="btn btn-primary">View Analytics</a>
         </div>
 
         <!-- Customer List Table -->

@@ -8,8 +8,8 @@ app = Flask(__name__)
 
 db = mysql.connector.connect(
     host="127.0.0.1",
-    user="",
-     password=""
+    user="Olisajioke",
+     password="@Lt@ir@@7"
 )
 # Connect to MySQL
 if not db.is_connected():
@@ -45,6 +45,7 @@ def index():
         return redirect(url_for('display_entries'))
     return render_template('request/new.html', curr_date=curr_date)
 
+
 @app.route('/edit/<int:id>', methods=['GET', 'POST'])
 def edit_entry(id):
     cursor.execute("SELECT * FROM requests WHERE id = %s", (id,))
@@ -57,7 +58,7 @@ def edit_entry(id):
         # Update data in MySQL
        cursor.execute("UPDATE requests SET name = %s, location = %s, phonenum = %s WHERE id = %s", (name, location, phonenum, id))
        db.commit()
-       db.close()
+       # db.close()
        return redirect(url_for('display_entries'))
     return render_template('request/edit.html', x=entry, curr_date=curr_date)
 
