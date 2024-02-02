@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="container mb-5 pt-3 height80">
-    <h4 class="text-center">Order details created by <span class="fw-bold">{{ x[1] }}</span> on <span class="fw-bold">{{ x[6] }}</span></h4>
+    <h4 class="text-center">Order details created by <span class="fw-bold">{{ x[1] }}</span> on <span class="fw-bold">{{ modified }}</span></h4>
     <div class="row p-3 mt-4 border bg-light rounded">
         <h6 class="fw-bolder">STATUS: <span class="text-success">{{ x[8] }}</span></h6>
     </div>
@@ -36,7 +36,7 @@
         </div>
         <div class="row">
             <div class="col-sm-10">
-                {% for item in req|sort(attribute="modified_date") %}
+                {% for item in req %}
                 <div class="row">
                     {% for elem in item %}
                         {% if loop.index == 3 %}
