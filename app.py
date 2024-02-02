@@ -11,8 +11,8 @@ curr_date = datetime.now().strftime("%d-%b-%Y %I:%M %p")
 
 db = mysql.connector.connect(
     host="127.0.0.1",
-    user="Olisajioke",
-    password="@Lt@ir@@7"
+    user="lagra",
+    password="root"
 )
 
 cursor = db.cursor()
@@ -68,11 +68,12 @@ def display_entry(id):
     cursor.execute("SELECT * FROM requests WHERE id = %s", (id,))
     entry = cursor.fetchone()
     user_phonenum = entry[3]
+    modified = entry[7].strftime("%d-%b-%Y at %I:%M %p")
 
-    cursor.execute("SELECT bottle_qty, sachet_qty, modified_date FROM requests WHERE phonenum = %s", (user_phonenum,))
+    cursor.execute("SELECT bottle_qty, sachet_qty, modified_date FROM requests WHERE phonenum = %s ORDER BY modified_date DESC", (user_phonenum,))
     req_history = cursor.fetchall()
 
-    return render_template('request/display.html', x=entry, req=req_history, curr_date=curr_date)
+    return render_template('request/display.html', x=entry, req=req_history, curr_date=curr_date, modified=modified)
 
 
 @app.route('/dashboard')
