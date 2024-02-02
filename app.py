@@ -39,7 +39,10 @@ def index():
         cursor.execute("INSERT INTO requests (name, location, phonenum, bottle_qty, sachet_qty) VALUES (%s, %s, %s, %s, %s)", (name, location, phonenum, bottle_qty, sachet_qty))
         db.commit()
 
-        return redirect(url_for('display_entries'))
+        cursor.execute("SELECT LAST_INSERT_ID()")
+        last_id = cursor.fetchone()[0]
+
+        return redirect(url_for('display_entry', id=last_id))
     return render_template('request/new.html', curr_date=curr_date)
 
 
@@ -51,18 +54,25 @@ def edit_entry(id):
        name = request.form.get('name')
        location = request.form.get('location')
        phonenum = request.form.get('phonenum')
+       bottle_qty = request.form['bottle_qty']
+       sachet_qty = request.form['sachet_qty']
 
         # Update data in MySQL
-       cursor.execute("UPDATE requests SET name = %s, location = %s, phonenum = %s WHERE id = %s", (name, location, phonenum, id))
+       cursor.execute("UPDATE requests SET name = %s, location = %s, phonenum = %s, bottle_qty = %s, sachet_qty = %s WHERE id = %s", (name, location, phonenum, bottle_qty, sachet_qty, id))
        db.commit()
-       return redirect(url_for('display_entries'))
+       return redirect(url_for('display_entry', id=id))
     return render_template('request/edit.html', x=entry, curr_date=curr_date)
 
-@app.route('/requests', methods=['GET', 'POST'])
-def display_entries():
-    cursor.execute("SELECT * FROM requests")
-    entry = cursor.fetchall()
-    return render_template('request/display.html', x=entry, curr_date=curr_date)
+@app.route('/display/<int:id>', methods=['GET', 'POST'])
+def display_entry(id):
+    cursor.execute("SELECT * FROM requests WHERE id = %s", (id,))
+    entry = cursor.fetchone()
+    user_phonenum = entry[3]
+
+    cursor.execute("SELECT bottle_qty, sachet_qty, modified_date FROM requests WHERE phonenum = %s", (user_phonenum,))
+    req_history = cursor.fetchall()
+
+    return render_template('request/display.html', x=entry, req=req_history, curr_date=curr_date)
 
 
 @app.route('/dashboard')
