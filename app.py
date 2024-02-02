@@ -8,8 +8,8 @@ app = Flask(__name__)
 
 db = mysql.connector.connect(
     host="127.0.0.1",
-    user="",
-     password=""
+    user="Olisajioke",
+     password="@Lt@ir@@7"
 )
 # Connect to MySQL
 if not db.is_connected():
@@ -90,7 +90,7 @@ def add_production():
         production_date = datetime.now().date()
 
         # Insert the new production data into the production_records table
-        cursor.execute("INSERT INTO production_records (product_name, quantity, production_date) VALUES (%s, %s, %s)", (product_name, quantity, production_date))
+        cursor.execute("INSERT INTO production_records (product_name, quantity, factory_worker, production_date) VALUES (%s, %s, %s, %s)", (product_name, quantity, factory_worker, production_date))
         db.commit()
 
         # Redirect to a success page or any other page
@@ -110,6 +110,22 @@ def production_content():
     production_content_data = cursor.fetchall()
     print(production_content_data)
     return render_template('admin/production_content.html', production_content_data=production_content_data, curr_date=curr_date)
+
+@app.route('/edit_production/<int:id>', methods=['GET', 'POST'])
+def edit_production(id):
+    cursor.execute("SELECT * FROM production_records WHERE id = %s", (id,))
+    product_edit = cursor.fetchone()
+    if request.method == 'POST':
+        product_name = request.form.get('product_name')
+        product_quantity = request.form.get('product_quantity')
+        factory_worker = request.form.get('factory_worker')
+        production_date = datetime.now().date()
+        cursor.execute("UPDATE production_records SET product_name = %s, product_quantity = %s, factory_worker = %s, production_date = %s WHERE id = %s", (product_name, product_quantity, factory_worker, production_date, id))
+        db.commit()
+       # db.close()
+        return redirect(url_for('production_content'))
+    return render_template('production_records/add_production.html', product_edit=product_edit, curr_date=curr_date)
+
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000, debug=True)
