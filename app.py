@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+"""Module that creates a flaskapp"""
 
 from flask import Flask, render_template, request, redirect, url_for
 from datetime import date, datetime, timedelta
@@ -10,8 +11,8 @@ curr_date = datetime.now().strftime("%d-%b-%Y %I:%M %p")
 
 db = mysql.connector.connect(
     host="127.0.0.1",
-    user="lagra",
-    password="root"
+    user="Olisajioke",
+    password="@Lt@ir@@7"
 )
 
 cursor = db.cursor()
@@ -22,7 +23,7 @@ cursor.execute("USE requests")
 
 # Create tables if not exists
 cursor.execute("CREATE TABLE IF NOT EXISTS requests (id  INT(11) NOT NULL AUTO_INCREMENT, name VARCHAR (255), location VARCHAR (255), phonenum VARCHAR (30), PRIMARY KEY(id))")
-cursor.execute("CREATE TABLE IF NOT EXISTS production_records (id INT(11) NOT NULL AUTO_INCREMENT, product_name VARCHAR(255), quantity INT, production_date DATE, PRIMARY KEY(id))")
+cursor.execute("CREATE TABLE IF NOT EXISTS production_records (id INT(11) NOT NULL AUTO_INCREMENT, product_name VARCHAR(255), factory_worker VARCHAR(255), quantity INT, production_date DATE, PRIMARY KEY(id))")
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -80,10 +81,8 @@ def add_production():
         product_name = request.form.get('product_name')
         quantity = request.form.get('quantity')
         factory_worker = request.form.get('factory_worker')
-
         # Get the current date
         production_date = datetime.now().date()
-
         # Insert the new production data into the production_records table
         cursor.execute("INSERT INTO production_records (product_name, quantity, factory_worker, production_date) VALUES (%s, %s, %s, %s)", (product_name, quantity, factory_worker, production_date))
         db.commit()
@@ -103,7 +102,7 @@ def production_content():
     cursor = db.cursor()
     cursor.execute("SELECT * FROM production_records")
     production_content_data = cursor.fetchall()
-    print(production_content_data)
+    # print(production_content_data)
     return render_template('admin/production_content.html', production_content_data=production_content_data, curr_date=curr_date)
 
 @app.route('/edit_production/<int:id>', methods=['GET', 'POST'])
