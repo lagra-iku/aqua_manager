@@ -84,6 +84,7 @@ def add_production():
     if request.method == 'POST':
         product_name = request.form.get('product_name')
         quantity = request.form.get('quantity')
+        factory_worker = request.form.get('factory_worker')
 
         # Get the current date
         production_date = datetime.now().date()
@@ -100,6 +101,15 @@ def add_production():
 @app.route('/view_analytics', methods=['GET', 'POST'])
 def view_analytics():
     return redirect(url_for('dashboard', curr_date=curr_date))
+
+@app.route('/production_content', methods=['GET', 'POST'])
+def production_content():
+    # Fetch production content data from the database
+    cursor = db.cursor()
+    cursor.execute("SELECT * FROM production_records")
+    production_content_data = cursor.fetchall()
+    print(production_content_data)
+    return render_template('admin/production_content.html', production_content_data=production_content_data, curr_date=curr_date)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000, debug=True)

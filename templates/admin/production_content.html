@@ -1,0 +1,32 @@
+{% extends 'index.html' %}
+
+{% block content %}
+    <div class="header">
+        <h1>Production Content Page</h1>
+    </div>
+
+    <div class="main-content">
+        <!-- Display Production Content Data -->
+        <div class="container mb-5">
+            <h1 class="mb-3">Display Requests</h1>
+            <div class="row">
+                <div class="col-sm-1 border border-dark bg-dark text-white"><h5>Actions</h5></div>
+                <div class="col-sm-1 border border-dark bg-dark text-white"><h5>id</h5></div>
+                <div class="col-sm-3 border border-dark bg-dark text-white"><h5>Product Name</h5></div>
+                <div class="col-sm-3 border border-dark bg-dark text-white"><h5>Quantity</h5></div>
+                <div class="col-sm-3 border border-dark bg-dark text-white"><h5>Production Date</h5></div>
+                <div class="col-sm-3 border border-dark bg-dark text-white"><h5>factory_worker</h5></div>
+            </div>
+            {% for production_data in production_content_data %}
+                <div class="row">
+                    <div class="col-sm-1 border border-dark py-1"><a class="" href="{{ url_for('production_content')}}">Edit</a></div>
+                    <div class="col-sm-3 border border-dark py-1">{{ production_data.product_name }}</div>
+                    <div class="col-sm-3 border border-dark py-1">{{ production_data.quantity }}</div>
+                    <div class="col-sm-3 border border-dark py-1">{{ production_data.production_date }}</div>
+                    <div class="col-sm-3 border border-dark py-1">{{ production_data.factory_worker }}</div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
