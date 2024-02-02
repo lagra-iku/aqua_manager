@@ -5,15 +5,15 @@
     <div class="row height80 ">
         <div class="col-sm-8 ">
             <h2 class="">Edit Production Records</h2>
-            <p class="txt-teal mb-5">Edit form request for  <span class="fw-bold">{{ x[1] }}</span> created on <span class="fw-bold">{{ x[6] }}</span></p>
+            <p class="txt-teal mb-5">Edit Quantity Request For  <span class="fw-bold">{{ x[1] }}</span> created on <span class="fw-bold">{{ x[6] }}</span></p>
             <form action="/edit_production/{{ x[0] }}" method="POST">
                 <div class="row">
                     <div class="col-sm-6 form-group">
-                        <label class="fw-bold" for="product_name">Product Name:<br><span class="fw-lighter">(Bottled Water or Satchet Water)</span></label>
+                        <label class="fw-bold" for="product_name">Product Name:<br><span class="fw-lighter">(Bottled Water or Sachet Water)</span></label>
                         <input type="text" id="product_name" name="product_name" value="{{ x[4] }}"  class="form-control"><br>
                     </div>
                     <div class="col-sm-6">
-                        <label class="fw-bold" for="quantity">Product Quantity:<br><span class="fw-lighter">(Indicate how many quantity produced)</span></label>
+                        <label class="fw-bold" for="quantity">Product Quantity:<br><span class="fw-lighter">(Indicate How Many Quantity Produced)</span></label>
                         <input type="number" id="quantity" name="quantity" value="{{ x[5] }}" class="form-control"><br>
                     </div>
                 </div>
@@ -21,10 +21,11 @@
                     <label for="factory_worker" class="fw-bold">Engineer:</label>
                     <input type="text" id="factory_worker" name="factory_worker" class="form-control" value="{{ x[1] }}" required><br>
                 </div>
+                <!--
                 <div class="form-group">
                     <label for="production_date" class="fw-bold">Production Date:</label>
                     <input type="number" id="production_date" name="production_date" class="form-control" value="{{ x[2] }}"><br>
-                </div>
+                </div>   -->
                 <div class="float-md-end ">
                     <button type="submit" class="btn btn-primary" >Submit Request</button>
                 </div>
