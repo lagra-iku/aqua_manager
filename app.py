@@ -11,8 +11,8 @@ curr_date = datetime.now().strftime("%d-%b-%Y %I:%M %p")
 
 db = mysql.connector.connect(
     host="127.0.0.1",
-    user="lagra",
-    password="root"
+    user="Olisajioke",
+    password="@Lt@ir@@7"
 )
 
 cursor = db.cursor()
