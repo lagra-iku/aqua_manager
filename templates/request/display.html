@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="container mb-5 pt-3 height80">
-    <h4 class="text-center">Order details created by <span class="fw-bold">{{ x[1] }}</span> on <span class="fw-bold">{{ modified }}</span></h4>
+    <h4 class="text-center">Order details created by <span class="fw-bold">{{ x[1] }}</span> on <span class="fw-bold">{{ modified.strftime('%d %b, %Y at %I:%M %p') }}</span></h4>
     <div class="row p-3 mt-4 border bg-light rounded">
         <h6 class="fw-bolder">STATUS: <span class="text-success">{{ x[8] }}</span></h6>
     </div>
@@ -26,24 +26,27 @@
     <div class="row">
         <h6 class="txt-teal">Submitted requests by {{ x[1] }}</h6>
         <div class="row">
-            <div class="col-sm-10">
+            <div class="col-sm-6">
                 <div class="row">
+                    <div class="col-sm-1 border border-dark bg-dark text-white"><h6>Edit</h6></div>
                     <div class="col-sm-2 border border-dark bg-dark text-white"><h6>Bottle_Qty</h6></div>
                     <div class="col-sm-2 border border-dark bg-dark text-white"><h6>Sachet_Qty</h6></div>
-                    <div class="col-sm-8 border border-dark bg-dark text-white"><h6>Modified_Date</h6></div>
+                    <div class="col-sm-2 border border-dark bg-dark text-white"><h6>Status</h6></div>
+                    <div class="col-sm-5 border border-dark bg-dark text-white"><h6>Modified_Date</h6></div>
                 </div>
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-10">
+            <div class="col-sm-6">
                 {% for item in req %}
                 <div class="row">
+                    <div class="col-sm-1 border"><a class="" href="{{ url_for('edit_entry', id=item[0]) }}"><i class="fa-solid fa-pencil txt-teal"></i></a></div>
                     {% for elem in item %}
-                        {% if loop.index == 3 %}
-                            <div class="col-sm-8 border">              
-                                {{ elem }}
+                        {% if loop.index == 5 %}
+                            <div class="col-sm-5 border">              
+                                {{ elem.strftime('%d %b, %Y %I:%M %p') }}
                             </div>
-                        {% else %}
+                        {% elif loop.index != 1 %}
                             <div class="col-sm-2 border">              
                                 {{ elem }}
                             </div>

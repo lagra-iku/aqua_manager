@@ -68,9 +68,9 @@ def display_entry(id):
     cursor.execute("SELECT * FROM requests WHERE id = %s", (id,))
     entry = cursor.fetchone()
     user_phonenum = entry[3]
-    modified = entry[7].strftime("%d-%b-%Y at %I:%M %p")
+    modified = entry[7]
 
-    cursor.execute("SELECT bottle_qty, sachet_qty, modified_date FROM requests WHERE phonenum = %s ORDER BY modified_date DESC", (user_phonenum,))
+    cursor.execute("SELECT id, bottle_qty, sachet_qty, status, modified_date FROM requests WHERE phonenum = %s ORDER BY modified_date DESC", (user_phonenum,))
     req_history = cursor.fetchall()
 
     return render_template('request/display.html', x=entry, req=req_history, curr_date=curr_date, modified=modified)
@@ -84,18 +84,20 @@ def dashboard():
 
 @app.route('/admin', methods=('GET', 'POST'))
 def admin():
-    return render_template('admin/home.html', curr_date=curr_date)
+    cursor.execute("SELECT id, name, bottle_qty, sachet_qty, status, modified_date FROM requests WHERE status  <> 'canceled' AND status <> 'completed' ORDER BY modified_date DESC")
+    entry = cursor.fetchall()
+    return render_template('admin/home.html', x=entry, curr_date=curr_date)
 
 @app.route('/add_production', methods=['GET', 'POST'])
 def add_production():
     if request.method == 'POST':
         product_name = request.form.get('product_name')
-        quantity = request.form.get('quantity')
+        production_quantity = request.form.get('production_quantity')
         factory_worker = request.form.get('factory_worker')
         # Get the current date
         production_date = datetime.now().date()
         # Insert the new production data into the production_records table
-        cursor.execute("INSERT INTO production_records (product_name, quantity, factory_worker, production_date) VALUES (%s, %s, %s, %s)", (product_name, quantity, factory_worker, production_date))
+        cursor.execute("INSERT INTO production_records (product_name, production_quantity, factory_worker, production_date) VALUES (%s, %s, %s, %s)", (product_name, production_quantity, factory_worker, production_date))
         db.commit()
 
         # Redirect to a success page or any other page
@@ -122,14 +124,14 @@ def edit_production(id):
     product_edit = cursor.fetchone()
     if request.method == 'POST':
         product_name = request.form.get('product_name')
-        quantity = request.form.get('quantity')
+        product_quantity = request.form.get('product_quantity')
         factory_worker = request.form.get('factory_worker')
         production_date = datetime.now().date()
-        cursor.execute("UPDATE production_records SET product_name = %s, quantity = %s, factory_worker = %s, production_date = %s WHERE id = %s", (product_name, quantity, factory_worker, production_date, id))
+        cursor.execute("UPDATE production_records SET product_name = %s, product_quantity = %s, factory_worker = %s, production_date = %s WHERE id = %s", (product_name, product_quantity, factory_worker, production_date, id))
         db.commit()
        # db.close()
         return redirect(url_for('production_content'))
-    return render_template('admin/edit_production.html', x=product_edit, curr_date=curr_date)
+    return render_template('admin/add_production.html', product_edit=product_edit, curr_date=curr_date)
 
 
 if __name__ == "__main__":

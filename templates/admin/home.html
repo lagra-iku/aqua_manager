@@ -1,27 +1,53 @@
-<pre>{{ entry }}</pre>
 {% extends 'index.html' %}
 
 {% block content %}    
-
-    <div class="header">
-        <h1>Water Production Admin Page</h1>
-        <div class="factory-worker-info">
-            <h2>Welcome, ##Factory Worker</h2>
+    <div class="container">
+        <div class="row">
+            <h2 class="">Water Production Admin Page</h2>
+            <p class="txt-teal mb-5">Welcome, ##Factory Worker</p>
         </div>
-    </div>
-    <br><br>
-    <div class="main-content">
-        <!-- Add Production and View Analytics buttons -->
-        <div class="action-buttons">
-            <a href="{{ url_for('add_production') }}" class="btn btn-dark">Add Production</a>
-            <a href="{{ url_for('dashboard') }}" class="btn btn-dark">View Analytics</a>
-            <a href="{{ url_for('production_content') }}" class="btn btn-dark">Check Available Products</a>
-            <a href="{{ url_for('dashboard') }}" class="btn btn-dark">Check Available Drivers</a>
-            <a href="{{ url_for('dashboard') }}" class="btn btn-dark">Check Active Machines</a>
+        <div class="d-grid gap-3 d-md-block text-center">
+            <a href="{{ url_for('add_production') }}" class="btn btn-lg p-5 mx-2 btn-secondary">Add Production</a>
+            <a href="{{ url_for('production_content') }}" class="btn btn-lg p-5 mx-2  btn-secondary">Production History</a>
+            <a href="{{ url_for('dashboard') }}" class="btn btn-lg p-5 btn-secondary mx-2 ">View Analytics</a>
         </div>
-        <br><br>
-        <div class="col-sm-4 order-sm-last text-center my-5">
-            <img src="../static/images/bg_bottle.png" alt="" class="sm-image d-none d-lg-block d-xl-block d-xxl-block">
+        <div class="row my-5">
+            <h6 class="txt-teal fw-bold">Requests pending delivery</h6>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="row">
+                        <div class="col-sm-1 border border-dark bg-dark text-white"><h6>Edit</h6></div>
+                        <div class="col-sm-2 border border-dark bg-dark text-white"><h6>Name</h6></div>
+                        <div class="col-sm-2 border border-dark bg-dark text-white"><h6>Bottle_Qty</h6></div>
+                        <div class="col-sm-2 border border-dark bg-dark text-white"><h6>Sachet_Qty</h6></div>
+                        <div class="col-sm-2 border border-dark bg-dark text-white"><h6>Status</h6></div>
+                        <div class="col-sm-2 border border-dark bg-dark text-white"><h6>Modified_Date</h6></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    {% for item in x %}
+                    <div class="row">
+                        <div class="col-sm-1 border text-center">
+                            <a class="" href="{{ url_for('edit_entry', id=item[0]) }}"><i class="fa-solid fa-pencil txt-teal"></i></a>&nbsp; &nbsp;
+                            <a class="" href="{{ url_for('display_entry', id=item[0]) }}"><i class="fa-solid fa-eye txt-teal"></i></a>
+                        </div>
+                        {% for elem in item %}
+                            {% if loop.index == 6 %}
+                                <div class="col-sm-2 border">              
+                                    {{ elem.strftime('%d %b, %Y %I:%M %p') }}
+                                </div>
+                            {% elif loop.index != 1 %}
+                                <div class="col-sm-2 border">              
+                                    {{ elem }}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}
