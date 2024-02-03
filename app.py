@@ -100,7 +100,7 @@ def add_production():
         cursor.execute("INSERT INTO production_records (product_name, production_quantity, factory_worker, production_date) VALUES (%s, %s, %s, %s)", (product_name, production_quantity, factory_worker, production_date))
         db.commit()
 
-        # Redirect to a success page or any other page
+        # Redirect to a success page
         return redirect(url_for('add_production'))
 
     return render_template('admin/add_production.html', curr_date=curr_date)
