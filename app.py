@@ -23,7 +23,7 @@ cursor.execute("USE requests")
 
 # Create tables if not exists
 cursor.execute("CREATE TABLE IF NOT EXISTS requests (id  INT(11) NOT NULL AUTO_INCREMENT, name VARCHAR (255), location VARCHAR (255), phonenum VARCHAR (30), bottle_qty INT(11), sachet_qty INT(11), created_date DATETIME DEFAULT CURRENT_TIMESTAMP, modified_date DATETIME DEFAULT CURRENT_TIMESTAMP, status VARCHAR (255) DEFAULT 'New', PRIMARY KEY(id))")
-cursor.execute("CREATE TABLE IF NOT EXISTS production_records (id INT(11) NOT NULL AUTO_INCREMENT, product_name VARCHAR(255), factory_worker VARCHAR(255), quantity INT, production_date DATE, PRIMARY KEY(id))")
+cursor.execute("CREATE TABLE IF NOT EXISTS production_records (id INT(11) NOT NULL AUTO_INCREMENT, bottle_qty INT(11), sachet_qty INT(11), factory_worker VARCHAR(255), production_date DATETIME DEFAULT CURRENT_TIMESTAMP, created_date DATETIME DEFAULT CURRENT_TIMESTAMP, modified_date DATETIME DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY(id))")
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -91,13 +91,12 @@ def admin():
 @app.route('/add_production', methods=['GET', 'POST'])
 def add_production():
     if request.method == 'POST':
-        product_name = request.form.get('product_name')
-        production_quantity = request.form.get('production_quantity')
+        bottle_qty = request.form.get('bottle_qty')
+        sachet_qty = request.form.get('sachet_qty')
         factory_worker = request.form.get('factory_worker')
-        # Get the current date
-        production_date = datetime.now().date()
+        production_date = request.form.get('production_date')
         # Insert the new production data into the production_records table
-        cursor.execute("INSERT INTO production_records (product_name, production_quantity, factory_worker, production_date) VALUES (%s, %s, %s, %s)", (product_name, production_quantity, factory_worker, production_date))
+        cursor.execute("INSERT INTO production_records (bottle_qty, sachet_qty, factory_worker, production_date) VALUES (%s, %s, %s, %s)", (bottle_qty, sachet_qty, factory_worker, production_date))
         db.commit()
 
         # Redirect to a success page
@@ -123,14 +122,14 @@ def edit_production(id):
     cursor.execute("SELECT * FROM production_records WHERE id = %s", (id,))
     product_edit = cursor.fetchone()
     if request.method == 'POST':
-        product_name = request.form.get('product_name')
-        product_quantity = request.form.get('product_quantity')
-        factory_worker = request.form.get('factory_worker')
-        production_date = datetime.now().date()
-        cursor.execute("UPDATE production_records SET product_name = %s, product_quantity = %s, factory_worker = %s, production_date = %s WHERE id = %s", (product_name, product_quantity, factory_worker, production_date, id))
-        db.commit()
+         bottle_qty = request.form.get('bottle_qty')
+         sachet_qty = request.form.get('sachet_qty')
+         factory_worker = request.form.get('factory_worker')
+         production_date = request.form.get('production_date')
+         cursor.execute("UPDATE production_records SET bottle_qty = %s, sachet_qty = %s, factory_worker = %s, production_date = %s WHERE id = %s", (bottle_qty, sachet_qty, factory_worker, production_date, id))
+         db.commit()
        # db.close()
-        return redirect(url_for('production_content'))
+         return redirect(url_for('production_content'))
     return render_template('admin/add_production.html', product_edit=product_edit, curr_date=curr_date)
 
 
