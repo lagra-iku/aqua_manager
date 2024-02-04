@@ -74,11 +74,11 @@ def edit_entry(id):
        name = request.form.get('name')
        location = request.form.get('location')
        phonenum = request.form.get('phonenum')
-       bottle_qty = request.form['bottle_qty']
-       sachet_qty = request.form['sachet_qty']
-
+       bottle_qty = request.form.get('bottle_qty')
+       sachet_qty = request.form.get('sachet_qty')
+       status = request.form.get('status')
         # Update data in MySQL
-       cursor.execute("UPDATE requests SET name = %s, location = %s, phonenum = %s, bottle_qty = %s, sachet_qty = %s WHERE id = %s", (name, location, phonenum, bottle_qty, sachet_qty, id))
+       cursor.execute("UPDATE requests SET name = %s, location = %s, phonenum = %s, bottle_qty = %s, sachet_qty = %s, status = %s WHERE id = %s", (name, location, phonenum, bottle_qty, sachet_qty, status, id))
        db.commit()
        return redirect(url_for('display_entry', id=id))
     return render_template('request/edit.html', x=entry, curr_date=curr_date)
@@ -120,7 +120,7 @@ def add_production():
         db.commit()
 
         # Redirect to a success page
-        return redirect(url_for('add_production'))
+        return redirect(url_for('production_content'))
 
     return render_template('admin/add_production.html', curr_date=curr_date)
 
@@ -132,7 +132,7 @@ def view_analytics():
 def production_content():
     # Fetch production content data from the database
     cursor = db.cursor()
-    cursor.execute("SELECT * FROM production_records")
+    cursor.execute("SELECT * FROM production_records ORDER BY production_date DESC")
     production_content_data = cursor.fetchall()
     # print(production_content_data)
     return render_template('admin/production_content.html', production_content_data=production_content_data, curr_date=curr_date)
@@ -150,7 +150,7 @@ def edit_production(id):
          db.commit()
        # db.close()
          return redirect(url_for('production_content'))
-    return render_template('admin/add_production.html', product_edit=product_edit, curr_date=curr_date)
+    return render_template('admin/edit_production.html', x=product_edit, curr_date=curr_date)
 
 
 if __name__ == "__main__":

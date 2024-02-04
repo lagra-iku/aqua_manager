@@ -29,15 +29,23 @@
                     <label for="phonenum" class="fw-bold">Your Phone Number:</label>
                     <input type="text" id="phonenum" name="phonenum" class="form-control" value="{{ x[3] }}" required><br>
                 </div>
-                <div class="float-md-end ">
+                <label for="status" class="fw-bold">Request Status:</label><br>
+                <div class="input-group mb-3">
+                    <select class="form-select" id="status" name="status" value="{{ x[8] }}" aria-label="status">
+                      <option value="New">New</option>
+                      <option value="On route">On route</option>
+                      <option value="Delivered">Delivered</option>
+                      <option value="Canceled">Canceled</option>
+                    </select>
+                  </div>
+                <div class="float-md-end my-3">
                     <button type="submit" class="btn btn-primary" >Submit Request</button>
                 </div>
-
             </form>
         </div>
-        <div class="col-sm-4 text-center my-5 ">
+        <!-- <div class="col-sm-4 text-center my-5 ">
             <img src="../static/images/bg_bottle.png" alt="" class="sm-image d-none d-lg-block d-xl-block d-xxl-block">
-        </div>
+        </div> -->
     </div>
 </div>
 {% endblock %}
