@@ -1,36 +1,45 @@
 {% extends 'index.html' %}
 
 {% block content %}
-    <div class="main-content">
+    <div class="container">
+        <h2 class="">Production History</h2>
+            <p class="txt-teal mb-5">Welcome, ##Factory Worker</p>
         <!-- Display Production Content Data -->
-        <div class="container mb-5">
-            <h1>Welcome, ##Factory Worker</h1>
-            <h1 class="mb-3">PRODUCTION HISTORY</h1>
             <div class="row">
-                <div class="col-sm-1 border border-dark bg-dark text-white"><h5>Actions</h5></div>
-                <div class="col-sm-1 border border-dark bg-dark text-white"><h5>id</h5></div>
-                <div class="col-sm-2 border border-dark bg-dark text-white"><h5>Product Name</h5></div>
-                <div class="col-sm-2 border border-dark bg-dark text-white"><h5>Quantity</h5></div>
-                <div class="col-sm-2 border border-dark bg-dark text-white"><h5>Production Date</h5></div>
-                <div class="col-sm-2 border border-dark bg-dark text-white"><h5>factory_worker</h5></div>
+                <div class="col-sm-1 border border-dark bg-dark text-white"><h6>Actions</h6></div>
+                <div class="col-sm-1 border border-dark bg-dark text-white"><h6>Bottle_Qty</h6></div>
+                <div class="col-sm-1 border border-dark bg-dark text-white"><h6>Sachet_Qty</h6></div>
+                <div class="col-sm-2 border border-dark bg-dark text-white"><h6>Updated By</h6></div>
+                <div class="col-sm-2 border border-dark bg-dark text-white"><h6>Production Date</h6></div>
+                <div class="col-sm-2 border border-dark bg-dark text-white"><h6>Created Date</h6></div>
+                <div class="col-sm-2 border border-dark bg-dark text-white"><h6>Modified Date</h6></div>
             </div>
             {% for item in production_content_data %}
     
             <div class="row">
-                <div class="col-sm-1 border border-dark py-1"><a class="" href="{{ url_for('edit_production', id=item[0]) }}">Edit</a></div>
+                <div class="col-sm-1 border py-1"><a class="" href="{{ url_for('edit_production', id=item[0]) }}"><i class="fa-solid fa-pencil txt-teal"></i></a></div>
                 {% for elem in item %}
-                    {% if loop.index == 1 %}
-                        <div class="col-sm-1 border border-dark  py-1">              
-                            {{ elem }}
-                        </div>
-                    {% else %}
-                        <div class="col-sm-2 border border-dark py-1">              
-                            {{ elem }}
-                        </div>
+                    {% if loop.index != 1 %}
+                        {% if loop.index == 2 or loop.index == 3 %}
+                            <div class="col-sm-1 border py-1">              
+                                {{ elem }}
+                            </div>
+                        {% elif loop.index == 4 %}
+                            <div class="col-sm-2 border py-1">              
+                                {{ elem }}
+                            </div>
+                        {% elif loop.index == 5 %}
+                            <div class="col-sm-2 border py-1">              
+                                {{ elem.strftime('%d %b, %Y') }}
+                            </div>
+                        {% else %}
+                            <div class="col-sm-2 border py-1">              
+                                {{ elem.strftime('%d %b, %Y %I:%M %p') }}
+                            </div>
+                        {% endif %}
                     {% endif %}
                 {% endfor %}
             </div>
             {% endfor %}
-        </div>
     </div>
 {% endblock %}
