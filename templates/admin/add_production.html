@@ -3,11 +3,11 @@
 {% block content %}    
 
     <div class="container main-content my-5">
+        <h2><bold>PRODUCTION PAGE </bold></h2>
         <div class="row float-md-end">
             <a href="{{ url_for('production_content') }}" class="btn btn-primary">Check Production Data</a>
         </div>
-        <h2>PRODUCTION PAGE</h2>
-        <p class="txt-teal">Welcome, please indicate below how many bags of Sachet water or packets of Bottled water produced today.</p>
+        <p class="txt-dark">Welcome, please indicate below how many bags of Sachet water or packets of Bottled water produced today.</p>
         <div class="row mt-5">
             <div class="col-sm-8">
                 <form action="{{ url_for('add_production') }}" method="POST">
