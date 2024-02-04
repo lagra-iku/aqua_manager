@@ -2,6 +2,13 @@
 
 {% block content %}
     <div class="container">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <p class="row text-center bg-info p-3 rounded mb-3">{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
         <h2 class="">Production History</h2>
             <p class="txt-teal mb-5">Welcome, ##Factory Worker</p>
         <!-- Display Production Content Data -->

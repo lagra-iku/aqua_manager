@@ -1,18 +1,19 @@
 #!/usr/bin/python3
 """Module that creates a flaskapp"""
 
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, flash, render_template, request, redirect, url_for
 from datetime import date, datetime, timedelta
 import mysql.connector
 
 app = Flask(__name__)
+app.secret_key = b'a secret key'
 
 curr_date = datetime.now().strftime("%d-%b-%Y %I:%M %p")
 
 db = mysql.connector.connect(
     host="127.0.0.1",
-    user="Olisajioke",
-    password="@Lt@ir@@7"
+    user="lagra",
+    password="root"
 )
 
 cursor = db.cursor()
@@ -61,7 +62,7 @@ def index():
 
         cursor.execute("SELECT LAST_INSERT_ID()")
         last_id = cursor.fetchone()[0]
-
+        flash('Request submitted successfully!!!')
         return redirect(url_for('display_entry', id=last_id))
     return render_template('request/new.html', curr_date=curr_date)
 
@@ -80,6 +81,7 @@ def edit_entry(id):
         # Update data in MySQL
        cursor.execute("UPDATE requests SET name = %s, location = %s, phonenum = %s, bottle_qty = %s, sachet_qty = %s, status = %s WHERE id = %s", (name, location, phonenum, bottle_qty, sachet_qty, status, id))
        db.commit()
+       flash('Request updated successfully!!!')
        return redirect(url_for('display_entry', id=id))
     return render_template('request/edit.html', x=entry, curr_date=curr_date)
 
@@ -120,6 +122,7 @@ def add_production():
         db.commit()
 
         # Redirect to a success page
+        flash('Production form submitted successfully!!!')
         return redirect(url_for('production_content'))
 
     return render_template('admin/add_production.html', curr_date=curr_date)
@@ -149,6 +152,7 @@ def edit_production(id):
          cursor.execute("UPDATE production_records SET bottle_qty = %s, sachet_qty = %s, factory_worker = %s, production_date = %s WHERE id = %s", (bottle_qty, sachet_qty, factory_worker, production_date, id))
          db.commit()
        # db.close()
+         flash('Production details updated successfully!!!')
          return redirect(url_for('production_content'))
     return render_template('admin/edit_production.html', x=product_edit, curr_date=curr_date)
 

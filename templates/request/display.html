@@ -2,6 +2,13 @@
 
 {% block content %}
 <div class="container mb-5 pt-3 height80">
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <p class="row text-center bg-info p-3 rounded mb-3">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
     <h4 class="text-center">Order details created by <span class="fw-bold">{{ x[1] }}</span> on <span class="fw-bold">{{ modified.strftime('%d %b, %Y at %I:%M %p') }}</span></h4>
     <div class="row p-3 mt-4 border bg-light rounded">
         <h6 class="fw-bolder">STATUS: <span class="text-success">{{ x[8] }}</span></h6>
