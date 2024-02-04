@@ -22,28 +22,9 @@ cursor.execute("CREATE DATABASE IF NOT EXISTS requests")
 cursor.execute("USE requests")
 
 # Create tables if not exists
-try:
-    cursor.execute("CREATE TABLE IF NOT EXISTS requests (id  INT(11) NOT NULL AUTO_INCREMENT, name VARCHAR (255), location VARCHAR (255), phonenum VARCHAR (30), bottle_qty INT(11), sachet_qty INT(11), created_date DATETIME DEFAULT CURRENT_TIMESTAMP, modified_date DATETIME DEFAULT CURRENT_TIMESTAMP, status VARCHAR (255) DEFAULT 'New', PRIMARY KEY(id))")
-    cursor.execute("DROP TABLE IF EXISTS production_records")
-    cursor.execute("CREATE TABLE IF NOT EXISTS production_records (id INT(11) NOT NULL AUTO_INCREMENT, bottle_qty INT(11), sachet_qty INT(11), factory_worker VARCHAR(255), production_date DATETIME DEFAULT CURRENT_TIMESTAMP, created_date DATETIME DEFAULT CURRENT_TIMESTAMP, modified_date DATETIME DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY(id))")
-except mysql.connector.errors as e:
-    # Handle specific MySQL errors
-    print(f"Error: {e}")
-    if "Table 'production_records' already exists" in str(e):
-        # Drop and recreate the 'production_records' table only if it already exists
-        cursor.execute("DROP TABLE IF EXISTS production_records")
-        cursor.execute("""
-            CREATE TABLE production_records (
-                id INT(11) NOT NULL AUTO_INCREMENT,
-                bottle_qty INT(11),
-                sachet_qty INT(11),
-                factory_worker VARCHAR(255),
-                production_date DATETIME DEFAULT CURRENT_TIMESTAMP,
-                created_date DATETIME DEFAULT CURRENT_TIMESTAMP,
-                modified_date DATETIME DEFAULT CURRENT_TIMESTAMP,
-                PRIMARY KEY(id)
-            )
-        """)
+cursor.execute("CREATE TABLE IF NOT EXISTS requests (id  INT(11) NOT NULL AUTO_INCREMENT, name VARCHAR (255), location VARCHAR (255), phonenum VARCHAR (30), bottle_qty INT(11), sachet_qty INT(11), created_date DATETIME DEFAULT CURRENT_TIMESTAMP, modified_date DATETIME DEFAULT CURRENT_TIMESTAMP, status VARCHAR (255) DEFAULT 'New', PRIMARY KEY(id))")
+cursor.execute("CREATE TABLE IF NOT EXISTS production_records (id INT(11) NOT NULL AUTO_INCREMENT, bottle_qty INT(11), sachet_qty INT(11), factory_worker VARCHAR(255), production_date DATETIME DEFAULT CURRENT_TIMESTAMP, created_date DATETIME DEFAULT CURRENT_TIMESTAMP, modified_date DATETIME DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY(id))")
+
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
