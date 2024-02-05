@@ -81,9 +81,34 @@ def display_entry(id):
 
 @app.route('/dashboard')
 def dashboard():
-    cursor.execute("SELECT id, name, location, phonenum, status FROM requests")
+    cursor.execute("SELECT id, name, location, phonenum, status FROM requests WHERE status  <> 'canceled' AND status <> 'delivered' ORDER BY modified_date DESC")
     entry = cursor.fetchall()
-    return render_template('dashboard.html', x=entry, curr_date=curr_date)
+    cursor.execute("""
+    SELECT 
+        SUM(CASE WHEN status = 'New' THEN 1 ELSE 0 END) AS new_count,
+        SUM(CASE WHEN status = 'On route' THEN 1 ELSE 0 END) AS enroute_count,
+        SUM(CASE WHEN status = 'Delivered' THEN 1 ELSE 0 END) AS completed_count,
+        SUM(CASE WHEN status = 'Canceled' THEN 1 ELSE 0 END) AS canceled_count
+    FROM requests
+    """)
+
+    # Fetch the result
+    result = cursor.fetchone()
+
+    # Extract counts for each status
+    new_count = result[0]
+    enroute_count = result[1]
+    completed_count = result[2]
+    canceled_count = result[3]
+
+    cursor.execute("SELECT SUM(bottle_qty) AS bottle_sum FROM production_records")
+    bottle = cursor.fetchone()
+    bottle_sum = bottle[0]
+
+    cursor.execute("SELECT SUM(sachet_qty) AS sachet_sum FROM production_records")
+    sachet = cursor.fetchone()
+    sachet_sum = sachet[0]
+    return render_template('dashboard.html', x=entry, curr_date=curr_date, new=new_count, enroute=enroute_count, completed=completed_count, canceled=canceled_count, bottled=bottle_sum, sachet=sachet_sum)
 
 @app.route('/admin', methods=('GET', 'POST'))
 def admin():
