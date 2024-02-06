@@ -1,21 +1,29 @@
 #!/usr/bin/python3
 """Module that creates a flaskapp"""
-
+from configparser import ConfigParser
 from flask import Flask, flash, render_template, request, redirect, url_for
-from datetime import date, datetime, timedelta
+from datetime import datetime
 import mysql.connector
 
-app = Flask(__name__)
-app.secret_key = b'a secret key'
+config = ConfigParser()
+config.read('config.ini')
 
-curr_date = datetime.now().strftime("%d-%b-%Y %I:%M %p")
+app = Flask(__name__)
 
 db = mysql.connector.connect(
+<<<<<<< HEAD
     host="127.0.0.1",
     user="Olisajioke",
     password="@Lt@ir@@7"
+=======
+    host=config['mysql']['host'],
+    user=config['mysql']['user'],
+    password=config['mysql']['password']
+>>>>>>> 6ab26c5f07817030d8c45b1f5d6f18fea80f2507
 )
 
+app.secret_key = config['flash']['secret_key']
+curr_date = datetime.now().strftime("%d-%b-%Y %I:%M %p")
 cursor = db.cursor()
 
 # Create database if not exists
