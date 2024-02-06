@@ -1,0 +1,10 @@
+{% extends 'index.html' %}
+
+{% block content %}
+    <h2>Welcome {{ user.username }}</h2>
+    <!--<p>Username: {{ user.username }}</p> -->
+    <p>Email: {{ user.email }}</p>
+    <p>Full Name: {{ user.full_name }}</p>
+    <br>
+    <a href="{{ url_for('logout') }}">Logout</a>
+{% endblock %}
