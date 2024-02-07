@@ -357,6 +357,14 @@ def logout():
     
     return render_template('user_profile/login.html', curr_date=curr_date)
 
+# Define route for 404 error
+@app.errorhandler(404)
+def not_found_error(error):
+    return render_template('404.html'), 404
+
+@app.errorhandler(503)
+def service_unavailable_error(error):
+    return render_template('503.html'), 503
 
 
 if __name__ == "__main__":
