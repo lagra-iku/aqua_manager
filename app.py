@@ -364,7 +364,7 @@ def not_found_error(error):
 
 @app.errorhandler(503)
 def service_unavailable_error(error):
-    return render_template('503.html'), 503
+    return render_template('503.html', error=error), 503
 
 
 if __name__ == "__main__":
