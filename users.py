@@ -65,3 +65,11 @@ class User:
             }
         else:
             return None
+        
+    @staticmethod
+    def is_username_available(username):
+        # Check if the username is already in use
+        cursor.execute("SELECT id FROM user_profiles WHERE username = %s", (username,))
+        user_data = cursor.fetchone()
+
+        return user_data is None 

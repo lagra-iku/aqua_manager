@@ -61,6 +61,7 @@ cursor.execute("""
     CREATE TABLE IF NOT EXISTS user_profiles (
         id INT AUTO_INCREMENT PRIMARY KEY,
         username VARCHAR(255),
+        full_name VARCHAR(255),
         email VARCHAR(255),
         password VARCHAR(255),
         date_created DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -234,25 +235,23 @@ def edit_production(id):
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        username = request.form['username']
-        email = request.form['email']
-        password = request.form['password']
+        username = request.form.get['username']
+        email = request.form.get['email']
+        password = request.form.get['password']
+        full_name = request.form.get['full_name']
 
-        # check for similar username
-        cursor.execute("SELECT id, username, password FROM user_profiles WHERE username = %s", (username,))
-        user = cursor.fetchone()
-
-        if user and check_password_hash(user[2], password):
+        # Check if username is available
+        if not User.is_username_available(username):
             flash('Username Taken! Please choose another one.', 'error')
             return redirect(url_for('register'))
-        else:
-            # Create a new user instance
-            new_user = User(username, password, email, '')
-            # Save the new user to the database
-            new_user.save_to_database()
-            flash('Registration successful! Please log in.', 'success')
 
-            return redirect(url_for('login'))
+        # Create a new user instance
+        new_user = User(username, password, email, '')
+        # Save the new user to the database
+        new_user.save_to_database()
+
+        flash('Registration successful! Please log in.', 'success')
+        return redirect(url_for('login'))
 
     return render_template('user_profile/register.html', curr_date=curr_date)
 
