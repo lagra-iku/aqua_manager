@@ -235,26 +235,29 @@ def edit_production(id):
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        username = request.form.get['username']
-        email = request.form.get['email']
-        password = request.form.get['password']
-        full_name = request.form.get['full_name']
+        username = request.form.get('username')
+        email = request.form.get('email')
+        raw_password = request.form.get('password') 
+        full_name = request.form.get('full_name')
 
-        # Check if username is available
-        if not User.is_username_available(username):
+        hashed_password = generate_password_hash(raw_password)
+
+        # Check if username is already taken
+        cursor.execute("SELECT * FROM user_profiles WHERE username = %s", (username,))
+        existing_user = cursor.fetchone()
+
+        if existing_user:
             flash('Username Taken! Please choose another one.', 'error')
             return redirect(url_for('register'))
-
-        # Create a new user instance
-        new_user = User(username, password, email, '')
-        # Save the new user to the database
-        new_user.save_to_database()
-
-        flash('Registration successful! Please log in.', 'success')
-        return redirect(url_for('login'))
+        else:
+            # Insert new user record into the database with hashed password
+            cursor.execute("INSERT INTO user_profiles (username, email, password, full_name) VALUES (%s, %s, %s, %s)",
+                           (username, email, hashed_password, full_name))
+            db.commit()
+            flash('Registration successful! Please log in.', 'success')
+            return redirect(url_for('login'))
 
     return render_template('user_profile/register.html', curr_date=curr_date)
-
 
 
 @login_manager.user_loader
@@ -265,21 +268,27 @@ def load_user(user_id):
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
+        username = request.form.get('username')
+        password = request.form.get('password')
 
         # Query the database to retrieve the user's data
         cursor.execute("SELECT id, username, password FROM user_profiles WHERE username = %s", (username,))
         user = cursor.fetchone()
 
+        # Check if a user with the provided username exists in the database
         if user and check_password_hash(user[2], password):
-            session['user_id'] = user[0]  # Store the user's ID in the session
             flash('Login successful!', 'success')
+            print("Login was Successful")
+            # Redirect to the admin page after successful login
             return redirect(url_for('admin'))
         else:
             flash('Invalid username or password', 'error')
+            print("login was unsuccessful!")
+            return redirect(url_for('login'))
 
     return render_template('user_profile/login.html', curr_date=curr_date)
+
+
 
 
 @app.route('/profile')
