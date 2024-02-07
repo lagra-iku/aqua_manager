@@ -25,8 +25,51 @@ cursor.execute("CREATE DATABASE IF NOT EXISTS requests")
 cursor.execute("USE requests")
 
 # Create tables if not exists
+<<<<<<< HEAD
 cursor.execute("CREATE TABLE IF NOT EXISTS requests (id  INT(11) NOT NULL AUTO_INCREMENT, name VARCHAR (255), location VARCHAR (255), phonenum VARCHAR (30), bottle_qty INT(11), sachet_qty INT(11), created_date DATETIME DEFAULT CURRENT_TIMESTAMP, modified_date DATETIME DEFAULT CURRENT_TIMESTAMP, status VARCHAR (255) DEFAULT 'New', PRIMARY KEY(id))")
 cursor.execute("CREATE TABLE IF NOT EXISTS production_records (id INT(11) NOT NULL AUTO_INCREMENT, bottle_qty INT(11), sachet_qty INT(11), factory_worker VARCHAR(255), production_date DATETIME DEFAULT CURRENT_TIMESTAMP, created_date DATETIME DEFAULT CURRENT_TIMESTAMP, modified_date DATETIME DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY(id))")
+=======
+cursor.execute("""
+    CREATE TABLE IF NOT EXISTS requests (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(255),
+        location VARCHAR(255),
+        phonenum VARCHAR(30),
+        bottle_qty INT,
+        sachet_qty INT,
+        created_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+        modified_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+        status VARCHAR(255) DEFAULT 'New'
+    )
+""")
+
+
+cursor.execute("""
+    CREATE TABLE IF NOT EXISTS production_records (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        bottle_qty INT,
+        sachet_qty INT,
+        factory_worker VARCHAR(255),
+        production_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+        created_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+        modified_date DATETIME DEFAULT CURRENT_TIMESTAMP
+    )
+""")
+
+cursor.execute("""
+    CREATE TABLE IF NOT EXISTS user_profiles (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        username VARCHAR(255),
+        full_name VARCHAR(255),
+        email VARCHAR(255),
+        password VARCHAR(255),
+        date_created DATETIME DEFAULT CURRENT_TIMESTAMP,
+        date_modified DATETIME DEFAULT CURRENT_TIMESTAMP
+    )
+""")
+
+db.commit()
+>>>>>>> 29200383d326c376202a01f6e47a5987ba0ccb3e
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -164,7 +207,42 @@ def edit_production(id):
          return redirect(url_for('production_content'))
     return render_template('admin/edit_production.html', x=product_edit, curr_date=curr_date)
 
+<<<<<<< HEAD
 @app.route('/login', methods=('GET', 'POST'))
+=======
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        username = request.form.get['username']
+        email = request.form.get['email']
+        password = request.form.get['password']
+        full_name = request.form.get['full_name']
+
+        # Check if username is available
+        if not User.is_username_available(username):
+            flash('Username Taken! Please choose another one.', 'error')
+            return redirect(url_for('register'))
+
+        # Create a new user instance
+        new_user = User(username, password, email, '')
+        # Save the new user to the database
+        new_user.save_to_database()
+
+        flash('Registration successful! Please log in.', 'success')
+        return redirect(url_for('login'))
+
+    return render_template('user_profile/register.html', curr_date=curr_date)
+
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User(user_id)
+
+
+@app.route('/login', methods=['GET', 'POST'])
+>>>>>>> 29200383d326c376202a01f6e47a5987ba0ccb3e
 def login():
     return render_template('user_profile/login.html')
 
