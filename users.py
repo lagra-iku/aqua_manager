@@ -73,3 +73,10 @@ class User:
         user_data = cursor.fetchone()
 
         return user_data is None 
+    
+    @staticmethod
+    def logout():
+        # Close the cursor
+        cursor.close()
+        # Close the database connection
+        db.close()

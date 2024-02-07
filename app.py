@@ -169,7 +169,8 @@ def admin():
         "SELECT id, name, bottle_qty, sachet_qty, status, modified_date FROM requests WHERE status  <> 'canceled' AND "
         "status <> 'completed' ORDER BY modified_date DESC")
     entry = cursor.fetchall()
-    return render_template('admin/home.html', x=entry, curr_date=curr_date)
+    fullname = session.get("full_name")
+    return render_template('admin/home.html', x=entry, fullname=fullname, curr_date=curr_date)
 
 
 @app.route('/add_production', methods=['GET', 'POST'])
@@ -185,9 +186,10 @@ def add_production():
             "%s, %s)",
             (bottle_qty, sachet_qty, factory_worker, production_date))
         db.commit()
-
+        # fullname = session.get("full_name")
         # Redirect to a success page
         flash('Production form submitted successfully!!!')
+        # username = session.get("username")
         return redirect(url_for('production_content'))
 
     return render_template('admin/add_production.html', curr_date=curr_date)
@@ -204,8 +206,9 @@ def production_content():
     cursor = db.cursor()
     cursor.execute("SELECT * FROM production_records ORDER BY production_date DESC")
     production_content_data = cursor.fetchall()
+    fullname = session.get("full_name")
     # print(production_content_data)
-    return render_template('admin/production_content.html', production_content_data=production_content_data,
+    return render_template('admin/production_content.html', production_content_data=production_content_data, fullname=fullname,
                            curr_date=curr_date)
 
 
@@ -262,11 +265,45 @@ def register():
     return render_template('user_profile/register.html', curr_date=curr_date)
 
 
-@login_manager.user_loader
-def load_user(user_id):
-    return User(user_id)
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+
+        # Query the database to retrieve the user's data
+        cursor.execute("SELECT id, username, password FROM user_profiles WHERE username = %s", (username,))
+        user = cursor.fetchone()
+
+        # Check if a user with the provided username exists in the database
+        if user and check_password_hash(user[2], password):
+            flash('Login successful!', 'success')
+            session['username'] = username
+            # Redirect to the user's profile page after successful login
+            return redirect(url_for('profile', username=username))
+        else:
+            flash('Invalid username or password', 'error')
+            return redirect(url_for('login'))
+
+    return render_template('user_profile/login.html', curr_date=curr_date)
 
 
+@app.route('/profile/<username>')
+def profile(username):
+    # Query the database to retrieve additional user information
+    cursor.execute("SELECT email, full_name FROM user_profiles WHERE username = %s", (username,))
+    user_info = cursor.fetchone()
+
+    if user_info:
+        email = user_info[0]
+        full_name = user_info[1]
+        session['full_name'] = full_name
+        return render_template('user_profile/profile.html', username=username, email=email, full_name=full_name)
+    else:
+        flash('User not found', 'error')
+        return redirect(url_for('login'))
+
+"""
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -290,6 +327,8 @@ def login():
 
     return render_template('user_profile/login.html', curr_date=curr_date)
 
+
+
 @app.route('/profile')
 def profile():
     if 'user_id' not in session:
@@ -301,22 +340,23 @@ def profile():
     user_data = cursor.fetchone()
 
     return render_template('user_profile/profile.html', user_data=user_data)
+"""
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User(user_id)
 
 
-@app.route('/logout')
-@login_required
+@app.route('/logout', methods=['GET', 'POST'])
+# @login_required
 def logout():
-    logout_user()
-    return redirect(url_for('login'))
+    if request.method == 'GET':
+        logout_user()
+        flash('Logout successful!', 'success')
+        return redirect(url_for('login'))
+    
+    return render_template('user_profile/login.html', curr_date=curr_date)
 
-# Define route for 404 error
-@app.errorhandler(404)
-def not_found_error(error):
-    return render_template('404.html'), 404
-
-@app.errorhandler(503)
-def service_unavailable_error(error):
-    return render_template('503.html'), 503
 
 
 if __name__ == "__main__":
