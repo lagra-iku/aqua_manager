@@ -4,6 +4,15 @@
     <h2>Register Here</h2>
     <div class="row mt-5">
         <div class="col-sm-8">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
             <form action="{{ url_for('register') }}" method="POST">
                 <div class="form-group my-2">
                     <label for="username" class="fw-bold">Username:</label>
@@ -29,4 +38,6 @@
             <div class="row float-md-left">
                 <a href="{{ url_for('login') }}" class="btn btn-primary">Login!</a>
             </div>
+        </div>
+    </div>
 {% endblock %}
