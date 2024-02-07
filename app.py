@@ -232,17 +232,14 @@ def edit_production(id):
     return render_template('admin/edit_production.html', x=product_edit, curr_date=curr_date)
 
 
-from werkzeug.security import generate_password_hash
-
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
         username = request.form.get('username')
         email = request.form.get('email')
-        raw_password = request.form.get('password')  # Get the raw password
+        raw_password = request.form.get('password') 
         full_name = request.form.get('full_name')
 
-        # Hash the password
         hashed_password = generate_password_hash(raw_password)
 
         # Check if username is already taken
@@ -263,9 +260,6 @@ def register():
     return render_template('user_profile/register.html', curr_date=curr_date)
 
 
-
-
-
 @login_manager.user_loader
 def load_user(user_id):
     return User(user_id)
@@ -274,13 +268,14 @@ def load_user(user_id):
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
+        username = request.form.get('username')
+        password = request.form.get('password')
 
         # Query the database to retrieve the user's data
         cursor.execute("SELECT id, username, password FROM user_profiles WHERE username = %s", (username,))
         user = cursor.fetchone()
 
+        # Check if a user with the provided username exists in the database
         if user and check_password_hash(user[2], password):
             flash('Login successful!', 'success')
             print("Login was Successful")
@@ -288,9 +283,11 @@ def login():
             return redirect(url_for('admin'))
         else:
             flash('Invalid username or password', 'error')
+            print("login was unsuccessful!")
             return redirect(url_for('login'))
 
     return render_template('user_profile/login.html', curr_date=curr_date)
+
 
 
 
