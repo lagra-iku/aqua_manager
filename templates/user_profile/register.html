@@ -1,6 +1,10 @@
 {% extends 'index.html' %}
 
 {% block content %}
+<div class="container main-content my-5">
+    <div class="row float-md-end">
+        <a href="{{ url_for('login') }}" class="btn btn-primary">Login!</a>
+    </div>
     <h2>Register Here</h2>
     <div class="container mb-5 pt-3 height80">
         {% with messages = get_flashed_messages() %}
@@ -32,9 +36,5 @@
                 <button type="submit" class="btn btn-primary">Register</button>
             </div>
         </form>
-    </div>
-
-    <div class="row float-md-left">
-        <a href="{{ url_for('login') }}" class="btn btn-primary">Login!</a>
     </div>
 {% endblock %}
