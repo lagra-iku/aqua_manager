@@ -6,10 +6,10 @@ The challenge is to seamlessly connect individuals, supermarkets, and depots thr
 While Aqua Manager strives to optimize the end-to-end supply chain, it acknowledges the external factors that might pose challenges, emphasizing the need for adaptability and resilience in the face of ever-changing circumstances. 
 The challenge is not just to create a technological solution but to forge a reliable and efficient network that can withstand the unique challenges of the Nigerian market and contribute to the accessibility and transparency of pure water distribution.
 
-## Where to find the app online
+## Where to find the app online?
 - Coming Soon !!!
 
-## How to run the app locally using vscode
+## How to run the app locally using vscode?
 - Clone the app
 - Ensure Python and Flask and sql-connector-python are installed on your VSCODE
 - Install and setup your MySql Server

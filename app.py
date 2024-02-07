@@ -164,6 +164,7 @@ def edit_production(id):
          return redirect(url_for('production_content'))
     return render_template('admin/edit_production.html', x=product_edit, curr_date=curr_date)
 
+@app.route('/login', methods=('GET', 'POST'))
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000, debug=True)
