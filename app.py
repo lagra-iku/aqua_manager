@@ -169,7 +169,8 @@ def admin():
         "SELECT id, name, bottle_qty, sachet_qty, status, modified_date FROM requests WHERE status  <> 'canceled' AND "
         "status <> 'completed' ORDER BY modified_date DESC")
     entry = cursor.fetchall()
-    return render_template('admin/home.html', x=entry, curr_date=curr_date)
+    fullname = session.get("full_name")
+    return render_template('admin/home.html', x=entry, fullname=fullname, curr_date=curr_date)
 
 
 @app.route('/add_production', methods=['GET', 'POST'])
@@ -188,6 +189,7 @@ def add_production():
         # fullname = session.get("full_name")
         # Redirect to a success page
         flash('Production form submitted successfully!!!')
+        # username = session.get("username")
         return redirect(url_for('production_content'))
 
     return render_template('admin/add_production.html', curr_date=curr_date)
@@ -276,7 +278,7 @@ def login():
         # Check if a user with the provided username exists in the database
         if user and check_password_hash(user[2], password):
             flash('Login successful!', 'success')
-            # session['username'] = username
+            session['username'] = username
             # Redirect to the user's profile page after successful login
             return redirect(url_for('profile', username=username))
         else:

@@ -8,10 +8,15 @@
     
     <!-- Links to other functionalities -->
     <div class="row float-md-left">
-            <a href="{{ url_for('add_production') }}" class="btn btn-dark">Add New Production</a><br>
+        <div class="col-md-6">
+            <a href="{{ url_for('add_production') }}" class="btn btn-dark">Add New Production</a>
+        </div>
     </div>
+    <br><br>
     <div class="row float-md-left">
-    <a href="{{ url_for('logout') }}" class="btn btn-primary ">Logout</a>
+        <div class="col-md-6">
+            <a href="{{ url_for('logout') }}" class="btn btn-primary btn-lg">Logout</a>
+        </div>
     </div>
     </div>
 {% endblock %}
