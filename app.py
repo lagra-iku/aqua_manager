@@ -185,12 +185,12 @@ def add_production():
             "%s, %s)",
             (bottle_qty, sachet_qty, factory_worker, production_date))
         db.commit()
-        fullname = session.get("full_name")
+        # fullname = session.get("full_name")
         # Redirect to a success page
         flash('Production form submitted successfully!!!')
         return redirect(url_for('production_content'))
 
-    return render_template('admin/add_production.html', fullname=fullname, curr_date=curr_date)
+    return render_template('admin/add_production.html', curr_date=curr_date)
 
 
 @app.route('/view_analytics', methods=['GET', 'POST'])
