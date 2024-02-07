@@ -232,13 +232,18 @@ def edit_production(id):
     return render_template('admin/edit_production.html', x=product_edit, curr_date=curr_date)
 
 
+from werkzeug.security import generate_password_hash
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
         username = request.form.get('username')
         email = request.form.get('email')
-        password = request.form.get('password')
+        raw_password = request.form.get('password')  # Get the raw password
         full_name = request.form.get('full_name')
+
+        # Hash the password
+        hashed_password = generate_password_hash(raw_password)
 
         # Check if username is already taken
         cursor.execute("SELECT * FROM user_profiles WHERE username = %s", (username,))
@@ -248,14 +253,15 @@ def register():
             flash('Username Taken! Please choose another one.', 'error')
             return redirect(url_for('register'))
         else:
-            # Insert new user record into the database
+            # Insert new user record into the database with hashed password
             cursor.execute("INSERT INTO user_profiles (username, email, password, full_name) VALUES (%s, %s, %s, %s)",
-                           (username, email, password, full_name))
+                           (username, email, hashed_password, full_name))
             db.commit()
             flash('Registration successful! Please log in.', 'success')
             return redirect(url_for('login'))
 
     return render_template('user_profile/register.html', curr_date=curr_date)
+
 
 
 
