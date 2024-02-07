@@ -71,7 +71,6 @@ cursor.execute("""
 
 db.commit()
 
-
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
@@ -81,15 +80,13 @@ def index():
         location = request.form['location']
         phonenum = request.form['phonenum']
 
-        # Insert data into SQLite
-        cursor.execute("INSERT INTO requests (name, location, phonenum, bottle_qty, sachet_qty) VALUES (?, ?, ?, ?, ?)",
-                       (name, location, phonenum, bottle_qty, sachet_qty))
+        # Insert data into MySQL
+        cursor.execute("INSERT INTO requests (name, location, phonenum, bottle_qty, sachet_qty) VALUES (%(name)s, %(location)s, %(phonenum)s, %(bottle_qty)s, %(sachet_qty)s)",
+                       {'name': name, 'location': location, 'phonenum': phonenum, 'bottle_qty': bottle_qty, 'sachet_qty': sachet_qty})
         db.commit()
 
-        cursor.execute("SELECT last_insert_rowid()")
-        last_id = cursor.fetchone()[0]
         flash('Request submitted successfully!!!')
-        return redirect(url_for('display_entry', id=last_id))
+        return redirect(url_for('display_entry', id=cursor.lastrowid))
     return render_template('request/new.html', curr_date=datetime.now().strftime("%d-%b-%Y %I:%M %p"))
 
 
@@ -256,6 +253,11 @@ def register():
             db.commit()
             flash('Registration successful! Please log in.', 'success')
             return redirect(url_for('login'))
+         # Consume flashed messages to ensure they are removed
+        flashed_messages = get_flashed_messages(with_categories=True)
+        if flashed_messages:
+            for category, message in flashed_messages:
+                pass  # Do nothing, just consume the flashed messages
 
     return render_template('user_profile/register.html', curr_date=curr_date)
 
