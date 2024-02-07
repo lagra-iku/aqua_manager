@@ -1,19 +1,14 @@
 #!/usr/bin/python3
 """Module that creates a flaskapp"""
-from flask import Flask, flash, render_template, request, redirect, url_for, session
-from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required
-from datetime import datetime
 from configparser import ConfigParser
-from werkzeug.security import generate_password_hash, check_password_hash
-from users import User
+from flask import Flask, flash, render_template, request, redirect, url_for
+from datetime import datetime
 import mysql.connector
 
 config = ConfigParser()
 config.read('config.ini')
 
 app = Flask(__name__)
-login_manager = LoginManager()
-login_manager.init_app(app)
 
 db = mysql.connector.connect(
     host=config['mysql']['host'],
@@ -25,54 +20,18 @@ app.secret_key = config['flash']['secret_key']
 curr_date = datetime.now().strftime("%d-%b-%Y %I:%M %p")
 cursor = db.cursor()
 
-# Create database if not exists
+# Create database if not existsgi t
 cursor.execute("CREATE DATABASE IF NOT EXISTS requests")
 cursor.execute("USE requests")
 
 # Create tables if not exists
-cursor.execute("""
-    CREATE TABLE IF NOT EXISTS requests (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        name VARCHAR(255),
-        location VARCHAR(255),
-        phonenum VARCHAR(30),
-        bottle_qty INT,
-        sachet_qty INT,
-        created_date DATETIME DEFAULT CURRENT_TIMESTAMP,
-        modified_date DATETIME DEFAULT CURRENT_TIMESTAMP,
-        status VARCHAR(255) DEFAULT 'New'
-    )
-""")
-
-
-cursor.execute("""
-    CREATE TABLE IF NOT EXISTS production_records (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        bottle_qty INT,
-        sachet_qty INT,
-        factory_worker VARCHAR(255),
-        production_date DATETIME DEFAULT CURRENT_TIMESTAMP,
-        created_date DATETIME DEFAULT CURRENT_TIMESTAMP,
-        modified_date DATETIME DEFAULT CURRENT_TIMESTAMP
-    )
-""")
-
-cursor.execute("""
-    CREATE TABLE IF NOT EXISTS user_profiles (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        username VARCHAR(255),
-        email VARCHAR(255),
-        password VARCHAR(255),
-        date_created DATETIME DEFAULT CURRENT_TIMESTAMP,
-        date_modified DATETIME DEFAULT CURRENT_TIMESTAMP
-    )
-""")
-
-db.commit()
+cursor.execute("CREATE TABLE IF NOT EXISTS requests (id  INT(11) NOT NULL AUTO_INCREMENT, name VARCHAR (255), location VARCHAR (255), phonenum VARCHAR (30), bottle_qty INT(11), sachet_qty INT(11), created_date DATETIME DEFAULT CURRENT_TIMESTAMP, modified_date DATETIME DEFAULT CURRENT_TIMESTAMP, status VARCHAR (255) DEFAULT 'New', PRIMARY KEY(id))")
+cursor.execute("CREATE TABLE IF NOT EXISTS production_records (id INT(11) NOT NULL AUTO_INCREMENT, bottle_qty INT(11), sachet_qty INT(11), factory_worker VARCHAR(255), production_date DATETIME DEFAULT CURRENT_TIMESTAMP, created_date DATETIME DEFAULT CURRENT_TIMESTAMP, modified_date DATETIME DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY(id))")
 
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
+    
     if request.method == 'POST':
         bottle_qty = request.form['bottle_qty']
         sachet_qty = request.form['sachet_qty']
@@ -80,16 +39,15 @@ def index():
         location = request.form['location']
         phonenum = request.form['phonenum']
 
-        # Insert data into SQLite
-        cursor.execute("INSERT INTO requests (name, location, phonenum, bottle_qty, sachet_qty) VALUES (?, ?, ?, ?, ?)",
-                       (name, location, phonenum, bottle_qty, sachet_qty))
+        # Insert data into MySQL
+        cursor.execute("INSERT INTO requests (name, location, phonenum, bottle_qty, sachet_qty) VALUES (%s, %s, %s, %s, %s)", (name, location, phonenum, bottle_qty, sachet_qty))
         db.commit()
 
-        cursor.execute("SELECT last_insert_rowid()")
+        cursor.execute("SELECT LAST_INSERT_ID()")
         last_id = cursor.fetchone()[0]
         flash('Request submitted successfully!!!')
         return redirect(url_for('display_entry', id=last_id))
-    return render_template('request/new.html', curr_date=datetime.now().strftime("%d-%b-%Y %I:%M %p"))
+    return render_template('request/new.html', curr_date=curr_date)
 
 
 @app.route('/edit/<int:id>', methods=['GET', 'POST'])
@@ -97,34 +55,27 @@ def edit_entry(id):
     cursor.execute("SELECT * FROM requests WHERE id = %s", (id,))
     entry = cursor.fetchone()
     if request.method == 'POST':
-        name = request.form.get('name')
-        location = request.form.get('location')
-        phonenum = request.form.get('phonenum')
-        bottle_qty = request.form.get('bottle_qty')
-        sachet_qty = request.form.get('sachet_qty')
-        status = request.form.get('status')
+       name = request.form.get('name')
+       location = request.form.get('location')
+       phonenum = request.form.get('phonenum')
+       bottle_qty = request.form.get('bottle_qty')
+       sachet_qty = request.form.get('sachet_qty')
+       status = request.form.get('status')
         # Update data in MySQL
-        cursor.execute(
-            "UPDATE requests SET name = %s, location = %s, phonenum = %s, bottle_qty = %s, sachet_qty = %s, "
-            "status = %s WHERE id = %s",
-            (name, location, phonenum, bottle_qty, sachet_qty, status, id))
-        db.commit()
-        flash('Request updated successfully!!!')
-        return redirect(url_for('display_entry', id=id))
+       cursor.execute("UPDATE requests SET name = %s, location = %s, phonenum = %s, bottle_qty = %s, sachet_qty = %s, status = %s WHERE id = %s", (name, location, phonenum, bottle_qty, sachet_qty, status, id))
+       db.commit()
+       flash('Request updated successfully!!!')
+       return redirect(url_for('display_entry', id=id))
     return render_template('request/edit.html', x=entry, curr_date=curr_date)
 
-
 @app.route('/display/<int:id>', methods=['GET', 'POST'])
-def display_entry(id,):
+def display_entry(id):
     cursor.execute("SELECT * FROM requests WHERE id = %s", (id,))
     entry = cursor.fetchone()
     user_phonenum = entry[3]
     modified = entry[7]
 
-    cursor.execute(
-        "SELECT id, bottle_qty, sachet_qty, status, modified_date FROM requests WHERE phonenum = %s ORDER BY "
-        "modified_date DESC",
-        (user_phonenum,))
+    cursor.execute("SELECT id, bottle_qty, sachet_qty, status, modified_date FROM requests WHERE phonenum = %s ORDER BY modified_date DESC", (user_phonenum,))
     req_history = cursor.fetchall()
 
     return render_template('request/display.html', x=entry, req=req_history, curr_date=curr_date, modified=modified)
@@ -132,9 +83,7 @@ def display_entry(id,):
 
 @app.route('/dashboard')
 def dashboard():
-    cursor.execute(
-        "SELECT id, name, location, phonenum, status FROM requests WHERE status  <> 'canceled' AND status <> "
-        "'delivered' ORDER BY modified_date DESC")
+    cursor.execute("SELECT id, name, location, phonenum, status FROM requests WHERE status  <> 'canceled' AND status <> 'delivered' ORDER BY modified_date DESC")
     entry = cursor.fetchall()
     cursor.execute("""
     SELECT 
@@ -161,18 +110,13 @@ def dashboard():
     cursor.execute("SELECT SUM(sachet_qty) AS sachet_sum FROM production_records")
     sachet = cursor.fetchone()
     sachet_sum = sachet[0]
-    return render_template('dashboard.html', x=entry, curr_date=curr_date, new=new_count, enroute=enroute_count,
-                           completed=completed_count, canceled=canceled_count, bottled=bottle_sum, sachet=sachet_sum)
-
+    return render_template('dashboard.html', x=entry, curr_date=curr_date, new=new_count, enroute=enroute_count, completed=completed_count, canceled=canceled_count, bottled=bottle_sum, sachet=sachet_sum)
 
 @app.route('/admin', methods=('GET', 'POST'))
 def admin():
-    cursor.execute(
-        "SELECT id, name, bottle_qty, sachet_qty, status, modified_date FROM requests WHERE status  <> 'canceled' AND "
-        "status <> 'completed' ORDER BY modified_date DESC")
+    cursor.execute("SELECT id, name, bottle_qty, sachet_qty, status, modified_date FROM requests WHERE status  <> 'canceled' AND status <> 'completed' ORDER BY modified_date DESC")
     entry = cursor.fetchall()
     return render_template('admin/home.html', x=entry, curr_date=curr_date)
-
 
 @app.route('/add_production', methods=['GET', 'POST'])
 def add_production():
@@ -182,10 +126,7 @@ def add_production():
         factory_worker = request.form.get('factory_worker')
         production_date = request.form.get('production_date')
         # Insert the new production data into the production_records table
-        cursor.execute(
-            "INSERT INTO production_records (bottle_qty, sachet_qty, factory_worker, production_date) VALUES (%s, %s, "
-            "%s, %s)",
-            (bottle_qty, sachet_qty, factory_worker, production_date))
+        cursor.execute("INSERT INTO production_records (bottle_qty, sachet_qty, factory_worker, production_date) VALUES (%s, %s, %s, %s)", (bottle_qty, sachet_qty, factory_worker, production_date))
         db.commit()
 
         # Redirect to a success page
@@ -194,11 +135,9 @@ def add_production():
 
     return render_template('admin/add_production.html', curr_date=curr_date)
 
-
 @app.route('/view_analytics', methods=['GET', 'POST'])
 def view_analytics():
     return redirect(url_for('dashboard', curr_date=curr_date))
-
 
 @app.route('/production_content', methods=['GET', 'POST'])
 def production_content():
@@ -207,102 +146,27 @@ def production_content():
     cursor.execute("SELECT * FROM production_records ORDER BY production_date DESC")
     production_content_data = cursor.fetchall()
     # print(production_content_data)
-    return render_template('admin/production_content.html', production_content_data=production_content_data,
-                           curr_date=curr_date)
-
+    return render_template('admin/production_content.html', production_content_data=production_content_data, curr_date=curr_date)
 
 @app.route('/edit_production/<int:id>', methods=['GET', 'POST'])
 def edit_production(id):
     cursor.execute("SELECT * FROM production_records WHERE id = %s", (id,))
     product_edit = cursor.fetchone()
     if request.method == 'POST':
-        bottle_qty = request.form.get('bottle_qty')
-        sachet_qty = request.form.get('sachet_qty')
-        factory_worker = request.form.get('factory_worker')
-        production_date = request.form.get('production_date')
-        cursor.execute(
-            "UPDATE production_records SET bottle_qty = %s, sachet_qty = %s, factory_worker = %s, production_date = "
-            "%s WHERE id = %s",
-            (bottle_qty, sachet_qty, factory_worker, production_date, id))
-        db.commit()
-        # db.close()
-        flash('Production details updated successfully!!!')
-        return redirect(url_for('production_content'))
+         bottle_qty = request.form.get('bottle_qty')
+         sachet_qty = request.form.get('sachet_qty')
+         factory_worker = request.form.get('factory_worker')
+         production_date = request.form.get('production_date')
+         cursor.execute("UPDATE production_records SET bottle_qty = %s, sachet_qty = %s, factory_worker = %s, production_date = %s WHERE id = %s", (bottle_qty, sachet_qty, factory_worker, production_date, id))
+         db.commit()
+       # db.close()
+         flash('Production details updated successfully!!!')
+         return redirect(url_for('production_content'))
     return render_template('admin/edit_production.html', x=product_edit, curr_date=curr_date)
 
 @app.route('/login', methods=('GET', 'POST'))
-
-@app.route('/register', methods=['GET', 'POST'])
-def register():
-    if request.method == 'POST':
-        username = request.form['username']
-        email = request.form['email']
-        password = request.form['password']
-
-        # check for similar username
-        cursor.execute("SELECT id, username, password FROM user_profiles WHERE username = %s", (username,))
-        user = cursor.fetchone()
-
-        if user and check_password_hash(user[2], password):
-            flash('Username Taken! Please choose another one.', 'error')
-            return redirect(url_for('register'))
-        else:
-            # Create a new user instance
-            new_user = User(username, password, email, '')
-            # Save the new user to the database
-            new_user.save_to_database()
-            flash('Registration successful! Please log in.', 'success')
-
-            return redirect(url_for('login'))
-
-    return render_template('user_profile/register.html', curr_date=curr_date)
-
-
-
-@login_manager.user_loader
-def load_user(user_id):
-    return User(user_id)
-
-
-@app.route('/login', methods=['GET', 'POST'])
 def login():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-
-        # Query the database to retrieve the user's data
-        cursor.execute("SELECT id, username, password FROM user_profiles WHERE username = %s", (username,))
-        user = cursor.fetchone()
-
-        if user and check_password_hash(user[2], password):
-            session['user_id'] = user[0]  # Store the user's ID in the session
-            flash('Login successful!', 'success')
-            return redirect(url_for('admin'))
-        else:
-            flash('Invalid username or password', 'error')
-
-    return render_template('user_profile/login.html', curr_date=curr_date)
-
-
-@app.route('/profile')
-def profile():
-    if 'user_id' not in session:
-        return redirect(url_for('login'))
-
-    # Retrieve user data from the database
-    user_id = session['user_id']
-    cursor.execute("SELECT username, email FROM user_profiles WHERE id = %s", (user_id,))
-    user_data = cursor.fetchone()
-
-    return render_template('user_profile/profile.html', user_data=user_data)
-
-
-@app.route('/logout')
-@login_required
-def logout():
-    logout_user()
-    return redirect(url_for('login'))
-
+    return render_template('user_profile/login.html')
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000, debug=True)
