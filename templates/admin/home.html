@@ -4,13 +4,13 @@
     <div class="container">
         <div class="row">
             <h2 class="">Water Production Admin Page</h2>
-            <p class="txt-teal mb-5">Welcome, ##Factory Worker</p>
-            <P><span class="fw-bolder">Welcome, {{ fullname}}</span></P>
+            <P><span class="txt-teal mb-5">Welcome, {{ fullname}}</span></P>
         </div>
         <div class="d-grid gap-3 d-md-block text-center">
             <a href="{{ url_for('add_production') }}" class="btn btn-lg p-5 mx-2 btn-secondary">Add Production</a>
             <a href="{{ url_for('production_content') }}" class="btn btn-lg p-5 mx-2  btn-secondary">Production History</a>
             <a href="{{ url_for('dashboard') }}" class="btn btn-lg p-5 btn-secondary mx-2 ">View Analytics</a>
+            <a href="{{ url_for('index') }}" class="btn btn-lg p-5 btn-secondary mx-2 ">Request Water</a>
         </div>
         <div class="row my-5">
             <h6 class="txt-teal fw-bold">Requests pending delivery</h6>

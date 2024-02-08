@@ -23,7 +23,7 @@ header{
 }
 
 #app-name{
-    font-size: 3.5em;
+    font-size: 3em;
     font-weight: 900;
 }
 .logo{
@@ -44,4 +44,14 @@ header{
 .btn-primary{
     background-color: #006965;
     border-color: #006965;
+}
+
+#profile_pic{
+    width:10%;
+    height:20%;
+}
+
+.profile-menu.show {
+    width: 100%;
+    min-height: 15vh;
 }

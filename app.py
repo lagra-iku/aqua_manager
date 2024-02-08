@@ -73,6 +73,7 @@ db.commit()
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
+    username = session.get("username")
     if request.method == 'POST':
         bottle_qty = request.form['bottle_qty']
         sachet_qty = request.form['sachet_qty']
@@ -86,12 +87,13 @@ def index():
         db.commit()
 
         flash('Request submitted successfully!!!')
-        return redirect(url_for('display_entry', id=cursor.lastrowid))
-    return render_template('request/new.html', curr_date=datetime.now().strftime("%d-%b-%Y %I:%M %p"))
+        return redirect(url_for('display_entry', id=cursor.lastrowid, username=username))
+    return render_template('request/new.html', username=username, curr_date=datetime.now().strftime("%d-%b-%Y %I:%M %p"))
 
 
 @app.route('/edit/<int:id>', methods=['GET', 'POST'])
 def edit_entry(id):
+    username = session.get("username")
     cursor.execute("SELECT * FROM requests WHERE id = %s", (id,))
     entry = cursor.fetchone()
     if request.method == 'POST':
@@ -108,12 +110,13 @@ def edit_entry(id):
             (name, location, phonenum, bottle_qty, sachet_qty, status, id))
         db.commit()
         flash('Request updated successfully!!!')
-        return redirect(url_for('display_entry', id=id))
-    return render_template('request/edit.html', x=entry, curr_date=curr_date)
+        return redirect(url_for('display_entry', id=id, username=username))
+    return render_template('request/edit.html', x=entry, curr_date=curr_date, username=username)
 
 
 @app.route('/display/<int:id>', methods=['GET', 'POST'])
 def display_entry(id,):
+    username = session.get("username")
     cursor.execute("SELECT * FROM requests WHERE id = %s", (id,))
     entry = cursor.fetchone()
     user_phonenum = entry[3]
@@ -125,11 +128,12 @@ def display_entry(id,):
         (user_phonenum,))
     req_history = cursor.fetchall()
 
-    return render_template('request/display.html', x=entry, req=req_history, curr_date=curr_date, modified=modified)
+    return render_template('request/display.html', x=entry, req=req_history, curr_date=curr_date, modified=modified, username=username)
 
 
 @app.route('/dashboard')
 def dashboard():
+    username = session.get("username")
     cursor.execute(
         "SELECT id, name, location, phonenum, status FROM requests WHERE status  <> 'canceled' AND status <> "
         "'delivered' ORDER BY modified_date DESC")
@@ -160,7 +164,7 @@ def dashboard():
     sachet = cursor.fetchone()
     sachet_sum = sachet[0]
     return render_template('dashboard.html', x=entry, curr_date=curr_date, new=new_count, enroute=enroute_count,
-                           completed=completed_count, canceled=canceled_count, bottled=bottle_sum, sachet=sachet_sum)
+                           completed=completed_count, canceled=canceled_count, bottled=bottle_sum, sachet=sachet_sum, username=username)
 
 
 @app.route('/admin', methods=('GET', 'POST'))
@@ -170,11 +174,14 @@ def admin():
         "status <> 'completed' ORDER BY modified_date DESC")
     entry = cursor.fetchall()
     fullname = session.get("full_name")
-    return render_template('admin/home.html', x=entry, fullname=fullname, curr_date=curr_date)
+    username = session.get("username")
+    return render_template('admin/home.html', x=entry, fullname=fullname, username=username, curr_date=curr_date)
 
 
 @app.route('/add_production', methods=['GET', 'POST'])
 def add_production():
+    username = session.get("username")
+    fullname = session.get("full_name")
     if request.method == 'POST':
         bottle_qty = request.form.get('bottle_qty')
         sachet_qty = request.form.get('sachet_qty')
@@ -186,22 +193,22 @@ def add_production():
             "%s, %s)",
             (bottle_qty, sachet_qty, factory_worker, production_date))
         db.commit()
-        # fullname = session.get("full_name")
         # Redirect to a success page
         flash('Production form submitted successfully!!!')
         # username = session.get("username")
-        return redirect(url_for('production_content'))
+        return redirect(url_for('production_content', username=username, fullname=fullname))
 
-    return render_template('admin/add_production.html', curr_date=curr_date)
+    return render_template('admin/add_production.html', curr_date=curr_date, username=username, fullname=fullname)
 
 
-@app.route('/view_analytics', methods=['GET', 'POST'])
-def view_analytics():
-    return redirect(url_for('dashboard', curr_date=curr_date))
+# @app.route('/view_analytics', methods=['GET', 'POST'])
+# def view_analytics():
+#     return redirect(url_for('dashboard', curr_date=curr_date))
 
 
 @app.route('/production_content', methods=['GET', 'POST'])
 def production_content():
+    username = session.get("username")
     # Fetch production content data from the database
     cursor = db.cursor()
     cursor.execute("SELECT * FROM production_records ORDER BY production_date DESC")
@@ -209,11 +216,12 @@ def production_content():
     fullname = session.get("full_name")
     # print(production_content_data)
     return render_template('admin/production_content.html', production_content_data=production_content_data, fullname=fullname,
-                           curr_date=curr_date)
+                           curr_date=curr_date, username=username)
 
 
 @app.route('/edit_production/<int:id>', methods=['GET', 'POST'])
 def edit_production(id):
+    username = session.get("username")
     cursor.execute("SELECT * FROM production_records WHERE id = %s", (id,))
     product_edit = cursor.fetchone()
     if request.method == 'POST':
@@ -228,8 +236,8 @@ def edit_production(id):
         db.commit()
         # db.close()
         flash('Production details updated successfully!!!')
-        return redirect(url_for('production_content'))
-    return render_template('admin/edit_production.html', x=product_edit, curr_date=curr_date)
+        return redirect(url_for('production_content', username=username))
+    return render_template('admin/edit_production.html', x=product_edit, curr_date=curr_date, username=username)
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -280,7 +288,8 @@ def login():
             flash('Login successful!', 'success')
             session['username'] = username
             # Redirect to the user's profile page after successful login
-            return redirect(url_for('profile', username=username))
+            return redirect(url_for('admin', username=username))
+            # return redirect(url_for('profile', username=username))
         else:
             flash('Invalid username or password', 'error')
             return redirect(url_for('login'))
@@ -356,6 +365,7 @@ def logout():
         return redirect(url_for('login'))
     
     return render_template('user_profile/login.html', curr_date=curr_date)
+
 
 # Define route for 404 error
 @app.errorhandler(404)
