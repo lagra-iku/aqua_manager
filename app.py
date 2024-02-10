@@ -302,7 +302,7 @@ def login():
             session['email'] = user_info[0]  # email
             session['full_name'] = user_info[1]  # full name
 
-            # Redirect to the user's profile page after successful login
+            # Redirect to the user's dashboard after successful login
             return redirect(url_for('admin', username=username))
         else:
             flash('Invalid username or password', 'error')
@@ -321,8 +321,8 @@ def profile():
         email = session['email']
         fullname = session['full_name']
 
-        # Query additional information from the database (if needed)
-        # For example, retrieve the user's profile picture or bio
+        # Query additional information from the database
+        # For example, retrieve the user's profile picture or bio(we might need to fix this later Grace)
 
         # Pass user information and additional data to the profile template
         return render_template('user_profile/profile.html', username=username, email=email, fullname=fullname)
