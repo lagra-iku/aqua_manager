@@ -322,7 +322,7 @@ def profile(username):
         email = user_info[0]
         fullname = user_info[1]
         session['full_name'] = fullname
-        return render_template('user_profile/profile.html', username=username, email=email, full_name=fullname)
+        return render_template('user_profile/profile.html', username=username, email=email, fullname=fullname)
     else:
         flash('User not found', 'error')
         return redirect(url_for('login'))
