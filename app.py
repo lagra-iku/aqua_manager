@@ -174,6 +174,7 @@ def admin():
         "SELECT id, name, bottle_qty, sachet_qty, status, modified_date FROM requests WHERE status  <> 'canceled' AND "
         "status <> 'completed' ORDER BY modified_date DESC")
     entry = cursor.fetchall()
+    print(fullname)
     username = session.get("username")
     return render_template('admin/home.html', x=entry, fullname=fullname, username=username, curr_date=curr_date)
 
@@ -182,6 +183,7 @@ def admin():
 def add_production():
     username = session.get("username")
     fullname = session.get("full_name")
+    print(fullname)
     if request.method == 'POST':
         bottle_qty = request.form.get('bottle_qty')
         sachet_qty = request.form.get('sachet_qty')
@@ -214,6 +216,7 @@ def production_content():
     cursor = db.cursor()
     cursor.execute("SELECT * FROM production_records ORDER BY production_date DESC")
     production_content_data = cursor.fetchall()
+    print(fullname)
     # print(production_content_data)
     return render_template('admin/production_content.html', production_content_data=production_content_data, fullname=fullname,
                            curr_date=curr_date, username=username)
@@ -287,13 +290,20 @@ def login():
         # Query the database to retrieve the user's data
         cursor.execute("SELECT id, username, password FROM user_profiles WHERE username = %s", (username,))
         user = cursor.fetchone()
-
+        print(user)
+        cursor.execute("SELECT email, full_name FROM user_profiles WHERE username = %s", (username,))
+        user_info = cursor.fetchone()
+        
+        # print(f"Session Before login: {full_na")
         # Check if a user with the provided username exists in the database
         if user and check_password_hash(user[2], password):
             flash('Login successful!', 'success')
             session['username'] = username
+            if user_info:
+                fullname = user_info[1]
+                print(fullname)
             # Redirect to the user's profile page after successful login
-            return redirect(url_for('admin', username=username))
+            return redirect(url_for('admin', username=username, fullname = fullname))
             # return redirect(url_for('profile', username=username))
         else:
             flash('Invalid username or password', 'error')
@@ -310,9 +320,9 @@ def profile(username):
 
     if user_info:
         email = user_info[0]
-        full_name = user_info[1]
-        session['full_name'] = full_name
-        return render_template('user_profile/profile.html', username=username, email=email, full_name=full_name)
+        fullname = user_info[1]
+        session['full_name'] = fullname
+        return render_template('user_profile/profile.html', username=username, email=email, full_name=fullname)
     else:
         flash('User not found', 'error')
         return redirect(url_for('login'))
@@ -366,6 +376,8 @@ def load_user(user_id):
 def logout():
     if request.method == 'GET':
         logout_user()
+        # session.pop('username', None)
+        # session.pop('fullname', None)
         flash('Logout successful!', 'success')
         return redirect(url_for('login'))
     
