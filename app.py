@@ -303,7 +303,7 @@ def login():
             session['full_name'] = user_info[1]  # full name
 
             # Redirect to the user's profile page after successful login
-            return redirect(url_for('profile', username=username))
+            return redirect(url_for('admin', username=username))
         else:
             flash('Invalid username or password', 'error')
 
