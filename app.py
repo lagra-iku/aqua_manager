@@ -169,11 +169,11 @@ def dashboard():
 
 @app.route('/admin', methods=('GET', 'POST'))
 def admin():
+    fullname = session.get("full_name")
     cursor.execute(
         "SELECT id, name, bottle_qty, sachet_qty, status, modified_date FROM requests WHERE status  <> 'canceled' AND "
         "status <> 'completed' ORDER BY modified_date DESC")
     entry = cursor.fetchall()
-    fullname = session.get("full_name")
     username = session.get("username")
     return render_template('admin/home.html', x=entry, fullname=fullname, username=username, curr_date=curr_date)
 
@@ -246,29 +246,34 @@ def register():
         username = request.form.get('username')
         email = request.form.get('email')
         raw_password = request.form.get('password') 
+        second_password = request.form.get("enter_password_again")
         full_name = request.form.get('full_name')
-
-        hashed_password = generate_password_hash(raw_password)
-
-        # Check if username is already taken
-        cursor.execute("SELECT * FROM user_profiles WHERE username = %s", (username,))
-        existing_user = cursor.fetchone()
-
-        if existing_user:
-            flash('Username Taken! Please choose another one.', 'error')
+        
+        if second_password != raw_password:
+            flash('Passwords are different, please make sure they match.', 'error')
             return redirect(url_for('register'))
         else:
-            # Insert new user record into the database with hashed password
-            cursor.execute("INSERT INTO user_profiles (username, email, password, full_name) VALUES (%s, %s, %s, %s)",
+            hashed_password = generate_password_hash(raw_password)
+
+            # Check if username is already taken
+            cursor.execute("SELECT * FROM user_profiles WHERE username = %s", (username,))
+            existing_user = cursor.fetchone()
+
+            if existing_user:
+                flash('Username Taken! Please choose another one.', 'error')
+                return redirect(url_for('register'))
+            else:
+                # Insert new user record into the database with hashed password
+                cursor.execute("INSERT INTO user_profiles (username, email, password, full_name) VALUES (%s, %s, %s, %s)",
                            (username, email, hashed_password, full_name))
-            db.commit()
-            flash('Registration successful! Please log in.', 'success')
-            return redirect(url_for('login'))
-         # Consume flashed messages to ensure they are removed
-        flashed_messages = get_flashed_messages(with_categories=True)
-        if flashed_messages:
-            for category, message in flashed_messages:
-                pass  # Do nothing, just consume the flashed messages
+                db.commit()
+                flash('Registration successful! Please log in.', 'success')
+                return redirect(url_for('login'))
+            # Consume flashed messages to ensure they are removed
+            flashed_messages = get_flashed_messages(with_categories=True)
+            if flashed_messages:
+                for category, message in flashed_messages:
+                    pass  # Do nothing, just consume the flashed messages
 
     return render_template('user_profile/register.html', curr_date=curr_date)
 

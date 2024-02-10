@@ -55,6 +55,10 @@
                             <input type="password" placeholder="Choose a secure Password" id="password" class="form-control" name="password" required>
                         </div>
                         <div class="form-group my-2">
+                            <label for="enter_password_again" class="fw-bold">Enter Password Again:</label>
+                            <input type="password" placeholder="Renter Your Password" id="enter_password_again" class="form-control" name="enter_password_again" required>
+                        </div>
+                        <div class="form-group my-2">
                             <label for="full_name" class="fw-bold">Full Name:</label>
                             <input type="text" placeholder="Please Enter Your Full Name" id="full_name" name="full_name" class="form-control"required>
                         </div>
@@ -73,46 +77,3 @@
 
 </body>
 </html>
-<!-- 
-
-
-{% extends 'index.html' %}
-
-{% block content %}
-<div class="container main-content my-5">
-    <div class="row float-md-end">
-        <a href="{{ url_for('login') }}" class="btn btn-primary">Login!</a>
-    </div>
-    <h2>Register Here</h2>
-    <div class="container mb-5 pt-3 height80">
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                {% for message in messages %}
-                    <p class="row text-center bg-info p-3 rounded mb-3">{{ message }}</p>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
-
-        <form action="{{ url_for('register') }}" method="POST">
-            <div class="form-group my-2">
-                <label for="username" class="fw-bold">Username:</label>
-                <input type="text" placeholder="Be creative with your username" id="username" name="username" class="form-control" required>
-            </div>
-            <div class="form-group my-2">
-                <label for="email" class="fw-bold">Email:</label>
-                <input type="text" placeholder="example123@gmail.com" id="email" name="email" class="form-control" required>
-            </div>
-            <div class="form-group my-2">
-                <label for="password" class="fw-bold">Password:</label>
-                <input type="password" placeholder="Choose a secure Password" id="password" class="form-control" name="password" required>
-            </div>
-            <div class="form-group my-2">
-                <label for="full_name" class="fw-bold">Full Name:</label>
-                <input type="text" placeholder="Please Enter Your Full Name" id="full_name" name="full_name" class="form-control"required>
-            </div>
-            <div class="float-md-left my-5">
-                <button type="submit" class="btn btn-primary">Register</button>
-            </div>
-        </form>
-    </div>
-{% endblock %} -->
