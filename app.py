@@ -270,10 +270,10 @@ def register():
                 flash('Registration successful! Please log in.', 'success')
                 return redirect(url_for('login'))
             # Consume flashed messages to ensure they are removed
-            flashed_messages = get_flashed_messages(with_categories=True)
-            if flashed_messages:
-                for category, message in flashed_messages:
-                    pass  # Do nothing, just consume the flashed messages
+                flashed_messages = get_flashed_messages(with_categories=True)
+                if flashed_messages:
+                    for category, message in flashed_messages:
+                        pass  # Do nothing, just consume the flashed messages
 
     return render_template('user_profile/register.html', curr_date=curr_date)
 
