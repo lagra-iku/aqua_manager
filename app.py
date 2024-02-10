@@ -208,12 +208,12 @@ def add_production():
 
 @app.route('/production_content', methods=['GET', 'POST'])
 def production_content():
+    fullname = session.get("full_name")
     username = session.get("username")
     # Fetch production content data from the database
     cursor = db.cursor()
     cursor.execute("SELECT * FROM production_records ORDER BY production_date DESC")
     production_content_data = cursor.fetchall()
-    fullname = session.get("full_name")
     # print(production_content_data)
     return render_template('admin/production_content.html', production_content_data=production_content_data, fullname=fullname,
                            curr_date=curr_date, username=username)
