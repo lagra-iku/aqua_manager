@@ -14,6 +14,9 @@ config.read('config.ini')
 app = Flask(__name__)
 login_manager = LoginManager()
 login_manager.init_app(app)
+# Set the login view to redirect to the login page
+login_manager.login_view = 'login'
+
 
 db = mysql.connector.connect(
     host=config['mysql']['host'],
@@ -132,6 +135,7 @@ def display_entry(id,):
 
 
 @app.route('/dashboard')
+@login_required
 def dashboard():
     username = session.get("username")
     cursor.execute(
@@ -168,6 +172,7 @@ def dashboard():
 
 
 @app.route('/admin', methods=('GET', 'POST'))
+#@login_required
 def admin():
     fullname = session.get("full_name")
     cursor.execute(
@@ -180,6 +185,7 @@ def admin():
 
 
 @app.route('/add_production', methods=['GET', 'POST'])
+@login_required
 def add_production():
     username = session.get("username")
     fullname = session.get("full_name")
@@ -203,12 +209,8 @@ def add_production():
     return render_template('admin/add_production.html', curr_date=curr_date, username=username, fullname=fullname)
 
 
-# @app.route('/view_analytics', methods=['GET', 'POST'])
-# def view_analytics():
-#     return redirect(url_for('dashboard', curr_date=curr_date))
-
-
 @app.route('/production_content', methods=['GET', 'POST'])
+@login_required
 def production_content():
     fullname = session.get("full_name")
     username = session.get("username")
@@ -223,6 +225,7 @@ def production_content():
 
 
 @app.route('/edit_production/<int:id>', methods=['GET', 'POST'])
+@login_required
 def edit_production(id):
     username = session.get("username")
     cursor.execute("SELECT * FROM production_records WHERE id = %s", (id,))
@@ -242,6 +245,54 @@ def edit_production(id):
         return redirect(url_for('production_content', username=username))
     return render_template('admin/edit_production.html', x=product_edit, curr_date=curr_date, username=username)
 
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+
+        # Query the database to retrieve the user's data
+        cursor.execute("SELECT id, username, password FROM user_profiles WHERE username = %s", (username,))
+        user = cursor.fetchone()
+
+        # Check if a user with the provided username exists in the database
+        if user and check_password_hash(user[2], password):
+            # Retrieve additional user information
+            cursor.execute("SELECT email, full_name FROM user_profiles WHERE username = %s", (username,))
+            user_info = cursor.fetchone()
+
+            # Store user information in the session
+            session['username'] = username
+            session['email'] = user_info[0]  # email
+            session['full_name'] = user_info[1]  # full name
+
+            # Redirect to the user's dashboard after successful login
+            return redirect(url_for('admin', username=username))
+        else:
+            flash('Invalid username or password', 'error')
+
+    return render_template('user_profile/login.html', curr_date=curr_date)
+
+
+@app.route('/profile')
+@login_required
+def profile():
+    # Check if the user is logged in
+    if 'username' in session:
+        # Retrieve user information from the session
+        username = session['username']
+        email = session['email']
+        fullname = session['full_name']
+
+        # Query additional information from the database
+        # For example, retrieve the user's profile picture or bio(we might need to fix this later Grace)
+
+        # Pass user information and additional data to the profile template
+        return render_template('user_profile/profile.html', username=username, email=email, fullname=fullname)
+    else:
+        # Redirect to the login page if the user is not logged in
+        return redirect(url_for('user_profile/login'))
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -281,101 +332,12 @@ def register():
     return render_template('user_profile/register.html', curr_date=curr_date)
 
 
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        username = request.form.get('username')
-        password = request.form.get('password')
-
-        # Query the database to retrieve the user's data
-        cursor.execute("SELECT id, username, password FROM user_profiles WHERE username = %s", (username,))
-        user = cursor.fetchone()
-
-        # Check if a user with the provided username exists in the database
-        if user and check_password_hash(user[2], password):
-            # Retrieve additional user information
-            cursor.execute("SELECT email, full_name FROM user_profiles WHERE username = %s", (username,))
-            user_info = cursor.fetchone()
-
-            # Store user information in the session
-            session['username'] = username
-            session['email'] = user_info[0]  # email
-            session['full_name'] = user_info[1]  # full name
-
-            # Redirect to the user's dashboard after successful login
-            return redirect(url_for('admin', username=username))
-        else:
-            flash('Invalid username or password', 'error')
-
-    return render_template('user_profile/login.html', curr_date=curr_date)
-
-
-
-
-@app.route('/profile')
-def profile():
-    # Check if the user is logged in
-    if 'username' in session:
-        # Retrieve user information from the session
-        username = session['username']
-        email = session['email']
-        fullname = session['full_name']
-
-        # Query additional information from the database
-        # For example, retrieve the user's profile picture or bio(we might need to fix this later Grace)
-
-        # Pass user information and additional data to the profile template
-        return render_template('user_profile/profile.html', username=username, email=email, fullname=fullname)
-    else:
-        # Redirect to the login page if the user is not logged in
-        return redirect(url_for('user_profile/login'))
-
-"""
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        username = request.form.get('username')
-        password = request.form.get('password')
-
-        # Query the database to retrieve the user's data
-        cursor.execute("SELECT id, username, password FROM user_profiles WHERE username = %s", (username,))
-        user = cursor.fetchone()
-
-        # Check if a user with the provided username exists in the database
-        if user and check_password_hash(user[2], password):
-            flash('Login successful!', 'success')
-            print("Login was Successful")
-            # Redirect to the admin page after successful login
-            return redirect(url_for('admin'))
-        else:
-            flash('Invalid username or password', 'error')
-            print("login was unsuccessful!")
-            return redirect(url_for('login'))
-
-    return render_template('user_profile/login.html', curr_date=curr_date)
-
-
-
-@app.route('/profile')
-def profile():
-    if 'user_id' not in session:
-        return redirect(url_for('login'))
-
-    # Retrieve user data from the database
-    user_id = session['user_id']
-    cursor.execute("SELECT username, email FROM user_profiles WHERE id = %s", (user_id,))
-    user_data = cursor.fetchone()
-
-    return render_template('user_profile/profile.html', user_data=user_data)
-"""
-
 @login_manager.user_loader
 def load_user(user_id):
     return User(user_id)
 
-
 @app.route('/logout', methods=['GET', 'POST'])
-# @login_required
+@login_required
 def logout():
     if request.method == 'GET':
         logout_user()
@@ -383,8 +345,7 @@ def logout():
         session.pop('fullname', None)
         flash('Logout successful!', 'success')
         return redirect(url_for('login'))
-    
-    return render_template('user_profile/login.html', curr_date=curr_date)
+    return render_template('user_profile/login.html')
 
 
 # Define route for 404 error
