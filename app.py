@@ -37,11 +37,13 @@ try:
         password=password,
         database=database
     )
-    print("Connected successfully!")
+    cursor = db.cursor()
+except mysql.connector.Error as e:
+    print("Error:", e)
 
 # app.secret_key = config['flash']['secret_key']
 # curr_date = datetime.now().strftime("%d-%b-%Y %I:%M %p")
-cursor = db.cursor()
+# cursor = db.cursor()
 curr_date = datetime.now()
 
 # Create database if not exists
