@@ -7,10 +7,17 @@ config = ConfigParser()
 config.read('config.ini')
 
 
-db = mysql.connector.connect(
-    host=config['mysql']['host'],
-    user=config['mysql']['user'],
-    password=config['mysql']['password']
+# db = mysql.connector.connect(
+#     host=config['mysql']['host'],
+#     user=config['mysql']['user'],
+#     password=config['mysql']['password']
+# )
+
+mydb = mysql.connector.connect(
+    host="MYSQLHOST",  # MySQL container name (if using Docker network)
+    user="MYSQLUSER",
+    password="MYSQLPASSWORD",
+    database="MYSQLDATABASE"
 )
 cursor = db.cursor()
 
