@@ -1,2 +1,4 @@
 # Ignore database configuration files (if any)
 config.ini
+.idea
+__pycache__
