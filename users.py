@@ -3,8 +3,8 @@
 from werkzeug.security import generate_password_hash, check_password_hash
 import mysql.connector
 from configparser import ConfigParser
-config = ConfigParser()
-config.read('config.ini')
+# config = ConfigParser()
+# config.read('config.ini')
 
 
 # db = mysql.connector.connect(
@@ -13,7 +13,7 @@ config.read('config.ini')
 #     password=config['mysql']['password']
 # )
 
-mydb = mysql.connector.connect(
+db = mysql.connector.connect(
     host="MYSQLHOST",  # MySQL container name (if using Docker network)
     user="MYSQLUSER",
     password="MYSQLPASSWORD",
