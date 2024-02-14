@@ -2,7 +2,7 @@
 """Module that handles user instances of registration, login and profiles"""
 from werkzeug.security import generate_password_hash, check_password_hash
 import mysql.connector
-from configparser import ConfigParser
+# from configparser import ConfigParser
 # config = ConfigParser()
 # config.read('config.ini')
 
@@ -13,12 +13,20 @@ from configparser import ConfigParser
 #     password=config['mysql']['password']
 # )
 
-db = mysql.connector.connect(
-    host="MYSQLHOST",  # MySQL container name (if using Docker network)
-    user="MYSQLUSER",
-    password="MYSQLPASSWORD",
-    database="MYSQLDATABASE"
-)
+host = "MYSQLHOST"
+user = "MYSQLUSER"
+password = "MYSQLPASSWORD"
+database = "MYSQLDATABASE"
+
+try:
+    connection = mysql.connector.connect(
+        host=host,
+        user=user,
+        password=password,
+        database=database
+    )
+    print("Connected successfully!")
+    
 cursor = db.cursor()
 
 # Create database if not exists
