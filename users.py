@@ -19,7 +19,7 @@ password = "MYSQLPASSWORD"
 database = "MYSQLDATABASE"
 
 try:
-    connection = mysql.connector.connect(
+    db = mysql.connector.connect(
         host=host,
         user=user,
         password=password,
