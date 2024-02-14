@@ -40,8 +40,9 @@ try:
     print("Connected successfully!")
 
 # app.secret_key = config['flash']['secret_key']
-curr_date = datetime.now().strftime("%d-%b-%Y %I:%M %p")
+# curr_date = datetime.now().strftime("%d-%b-%Y %I:%M %p")
 cursor = db.cursor()
+curr_date = datetime.now()
 
 # Create database if not exists
 cursor.execute("CREATE DATABASE IF NOT EXISTS requests")
@@ -106,7 +107,7 @@ def index():
 
         flash('Request submitted successfully!!!')
         return redirect(url_for('display_entry', id=cursor.lastrowid, username=username))
-    return render_template('request/new.html', username=username, curr_date=datetime.now().strftime("%d-%b-%Y %I:%M %p"))
+    return render_template('request/new.html', username=username, curr_date=curr_date)
 
 
 @app.route('/edit/<int:id>', methods=['GET', 'POST'])
