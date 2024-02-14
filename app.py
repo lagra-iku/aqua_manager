@@ -135,7 +135,6 @@ def display_entry(id,):
 
 
 @app.route('/dashboard')
-@login_required
 def dashboard():
     username = session.get("username")
     cursor.execute(
@@ -185,7 +184,7 @@ def admin():
 
 
 @app.route('/add_production', methods=['GET', 'POST'])
-@login_required
+#@login_required
 def add_production():
     username = session.get("username")
     fullname = session.get("full_name")
@@ -210,7 +209,7 @@ def add_production():
 
 
 @app.route('/production_content', methods=['GET', 'POST'])
-@login_required
+#@login_required
 def production_content():
     fullname = session.get("full_name")
     username = session.get("username")
@@ -225,7 +224,7 @@ def production_content():
 
 
 @app.route('/edit_production/<int:id>', methods=['GET', 'POST'])
-@login_required
+#@login_required
 def edit_production(id):
     username = session.get("username")
     cursor.execute("SELECT * FROM production_records WHERE id = %s", (id,))
@@ -276,7 +275,7 @@ def login():
 
 
 @app.route('/profile')
-@login_required
+#@login_required
 def profile():
     # Check if the user is logged in
     if 'username' in session:
@@ -337,7 +336,7 @@ def load_user(user_id):
     return User(user_id)
 
 @app.route('/logout', methods=['GET', 'POST'])
-@login_required
+#@login_required
 def logout():
     if request.method == 'GET':
         logout_user()
@@ -346,6 +345,10 @@ def logout():
         flash('Logout successful!', 'success')
         return redirect(url_for('login'))
     return render_template('user_profile/login.html')
+
+@app.route('/home', methods=['GET', 'POST'])
+def home():
+    return render_template('landing.html')
 
 
 # Define route for 404 error

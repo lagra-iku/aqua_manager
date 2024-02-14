@@ -1,3 +1,2 @@
 # Ignore database configuration files (if any)
-config.ini.idea/
-.idea/
+config.ini
