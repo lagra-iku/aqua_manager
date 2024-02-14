@@ -138,7 +138,7 @@ def display_entry(id,):
 def dashboard():
     username = session.get("username")
     if username is None:
-        flash('Please Login!!!', "error")
+        flash('Please Login to acess this page!!!', "error")
         return redirect(url_for('login'))  # Corrected the redirect URL
 
     else:  
@@ -181,14 +181,18 @@ def dashboard():
 @app.route('/admin', methods=('GET', 'POST'))
 #@login_required
 def admin():
-    fullname = session.get("full_name")
-    cursor.execute(
-        "SELECT id, name, bottle_qty, sachet_qty, status, modified_date FROM requests WHERE status  <> 'canceled' AND "
-        "status <> 'completed' ORDER BY modified_date DESC")
-    entry = cursor.fetchall()
-    # print(fullname)
     username = session.get("username")
-    return render_template('admin/home.html', x=entry, fullname=fullname, username=username, curr_date=curr_date)
+    fullname = session.get("full_name")
+    if username is None:
+        flash('Please Login to access this page!!!', "error")
+        return redirect(url_for('login'))
+    else:
+        cursor.execute(
+            "SELECT id, name, bottle_qty, sachet_qty, status, modified_date FROM requests WHERE status  <> 'canceled' AND "
+            "status <> 'completed' ORDER BY modified_date DESC")
+        entry = cursor.fetchall()
+        # print(fullname)
+        return render_template('admin/home.html', x=entry, fullname=fullname, username=username, curr_date=curr_date)
 
 
 @app.route('/add_production', methods=['GET', 'POST'])
