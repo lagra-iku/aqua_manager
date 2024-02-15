@@ -13,6 +13,10 @@ class TestFlaskApp(unittest.TestCase):
 
     def test_edit_entry_route(self):
         response = self.app.get('/edit/1')
+        # Check for redirection to login page if not logged in
+        self.assertEqual(response.status_code, 302)
+        # Follow the redirect to login page
+        response = self.app.get('/login')
         self.assertEqual(response.status_code, 200)
 
     def test_display_entry_route(self):
@@ -21,22 +25,42 @@ class TestFlaskApp(unittest.TestCase):
 
     def test_dashboard_route(self):
         response = self.app.get('/dashboard')
+        # Check for redirection to login page if not logged in
+        self.assertEqual(response.status_code, 302)
+        # Follow the redirect to login page
+        response = self.app.get('/login')
         self.assertEqual(response.status_code, 200)
 
     def test_admin_route(self):
         response = self.app.get('/admin')
+        # Check for redirection to login page if not logged in
+        self.assertEqual(response.status_code, 302)
+        # Follow the redirect to login page
+        response = self.app.get('/login')
         self.assertEqual(response.status_code, 200)
 
     def test_add_production_route(self):
         response = self.app.get('/add_production')
+        # Check for redirection to login page if not logged in
+        self.assertEqual(response.status_code, 302)
+        # Follow the redirect to login page
+        response = self.app.get('/login')
         self.assertEqual(response.status_code, 200)
 
     def test_production_content_route(self):
         response = self.app.get('/production_content')
+        # Check for redirection to login page if not logged in
+        self.assertEqual(response.status_code, 302)
+        # Follow the redirect to login page
+        response = self.app.get('/login')
         self.assertEqual(response.status_code, 200)
 
     def test_edit_production_route(self):
         response = self.app.get('/edit_production/1')
+        # Check for redirection to login page if not logged in
+        self.assertEqual(response.status_code, 302)
+        # Follow the redirect to login page
+        response = self.app.get('/login')
         self.assertEqual(response.status_code, 200)
 
     def test_login_route(self):
@@ -45,6 +69,10 @@ class TestFlaskApp(unittest.TestCase):
 
     def test_profile_route(self):
         response = self.app.get('/profile')
+        # Check for redirection to login page if not logged in
+        self.assertEqual(response.status_code, 302)
+        # Follow the redirect to login page
+        response = self.app.get('/login')
         self.assertEqual(response.status_code, 200)
 
     def test_register_route(self):
@@ -53,6 +81,10 @@ class TestFlaskApp(unittest.TestCase):
 
     def test_logout_route(self):
         response = self.app.get('/logout')
+        # Check for redirection to login page if not logged in
+        self.assertEqual(response.status_code, 302)
+        # Follow the redirect to login page
+        response = self.app.get('/login')
         self.assertEqual(response.status_code, 200)
 
     def test_home_route(self):
