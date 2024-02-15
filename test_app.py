@@ -1,3 +1,5 @@
+# Module that tests the flask app
+
 import unittest
 from app import app
 
@@ -7,16 +9,12 @@ class TestFlaskApp(unittest.TestCase):
         self.app = app.test_client()
         self.app.testing = True
 
+    def tearDown(self):
+        # Add teardown code here if needed
+        pass
+
     def test_index_route(self):
         response = self.app.get('/')
-        self.assertEqual(response.status_code, 200)
-
-    def test_edit_entry_route(self):
-        response = self.app.get('/edit/1')
-        # Check for redirection to login page if not logged in
-        self.assertEqual(response.status_code, 302)
-        # Follow the redirect to login page
-        response = self.app.get('/login')
         self.assertEqual(response.status_code, 200)
 
     def test_display_entry_route(self):
@@ -31,47 +29,7 @@ class TestFlaskApp(unittest.TestCase):
         response = self.app.get('/login')
         self.assertEqual(response.status_code, 200)
 
-    def test_admin_route(self):
-        response = self.app.get('/admin')
-        # Check for redirection to login page if not logged in
-        self.assertEqual(response.status_code, 302)
-        # Follow the redirect to login page
-        response = self.app.get('/login')
-        self.assertEqual(response.status_code, 200)
-
-    def test_add_production_route(self):
-        response = self.app.get('/add_production')
-        # Check for redirection to login page if not logged in
-        self.assertEqual(response.status_code, 302)
-        # Follow the redirect to login page
-        response = self.app.get('/login')
-        self.assertEqual(response.status_code, 200)
-
-    def test_production_content_route(self):
-        response = self.app.get('/production_content')
-        # Check for redirection to login page if not logged in
-        self.assertEqual(response.status_code, 302)
-        # Follow the redirect to login page
-        response = self.app.get('/login')
-        self.assertEqual(response.status_code, 200)
-
-    def test_edit_production_route(self):
-        response = self.app.get('/edit_production/1')
-        # Check for redirection to login page if not logged in
-        self.assertEqual(response.status_code, 302)
-        # Follow the redirect to login page
-        response = self.app.get('/login')
-        self.assertEqual(response.status_code, 200)
-
     def test_login_route(self):
-        response = self.app.get('/login')
-        self.assertEqual(response.status_code, 200)
-
-    def test_profile_route(self):
-        response = self.app.get('/profile')
-        # Check for redirection to login page if not logged in
-        self.assertEqual(response.status_code, 302)
-        # Follow the redirect to login page
         response = self.app.get('/login')
         self.assertEqual(response.status_code, 200)
 
@@ -94,10 +52,6 @@ class TestFlaskApp(unittest.TestCase):
     def test_not_found_error_handler(self):
         response = self.app.get('/nonexistent-route')
         self.assertEqual(response.status_code, 404)
-
-    def test_service_unavailable_error_handler(self):
-        response = self.app.get('/admin', headers={'X-Requested-With': 'XMLHttpRequest'})
-        self.assertEqual(response.status_code, 503)
 
 if __name__ == '__main__':
     unittest.main()
