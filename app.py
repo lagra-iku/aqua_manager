@@ -3,13 +3,13 @@
 from flask import Flask, flash, render_template, request, redirect, url_for, session
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required
 from datetime import datetime
-# from configparser import ConfigParser
+from configparser import ConfigParser
 from werkzeug.security import generate_password_hash, check_password_hash
 from users import User
 import mysql.connector
 
-# config = ConfigParser()
-# config.read('config.ini')
+config = ConfigParser()
+config.read('config.ini')
 
 app = Flask(__name__)
 login_manager = LoginManager()
@@ -18,33 +18,15 @@ login_manager.init_app(app)
 login_manager.login_view = 'login'
 
 
-# db = mysql.connector.connect(
-#     host=config['mysql']['host'],
-#     user=config['mysql']['user'],
-#     password=config['mysql']['password']
-# )
+db = mysql.connector.connect(
+    host=config['mysql']['host'],
+    user=config['mysql']['user'],
+    password=config['mysql']['password']
+)
 
-host = "MYSQLHOST"
-user = "MYSQLUSER"
-password = "MYSQLPASSWORD"
-database = "MYSQLDATABASE"
-
-# Create a connection
-try:
-    db = mysql.connector.connect(
-        host=host,
-        user=user,
-        password=password,
-        database=database
-    )
-    cursor = db.cursor()
-except mysql.connector.Error as e:
-    print("Error:", e)
-
-# app.secret_key = config['flash']['secret_key']
-# curr_date = datetime.now().strftime("%d-%b-%Y %I:%M %p")
-# cursor = db.cursor()
-curr_date = datetime.now()
+app.secret_key = config['flash']['secret_key']
+curr_date = datetime.now().strftime("%d-%b-%Y %I:%M %p")
+cursor = db.cursor()
 
 # Create database if not exists
 cursor.execute("CREATE DATABASE IF NOT EXISTS requests")
@@ -109,7 +91,7 @@ def index():
 
         flash('Request submitted successfully!!!')
         return redirect(url_for('display_entry', id=cursor.lastrowid, username=username))
-    return render_template('request/new.html', username=username, curr_date=curr_date)
+    return render_template('request/new.html', username=username, curr_date=datetime.now().strftime("%d-%b-%Y %I:%M %p"))
 
 
 @app.route('/edit/<int:id>', methods=['GET', 'POST'])
