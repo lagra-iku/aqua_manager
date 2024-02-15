@@ -2,16 +2,31 @@
 """Module that handles user instances of registration, login and profiles"""
 from werkzeug.security import generate_password_hash, check_password_hash
 import mysql.connector
-from configparser import ConfigParser
-config = ConfigParser()
-config.read('config.ini')
+# from configparser import ConfigParser
+# config = ConfigParser()
+# config.read('config.ini')
 
 
-db = mysql.connector.connect(
-    host=config['mysql']['host'],
-    user=config['mysql']['user'],
-    password=config['mysql']['password']
-)
+# db = mysql.connector.connect(
+#     host=config['mysql']['host'],
+#     user=config['mysql']['user'],
+#     password=config['mysql']['password']
+# )
+
+host = "MYSQLHOST"
+user = "MYSQLUSER"
+password = "MYSQLPASSWORD"
+database = "MYSQLDATABASE"
+
+try:
+    db = mysql.connector.connect(
+        host=host,
+        user=user,
+        password=password,
+        database=database
+    )
+    print("Connected successfully!")
+    
 cursor = db.cursor()
 
 # Create database if not exists
