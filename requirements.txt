@@ -1,0 +1,17 @@
+Flask
+Flask-Login
+Flask-Session
+Flask-SQLAlchemy
+blinker
+cachelib
+click
+colorama
+greenlet
+itsdangerous
+Jinja2
+MarkupSafe
+mysql-connector-python
+pycodestyle
+SQLAlchemy
+typing_extensions
+Werkzeug
