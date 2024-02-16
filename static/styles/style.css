@@ -1,9 +1,13 @@
 :root {
     --pricolor: #00bfb2;
+    --seccolor: #00343b;
   }
 
 .bg-pri {
     background-color: var(--pricolor); 
+}
+.bg-sec{
+    background-color: #00616E;
 }
 .txt-teal{
     color: var(--pricolor); 
