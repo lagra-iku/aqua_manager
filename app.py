@@ -139,7 +139,7 @@ def dashboard():
     username = session.get("username")
     if username is None:
         flash('Please Login to acess this page!!!', "error")
-        return redirect(url_for('login'))  # Corrected the redirect URL
+        return redirect(url_for('login'))
 
     else:  
         cursor.execute(
