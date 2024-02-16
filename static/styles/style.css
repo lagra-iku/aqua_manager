@@ -77,7 +77,7 @@ header{
     background-repeat: no-repeat;
     min-height: 500px;
 }
-@media (max-width: 767.98px) { 
+@media (max-width: 991px) { 
     #app-name{
         font-size: 1.5em;
     }
@@ -86,6 +86,7 @@ header{
         height: 75px;
     }
     .navbar-collapse{
+        background-color: #00616e;;
         background-color: rgba(0, 52, 59, 0.8);
         padding:10px;
         min-height:25vh;
