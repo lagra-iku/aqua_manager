@@ -1,13 +1,13 @@
 :root {
     --pricolor: #00bfb2;
-    --seccolor: #00343b;
+    --seccolor: #00616e;
   }
 
 .bg-pri {
     background-color: var(--pricolor); 
 }
 .bg-sec{
-    background-color: #00616E;
+    background-color: var(--seccolor); 
 }
 .txt-teal{
     color: var(--pricolor); 
@@ -84,5 +84,16 @@ header{
     .logo{
         width: 75px;
         height: 75px;
+    }
+    .navbar-collapse{
+        background-color: rgba(0, 52, 59, 0.8);
+        padding:10px;
+        min-height:25vh;
+    }
+    .nav-item{
+        margin: 5px;
+    }
+    .nav-item > a{
+        width: 100%;
     }
  }
