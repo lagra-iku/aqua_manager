@@ -4,13 +4,13 @@
     <div class="container">
         <div class="row">
             <h2 class="">Water Production Admin Page</h2>
-            <P style="color: blue; font-size: large; font-family: sans-serif;  font-style: italic;"><span class="txt-teal mb-5">Welcome, {{ fullname }}</span></P>
+            <P style="color: blue; font-size: large; font-family: sans-serif;  font-style: italic;"><span class="txt-teal mb-5">Welcome</span></P>
         </div>
         <div class="d-grid gap-3 d-md-block text-center">
-            <a href="{{ url_for('add_production') }}" class="btn btn-lg p-5 mx-2 btn-secondary">Add Production</a>
-            <a href="{{ url_for('production_content') }}" class="btn btn-lg p-5 mx-2  btn-secondary">Production History</a>
-            <a href="{{ url_for('dashboard') }}" class="btn btn-lg p-5 btn-secondary mx-2 ">View Analytics</a>
-            <a href="{{ url_for('index') }}" class="btn btn-lg p-5 btn-secondary mx-2 ">Request Water</a>
+            <a href="{{ url_for('main.add_production') }}" class="btn btn-lg p-5 mx-2 btn-secondary">Add Production</a>
+            <a href="{{ url_for('main.production_content') }}" class="btn btn-lg p-5 mx-2  btn-secondary">Production History</a>
+            <a href="{{ url_for('main.new') }}" class="btn btn-lg p-5 btn-secondary mx-2 ">View Analytics</a>
+            <a href="{{ url_for('main.new') }}" class="btn btn-lg p-5 btn-secondary mx-2 ">Request Form</a>
         </div>
         <div class="row my-5">
             <h6 class="txt-teal fw-bold">Requests pending delivery</h6>
@@ -31,20 +31,14 @@
                     {% for item in x %}
                     <div class="row">
                         <div class="col-sm-1 border text-center">
-                            <a class="" href="{{ url_for('edit_entry', id=item[0]) }}"><i class="fa-solid fa-pencil txt-teal"></i></a>&nbsp; &nbsp;
-                            <a class="" href="{{ url_for('display_entry', id=item[0]) }}"><i class="fa-solid fa-eye txt-teal"></i></a>
+                            <a class="" href="{{ url_for('main.edit_request', id=item.id) }}"><i class="fa-solid fa-pencil txt-teal"></i></a>&nbsp; &nbsp;
+                            <a class="" href="{{ url_for('main.display_entry', id=item.id) }}"><i class="fa-solid fa-eye txt-teal"></i></a>
                         </div>
-                        {% for elem in item %}
-                            {% if loop.index == 6 %}
-                                <div class="col-sm-2 border">              
-                                    {{ elem.strftime('%d %b, %Y %I:%M %p') }}
-                                </div>
-                            {% elif loop.index != 1 %}
-                                <div class="col-sm-2 border">              
-                                    {{ elem }}
-                                </div>
-                            {% endif %}
-                        {% endfor %}
+                        <div class="col-sm-2 border"><h6>{{ item.name }}</h6></div>
+                        <div class="col-sm-2 border"><h6>{{ item.bottle_qty }}</h6></div>
+                        <div class="col-sm-2 border"><h6>{{ item.sachet_qty }}</h6></div>
+                        <div class="col-sm-2 border"><h6>{{ item.status }}</h6></div>
+                        <div class="col-sm-2 border"><h6>{{ item.modified_date.strftime('%d %b, %Y %I:%M %p')}}</h6></div>
                     </div>
                     {% endfor %}
                 </div>

@@ -4,14 +4,14 @@
 
     <div class="container main-content my-5">
         <h2><bold>PRODUCTION PAGE </bold></h2>
-        <P style="color: rgb(1, 20, 16); font-size: large; font-family: sans-serif;  font-style: italic;"><span class="fw-bolder">Hello, {{ fullname }} !</span></P>
+        <P style="color: rgb(1, 20, 16); font-size: large; font-family: sans-serif;  font-style: italic;"><span class="fw-bolder">Hello,!</span></P>
         <div class="row float-md-end">
-            <a href="{{ url_for('production_content') }}" class="btn btn-primary">Check Production Data</a>
+            <a href="{{ url_for('main.production_content') }}" class="btn btn-primary">Check Production Data</a>
         </div>
         <p class="txt-dark">Welcome, please indicate below how many bags of Sachet water or packets of Bottled water produced today.</p>
         <div class="row mt-5">
             <div class="col-sm-8">
-                <form action="{{ url_for('add_production') }}" method="POST">
+                <form action="{{ url_for('main.add_production') }}" method="POST">
                     <div class="form-group my-2">
                         <label for="bottle_qty" class="fw-bold">Bottled water Quantity:</label>
                         <input type="number" id="bottle_qty" name="bottle_qty" value=0  class="form-control" required>
@@ -34,9 +34,5 @@
                 </form>
             </div>
         </div>
-        <!-- <footer>Remember to sign out after each session.</footer> -->
-        <!-- <div class="col-sm-4 text-center my-5">
-            <img src="../static/images/bg_bottle.png" alt="" class="sm-image d-none d-lg-block d-xl-block d-xxl-block">
-        </div> -->
     </div>
 {% endblock %}

@@ -6,32 +6,30 @@
         <div class="col-sm-8 ">
             <h2 class="">Edit Production Record</h2>
             <p class="txt-teal mb-5">Edit production details of record below</span></p>
-            <form action="/edit_production/{{ x[0] }}" method="POST">
+            <form action="{{ x.id }}" method="POST">
                     <div class="form-group my-2">
                         <label for="bottle_qty" class="fw-bold">Bottled water Quantity:</label>
-                        <input type="number" id="bottle_qty" name="bottle_qty" value="{{ x[1] }}"  class="form-control" required>
+                        <input type="number" id="bottle_qty" name="bottle_qty" value="{{ x.bottle_qty }}"  class="form-control" required>
                     </div>
                     <div class="form-group my-2">
                         <label for="sachet_qty" class="fw-bold">Sachet Water Quantity:</label>
-                        <input type="number" id="sachet_qty" name="sachet_qty" value="{{ x[2] }}"  class="form-control" required>
+                        <input type="number" id="sachet_qty" name="sachet_qty" value="{{ x.sachet_qty }}"  class="form-control" required>
                     </div>
                     <div class="form-group my-2">
                         <label for="production_date" class="fw-bold">Production Date:</label>
-                        <input type="date" id="production_date" class="form-control" value="{{ x[4] }}" name="production_date" required>
+                        <input type="date" id="production_date" class="form-control" value="{{ x.production_date }}" name="production_date" required>
                     </div>
                     <div class="form-group my-2">
                         <label for="factory_worker" class="fw-bold">Updated by:</label>
-                        <input type="text" placeholder="please enter your full name" id="factory_worker" name="factory_worker" value="{{ x[3] }}" class="form-control"required>
+                        <input type="text" placeholder="please enter your full name" id="factory_worker" name="factory_worker" value="{{ x.factory_worker }}" class="form-control"required>
                     </div>
                     <div class="float-md-end my-5">
                         <button type="submit" class="btn btn-primary">Submit Request</button>
+                        <a class="btn btn-danger mx-2 px-5" href="{{ url_for('main.production_content') }}" role="button">Cancel</a>
                     </div>
             </form>
-            <p class="text-black-50">Last modified on {{ x[6].strftime('%d %b, %Y %I:%M %p') }}</p>
+            <p class="text-black-50">Last modified on {{ x.modified_date.strftime('%d %b, %Y %I:%M %p') }}</p>
         </div>
-        <!-- <div class="col-sm-4 text-center my-5 ">
-            <img src="../static/images/bg_bottle.png" alt="" class="sm-image d-none d-lg-block d-xl-block d-xxl-block">
-        </div> -->
     </div>
 </div>
 {% endblock %}
