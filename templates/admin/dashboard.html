@@ -1,0 +1,79 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<div class="container mb-5">
+    <h3 class="my-4">Dashboard</h3>
+    <div class="row mb-5">
+        <div class="col-sm-6">
+            <div class="row">
+                <h5 class="">REQUEST DETAILS</h5>
+            </div>
+            <div class="row row-cols-2 row-cols-lg-5 g-2 g-lg-2">
+                <div class="col text-center">
+                  <div class="p-3 border bg-secondary text-white rounded">
+                    <h4 class="fs-3 fw-bolder">{{ bottled }}</h4>
+                    <p class="fs-6">New</p>
+                  </div>
+                </div>
+                <div class="col text-center">
+                    <div class="p-3 border bg-warning rounded">
+                      <h4 class="fs-3 fw-bolder">{{ bottled }}</h4>
+                      <p class="fs-6">On Route</p>
+                    </div>
+                </div>
+                <div class="col text-center">
+                    <div class="p-3 border bg-success text-white rounded">
+                      <h4 class="fs-3 fw-bolder">{{ sachet }}</h4>
+                      <p class="fs-6">Delivered</p>
+                    </div>
+                </div>
+                <div class="col text-center">
+                    <div class="p-3 border bg-danger text-white rounded">
+                      <h4 class="fs-3 fw-bolder">{{ sachet}}</h4>
+                      <p class="fs-6">Canceled</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="row">
+                <h5 class="">PRODUCTION DETAILS</h5>
+            </div>
+            <div class="row row-cols-2 row-cols-lg-3 g-2 g-lg-2">
+                <div class="col text-center">
+                  <div class="p-3 border bg-secondary text-white rounded">
+                    <h4 class="fs-3 fw-bolder">{{ bottled }}</h4>
+                    <p class="fs-6">Bottled</p>
+                  </div>
+                </div>
+                <div class="col text-center">
+                    <div class="p-3 border bg-secondary text-white rounded">
+                      <h4 class="fs-3 fw-bolder">{{ sachet }}</h4>
+                      <p class="fs-6">Sachet</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <p class="fst-italic">Awaiting delivery requests</p>
+    <div class="row">
+        <div class="col-sm-1 border border-dark bg-dark text-white"><h5>Actions</h5></div>
+        <div class="col-sm-2 border border-dark bg-dark text-white"><h5>Name</h5></div>
+        <div class="col-sm-2 border border-dark bg-dark text-white"><h5>Bottle_Qty</h5></div>
+        <div class="col-sm-2 border border-dark bg-dark text-white"><h5>Sachet_Qty</h5></div>
+        <div class="col-sm-2 border border-dark bg-dark text-white"><h5>Status</h5></div>
+    </div>
+    {% for item in x %}
+    <div class="row">
+        <div class="col-sm-1 border py-1">
+            <a class="" href="{{ url_for('main.edit_request', id=item.id) }}"><i class="fa-solid fa-pencil txt-teal"></i></a>&nbsp; &nbsp;
+            <a class="" href="{{ url_for('main.display_entry', id=item.id) }}"><i class="fa-solid fa-eye txt-teal"></i></a>
+        </div>
+        <div class="col-sm-2 border"><h5>{{ item.name }}</h5></div>
+        <div class="col-sm-2 border"><h5>{{ item.bottle_qty }}</h5></div>
+        <div class="col-sm-2 border"><h5>{{ item.sachet_qty }}</h5></div>
+        <div class="col-sm-2 border"><h5>{{ item.status }}</h5></div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

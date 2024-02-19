@@ -10,7 +10,7 @@
             {% endif %}
         {% endwith %}
         <h2 class="">Production History</h2>
-            <P style="color: black; font-style: italic; font-size: larger;"><span class="fw-bolder">Welcome, {{ fullname }}</span></P>
+            <P style="color: black; font-style: italic; font-size: larger;"><span class="fw-bolder">Welcome</span></P>
         <!-- Display Production Content Data -->
             <div class="row">
                 <div class="col-sm-1 border border-dark bg-dark text-white"><h6>Actions</h6></div>
@@ -21,32 +21,19 @@
                 <div class="col-sm-2 border border-dark bg-dark text-white"><h6>Created Date</h6></div>
                 <div class="col-sm-2 border border-dark bg-dark text-white"><h6>Modified Date</h6></div>
             </div>
-            {% for item in production_content_data %}
-    
+            {% for item in x %}
             <div class="row">
-                <div class="col-sm-1 border py-1"><a class="" href="{{ url_for('edit_production', id=item[0]) }}"><i class="fa-solid fa-pencil txt-teal"></i></a></div>
-                {% for elem in item %}
-                    {% if loop.index != 1 %}
-                        {% if loop.index == 2 or loop.index == 3 %}
-                            <div class="col-sm-1 border py-1">              
-                                {{ elem }}
-                            </div>
-                        {% elif loop.index == 4 %}
-                            <div class="col-sm-2 border py-1">              
-                                {{ elem }}
-                            </div>
-                        {% elif loop.index == 5 %}
-                            <div class="col-sm-2 border py-1">              
-                                {{ elem.strftime('%d %b, %Y') }}
-                            </div>
-                        {% else %}
-                            <div class="col-sm-2 border py-1">              
-                                {{ elem.strftime('%d %b, %Y %I:%M %p') }}
-                            </div>
-                        {% endif %}
-                    {% endif %}
-                {% endfor %}
+                <div class="col-sm-1 border text-center"><a class="" href="{{ url_for('main.edit_production', id=item.id ) }}"><i class="fa-solid fa-pencil txt-teal"></i></a></div>
+                    <div class="col-sm-1 border text-center">{{ item.bottle_qty }}</div>
+                    <div class="col-sm-1 border text-center">{{ item.sachet_qty }}</div>
+                    <div class="col-sm-2 border">{{ item.factory_worker }}</div>
+                    <div class="col-sm-2 border">{{ item.production_date.strftime('%d %b, %Y %I:%M %p') }}</div>
+                    <div class="col-sm-2 border">{{ item.created_date.strftime('%d %b, %Y %I:%M %p') }}</div>
+                    <div class="col-sm-2 border">{{ item.modified_date.strftime('%d %b, %Y %I:%M %p') }}</div>
             </div>
             {% endfor %}
+            <div class="d-flex flex-row-reverse my-5">
+                <a class="btn btn-danger mx-2 px-5" href="{{ url_for('main.admin') }}" role="button">Close</a>
+            </div>
     </div>
 {% endblock %}

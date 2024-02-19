@@ -6,15 +6,15 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <title>Aqua Manager</title>
-    <link rel="icon" type="image/x-icon" href="static/images/aqua_manager_logo.png">
+    <link rel="icon" type="static/image/x-icon" href="https://app.aquamanager.com.ng/static/images/aqua_manager_logo.png">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
     <link rel="stylesheet" href="static/styles/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <body class="" style="background-color: #E9F3F3;">
-    <div class="container-fluid bg-teal">
-        <nav class="navbar navbar-expand-lg " style="height: 100px;">
+    <div class="container-fluid   bg-teal">
+        <nav class="navbar navbar-expand-lg fixed-top bg-teal" style="height: 100px;">
             <div class="container-fluid ">
-                <a href="#"><img src="static/images/logo_new.png" alt="" class="logo"></a>
+                <a href="#"><img src="https://app.aquamanager.com.ng/static/images/logo_new.png" alt="" class="logo"></a>
                 <h3 class="ms-2" id="app-name">Aqua Manager</h3>
               <button class="navbar-toggler bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon "></span>
@@ -22,10 +22,13 @@
               <div class="collapse navbar-collapse justify-content-end" id="navbarText">
                 <ul class="navbar-nav navbarToggleExternalContent mb-lg-0">
                   <li class="nav-item">
-                    <a class="btn btn-outline-light mx-1 rounded" aria-current="page" href="#">Features</a>
+                    <a class="btn btn-outline-light mx-1 rounded" aria-current="page" href="#features">Features</a>
                   </li>
                   <li class="nav-item">
-                    <a class="btn btn-outline-light mx-1 rounded" href="#">About Us</a>
+                    <a class="btn btn-outline-light mx-1 rounded" href="#team">The Team</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="btn btn-outline-light mx-1 rounded" href="#video">Our Video</a>
                   </li>
                 </ul>
               </div>
@@ -36,21 +39,24 @@
               <h5 class="text-white h4">Collapsed content</h5>
               <span class="text-muted">Toggleable via the navbar brand.</span>
             </div>
-          </div>
-          <div class="container my-5">
+          </div>  
+          <div class="container-fluid"  style="padding-top: 100px;">
+            <div class="container my-5">
               <div class="row align-items-center">
                 <div class="col-sm-6">
-                    <img src="static/images/african drinking water.jpeg" class="mx-5 rounded shadow-sm" alt="" style="max-width:75%; height: auto; margin-bottom: -25%; ">
+                    <img src="https://app.aquamanager.com.ng/static/images/africandrinkingwater.jpeg" class="mx-5 rounded shadow-sm" alt="" style="max-width:75%; height: auto; margin-bottom: -25%; ">
                 </div>
                 <div class="col-sm-6 text-center text-white py-5">
                     <h1 class="mt-5 mb-3">Take orders and manage your water company.</h1>
                     <p>Access real-time information about customer orders and production updates.</p>
-                    <a class="btn btn-light px-5 py-3 fw-bold btn-lg my-3 shadow-sm" href="#" role="button">Get Started</a>
+                    <a class="btn btn-light px-5 py-3 fw-bold btn-lg my-3 shadow-sm" href="https://app.aquamanager.com.ng" role="button">Get Started</a>
                 </div>
               </div>
-          </div>          
+          </div>   
+          </div>     
       </div>
-      <div class="container-fluid water-bg">
+      
+      <div class="container-fluid water-bg" id="features">
       <div class="container p-5">
         <div class="row align-items-center my-5">
             <div class="col-sm-6 py-5">
@@ -63,7 +69,7 @@
          </div>
          <div class="row align-items-center my-5">
             <div class="col-sm-6 ">
-                <img src="static/images/dashboard.png" alt="" style="max-width: 100%;">
+                <img src="https://app.aquamanager.com.ng/static/images/dashboard.png" alt="" style="max-width: 100%;">
             </div>
             <div class="col-sm-6 py-5">
                 <h1 class="text-teal fw-bold">Get insights and analytics to optimize operations and enhance decision-making.</h1>
@@ -76,15 +82,15 @@
                 <p>Aren't you tired of constant loss reporting? Track your production volume and compare with your delivery volume to find and close out such leaks.</p>
             </div>
             <div class="col-sm-6 ">
-                <img class="shadow-sm" src="static/images/adminpage.png" alt="" style="max-width: 100%;">
+                <img class="shadow-sm" src="https://app.aquamanager.com.ng/static/images/adminpage.png" alt="" style="max-width: 100%;">
             </div>
          </div>
       </div>
     </div>
-    <div class="container-fluid py-5 bg-secondary  text-white">
-        <div class="container">
+    <div class="container-fluid">
+        <div class="container text-white bg-sec">
             <div class="row align-items-center">
-                <div class="col-sm-6 px-2">
+                <div class="col-sm-6 px-5 py-3">
                     <h2 class=" fw-bold mb-3">What inspired this project?</h2>
                     <p>The inspiration for this pure water supply project stemmed from a personal experience and a desire to address challenges faced by one of the team members' father in managing his pure water company.
                         His pure water company operates within a dynamic and demanding market, where efficiency, transparency, and customer satisfaction are paramount. As a business owner, he faces numerous challenges in managing the day-to-day operations of the company, including order processing, delivery logistics, and financial management.
@@ -95,57 +101,102 @@
     The project became more than just a technological endeavor; it was a testament to our commitment to innovation, entrepreneurship, and family legacy.
                     </p>
                 </div>
-                <div class="col-sm-6 text-center">
-                    <img src="static/images/drinking water.png" alt="" class="rounded-circle" width="75%">
+                <div class="col-sm-6 text-center px-5 py-3">
+                    <img src="https://app.aquamanager.com.ng/static/images/drinkingwater.png" alt="" class="rounded-circle" width="75%">
+                    <h4 class="p-2"> A portfolio project submitted to Holberton School</h4>
+                <a href="https://tech.alxafrica.com/nigeria?utm_source=google&utm_medium=pmax&utm_campaign=la_2024q1&utm_term=tofu-applications-tech-lite-ng&utm_content=all&gad_source=1&gclid=CjwKCAiArLyuBhA7EiwA-qo80NG72-jg9W2xiGEr0flLvitHhePEnx2lXWdG16dXSYn3ZQLQ7oClMhoCf_EQAvD_BwE" class="text-uppercase text-decoration-underline fs-4 text-white">#ALX Africa</a>
+            
                 </div>
-            </div>
-            <div class="row my-5">
-                <h4 class="text-center"> A portfolio project submitted to Holberton School</h4>
             </div>
         </div>
     </div>
-    <div class="container px-4 my-5">
+    <div class="container px-4 my-5" id="team">
         <h1 class="my-3 text-teal fw-bold text-center">Our Team</h1>
         <div class="row gx-5 justify-content-center">
           <div class="col-sm-4 my-3">
            <div class="p-3 border bg-light">
-            <img src="static/images/olisajiokem.jpg" alt="" class="rounded" style="width:100%; height:250px; object-fit: cover;">
+            <img src="https://app.aquamanager.com.ng/static/images/olisajiokem.jpg" alt="" class="rounded" style="width:100%; height:250px; object-fit: cover;">
                 <h5 class="mt-3">Mr.</h5>
                 <h4 class="mb-5 fw-bold text-teal">Olisajiokem Ahunanya</h4>
                 <ul class="list-inline text-center">
-                    <li class="list-inline-item"><a href="#"><img src="static/images/github.svg" alt="" style="width:30px; height:30px; object-fit: cover;"></a></li>
-                    <li class="list-inline-item"><a href="#"><img src="static/images/linkedin.png" alt="" style="width:45px; height:45px; object-fit: cover;"></a></li>
-                    <li class="list-inline-item"><a href="#"><img src="static/images/x.png" alt="" style="width:40px; height:40px; object-fit: cover;"></a></li>
+                    <li class="list-inline-item"><a href="https://github.com/Olisajioke" target="_blank"><img src="https://app.aquamanager.com.ng/static/images/github.svg" alt="" style="width:30px; height:30px; object-fit: cover;"></a></li>
+                    <li class="list-inline-item"><a href="https://www.linkedin.com/in/ahunanya-bright-chijiokem-3ab9051b4/" target="_blank"><img src="https://app.aquamanager.com.ng/static/images/linkedin.png" alt="" style="width:45px; height:45px; object-fit: cover;"></a></li>
+                    <li class="list-inline-item"><a href="https://twitter.com/Chijiokemonyema" target="_blank"><img src="https://app.aquamanager.com.ng/static/images/x.png" alt="" style="width:40px; height:40px; object-fit: cover;"></a></li>
                 </ul>
            </div>
           </div>
           <div class="col-sm-4 my-3">
             <div class="p-3 border bg-light">
-                <img src="static/images/lagra.jpg" alt="" class="rounded" style="width:100%; height:250px; object-fit: cover;">
+                <img src="https://app.aquamanager.com.ng/static/images/lagra.jpg" alt="" class="rounded" style="width:100%; height:250px; object-fit: cover;">
                 <h5 class="mt-3">Mrs.</h5>
                 <h4 class="mb-5 fw-bold text-teal">Grace O. Nweke</h4>
                 <ul class="list-inline text-center">
-                    <li class="list-inline-item"><a href="#"><img src="static/images/github.svg" alt="" style="width:30px; height:30px; object-fit: cover;"></a></li>
-                    <li class="list-inline-item"><a href="#"><img src="static/images/linkedin.png" alt="" style="width:45px; height:45px; object-fit: cover;"></a></li>
-                    <li class="list-inline-item"><a href="#"><img src="static/images/x.png" alt="" style="width:40px; height:40px; object-fit: cover;"></a></li>
+                    <li class="list-inline-item"><a href="https://github.com/lagra-iku" target="_blank"><img src="https://app.aquamanager.com.ng/static/images/github.svg" alt="" style="width:30px; height:30px; object-fit: cover;"></a></li>
+                    <li class="list-inline-item"><a href="https://www.linkedin.com/in/grace-ikujuni" target="_blank"><img src="https://app.aquamanager.com.ng/static/images/linkedin.png" alt="" style="width:45px; height:45px; object-fit: cover;"></a></li>
+                    <li class="list-inline-item"><a href="https://twitter.com/Lagra_Iku" target="_blank"><img src="https://app.aquamanager.com.ng/static/images/x.png" alt="" style="width:40px; height:40px; object-fit: cover;"></a></li>
                 </ul>
             </div>
           </div>
         </div>
       </div>
-        <div class="container-fluid bg-white py-5" style="background-image: url(static/images/waterbg1.jpg); background-position: left top; background-repeat: no-repeat;">
+        <div class="container-fluid bg-white py-5" style="background-image: url(https://app.aquamanager.com.ng/static/images/waterbg1.jpg); background-position: left top; background-repeat: no-repeat;">
             <div class="row align-items-center text-center" style="min-height: 500px;">
                 <div class="col-sm-3">
 
                 </div>
                 <div class="col-sm-9">
                     <h1 class="text-teal fw-bold text-center">Aqua Manager Github Repo</h1>
-                    <a href="#"><img src="static/images/github.svg" alt="" style="width:200px; height:200px; object-fit: cover;" class=""></a>
+                    <a href="https://github.com/lagra-iku/aqua_manager" target="_blank"><img src="https://app.aquamanager.com.ng/static/images/github.svg" alt="" style="width:200px; height:200px; object-fit: cover;" class=""></a>
                 </div>
             </div>
         </div>  
-        <footer class="bg-dark text-white text-center py-3">
-            <h5>
+        <div class="container text-center p-5" id="video">
+          <h1 class="text-teal fw-bold text-center pb-5">Our Project in 1 min</h1>
+          <video width="100%" controls>
+            <source src="https://app.aquamanager.com.ng/static/images/appvideo.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+          </video>
+        </div>
+        <footer class="bg-dark text-white py-3">
+          <div class="container my-5 text-start border-bottom border-light">
+            <div class="row pb-5">
+              <div class="col-sm-3">
+                <a href="#"><img src="https://app.aquamanager.com.ng/static/images/logo_new.png" alt="" class="logo"></a>
+              </div>
+              <div class="col-sm-3">
+                <h5 class="fw-bold">Why Aqua Manager?</h5>
+                <ul class="list-unstyled pt-3 ps-3">
+                  <li>Track Customer Orders</li>
+                  <li>Track Production</li>
+                  <li>Production Analytics</li>
+                  <li>Customer usage reports</li>
+                  <li>Operations transparency</li>
+                </ul>
+              </div>
+              <div class="col-sm-3">
+                <h5 class="fw-bold">Technologies Used</h5>
+                <ul class="list-unstyled pt-3 ps-3">
+                  <li>Python</li>
+                  <li>Flask</li>
+                  <li>MySQL</li>
+                  <li>MySQL Connector</li>
+                  <li>HTLM5 & Bootstrap</li>
+                </ul>
+              </div>
+              <div class="col-sm-3">
+                <h5 class="fw-bold">Resources</h5>
+                <ul class="list-unstyled pt-3 ps-3">
+                  <li>ALX SE curriculum</li>
+                  <li>Manuals & Documentations</li>
+                  <li>Fellow ALX students</li>
+                  <li>ChatGpt</li>
+                  <li>CoPilot</li>
+                </ul>
+              </div>
+            </div>
+            
+          </div>
+            <h5 class="text-center">
              &copy; Copyright 2024 by lagra-iku & Olisajiokem
             </h5>
          </footer>

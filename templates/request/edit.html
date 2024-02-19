@@ -5,47 +5,45 @@
     <div class="row height80 ">
         <div class="col-sm-8 ">
             <h2 class="">Edit Form</h2>
-            <p class="txt-teal mb-5">Edit form request for  <span class="fw-bold">{{ x[1] }}</span> created on <span class="fw-bold">{{ x[6] }}</span></p>
-            <form action="/edit/{{ x[0] }}" method="POST">
+            <p class="txt-teal mb-5">Edit form request for  <span class="fw-bold">{{ x.created_date.strftime('%d %b, %Y at %I:%M %p') }}</span> created on <span class="fw-bold">{{ x[6] }}</span></p>
+            <form action="/edit/{{ x.id }}" method="POST">
                 <div class="row">
                     <div class="col-sm-6 form-group">
                         <label class="fw-bold" for="bottle_qty">Bottled Water quantity in packs:<br><span class="fw-lighter">(Each Pack = 24 pieces)</span></label>
-                        <input type="number" id="bottle_qty" name="bottle_qty" value="{{ x[4] }}"  class="form-control"><br>
+                        <input type="number" id="bottle_qty" name="bottle_qty" value="{{ x.bottle_qty }}"  class="form-control"><br>
                     </div>
                     <div class="col-sm-6">
                         <label class="fw-bold" for="sachet_qty">Sachet Water quantity in packs:<br><span class="fw-lighter">(Each Pack = 20 pieces)</span></label>
-                        <input type="number" id="sachet_qty" name="sachet_qty" value="{{ x[5] }}" class="form-control"><br>
+                        <input type="number" id="sachet_qty" name="sachet_qty" value="{{ x.sachet_qty }}" class="form-control"><br>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="name" class="fw-bold">Your Name:</label>
-                    <input type="text" id="name" name="name" class="form-control" value="{{ x[1] }}" required><br>
+                    <input type="text" id="name" name="name" class="form-control" value="{{ x.name }}" required><br>
                 </div>
                 <div class="form-group">
                     <label for="location" class="fw-bold">Your Location:</label>
-                    <input type="text" id="location" name="location" class="form-control" value="{{ x[2] }}" required><br>
+                    <input type="text" id="location" name="location" class="form-control" value="{{ x.location }}" required><br>
                 </div>
                 <div class="form-group">
                     <label for="phonenum" class="fw-bold">Your Phone Number:</label>
-                    <input type="text" id="phonenum" name="phonenum" class="form-control" value="{{ x[3] }}" required><br>
+                    <input type="text" id="phonenum" name="phonenum" class="form-control" value="{{ x.phonenum }}" required><br>
                 </div>
                 <label for="status" class="fw-bold">Request Status:</label><br>
-                <div class="input-group mb-3">
-                    <select class="form-select" id="status" name="status" value="{{ x[8] }}" aria-label="status">
-                      <option value="New">New</option>
-                      <option value="On route">On route</option>
-                      <option value="Delivered">Delivered</option>
-                      <option value="Canceled">Canceled</option>
+                  <div class="input-group mb-3">
+                    <select class="form-select" id="status" name="status" aria-label="status">
+                        <option value="New" {% if x.status == 'New' %} selected {% endif %}>New</option>
+                        <option value="On route" {% if x.status == 'On route' %} selected {% endif %}>On route</option>
+                        <option value="Delivered" {% if x.status == 'Delivered' %} selected {% endif %}>Delivered</option>
+                        <option value="Canceled" {% if x.status == 'Canceled' %} selected {% endif %}>Canceled</option>
                     </select>
-                  </div>
+                </div>
                 <div class="float-md-end my-3">
                     <button type="submit" class="btn btn-primary" >Submit Request</button>
+                    <a class="btn btn-danger mx-2 px-5" href="{{ request.referrer }}" role="button">Cancel</a>
                 </div>
             </form>
         </div>
-        <!-- <div class="col-sm-4 text-center my-5 ">
-            <img src="../static/images/bg_bottle.png" alt="" class="sm-image d-none d-lg-block d-xl-block d-xxl-block">
-        </div> -->
     </div>
 </div>
 {% endblock %}
