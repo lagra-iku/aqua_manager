@@ -9,29 +9,39 @@
                 {% endfor %}
             {% endif %}
         {% endwith %}
-        <h2 class="">Production History</h2>
+        <div class="row my-5">
+            <h2 class="">Production History</h2>
             <P style="color: black; font-style: italic; font-size: larger;"><span class="fw-bolder">Welcome</span></P>
-        <!-- Display Production Content Data -->
-            <div class="row">
-                <div class="col-sm-1 border border-dark bg-dark text-white"><h6>Actions</h6></div>
-                <div class="col-sm-1 border border-dark bg-dark text-white"><h6>Bottle_Qty</h6></div>
-                <div class="col-sm-1 border border-dark bg-dark text-white"><h6>Sachet_Qty</h6></div>
-                <div class="col-sm-2 border border-dark bg-dark text-white"><h6>Updated By</h6></div>
-                <div class="col-sm-2 border border-dark bg-dark text-white"><h6>Production Date</h6></div>
-                <div class="col-sm-2 border border-dark bg-dark text-white"><h6>Created Date</h6></div>
-                <div class="col-sm-2 border border-dark bg-dark text-white"><h6>Modified Date</h6></div>
-            </div>
-            {% for item in x %}
-            <div class="row">
-                <div class="col-sm-1 border text-center"><a class="" href="{{ url_for('main.edit_production', id=item.id ) }}"><i class="fa-solid fa-pencil txt-teal"></i></a></div>
-                    <div class="col-sm-1 border text-center">{{ item.bottle_qty }}</div>
-                    <div class="col-sm-1 border text-center">{{ item.sachet_qty }}</div>
-                    <div class="col-sm-2 border">{{ item.factory_worker }}</div>
-                    <div class="col-sm-2 border">{{ item.production_date.strftime('%d %b, %Y %I:%M %p') }}</div>
-                    <div class="col-sm-2 border">{{ item.created_date.strftime('%d %b, %Y %I:%M %p') }}</div>
-                    <div class="col-sm-2 border">{{ item.modified_date.strftime('%d %b, %Y %I:%M %p') }}</div>
-            </div>
-            {% endfor %}
+            <div class="table-responsive">
+                <table class="table table-success table-striped-columns">
+                    <thead>
+                        <tr>
+                            <th scope="col-sm-1">Action</th>
+                            <th scope="col-sm-1">Bottle_Qty</th>
+                            <th scope="col-sm-1">Sachet_Qty</th>
+                            <th scope="col-sm-2">Updated_by</th>
+                            <th scope="col-sm-2">Production_Date</th>
+                            <th scope="col-sm-2">Modified_Date</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for item in x %}
+                        <tr>
+                            <th scope="row">
+                            <a class="" href="{{ url_for('main.edit_production', id=item.id ) }}"><i class="fa-solid fa-pencil txt-teal"></i></a>&nbsp; &nbsp;
+                            <a class="" href="{{ url_for('main.display_production', id=item.id) }}"><i class="fa-solid fa-eye txt-teal"></i></a>
+                            </th>
+                            <td>{{ item.bottle_qty }}</td>
+                            <td>{{ item.sachet_qty }}</td>
+                            <td>{{ item.factory_worker }}</td>
+                            <td>{{ item.production_date.strftime('%d %b, %Y %I:%M %p') }}</td>
+                            <td>{{ item.modified_date.strftime('%d %b, %Y %I:%M %p') }}</td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                </table>
+                </div>
+        </div>
             <div class="d-flex flex-row-reverse my-5">
                 <a class="btn btn-danger mx-2 px-5" href="{{ url_for('main.admin') }}" role="button">Close</a>
             </div>

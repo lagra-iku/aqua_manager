@@ -11,25 +11,25 @@
             <div class="row row-cols-2 row-cols-lg-5 g-2 g-lg-2">
                 <div class="col text-center">
                   <div class="p-3 border bg-secondary text-white rounded">
-                    <h4 class="fs-3 fw-bolder">{{ bottled }}</h4>
+                    <h4 class="fs-3 fw-bolder">{{ new }}</h4>
                     <p class="fs-6">New</p>
                   </div>
                 </div>
                 <div class="col text-center">
                     <div class="p-3 border bg-warning rounded">
-                      <h4 class="fs-3 fw-bolder">{{ bottled }}</h4>
+                      <h4 class="fs-3 fw-bolder">{{ enroute }}</h4>
                       <p class="fs-6">On Route</p>
                     </div>
                 </div>
                 <div class="col text-center">
                     <div class="p-3 border bg-success text-white rounded">
-                      <h4 class="fs-3 fw-bolder">{{ sachet }}</h4>
+                      <h4 class="fs-3 fw-bolder">{{ delivered }}</h4>
                       <p class="fs-6">Delivered</p>
                     </div>
                 </div>
                 <div class="col text-center">
                     <div class="p-3 border bg-danger text-white rounded">
-                      <h4 class="fs-3 fw-bolder">{{ sachet}}</h4>
+                      <h4 class="fs-3 fw-bolder">{{ canceled }}</h4>
                       <p class="fs-6">Canceled</p>
                     </div>
                 </div>
@@ -56,24 +56,32 @@
         </div>
     </div>
     <p class="fst-italic">Awaiting delivery requests</p>
-    <div class="row">
-        <div class="col-sm-1 border border-dark bg-dark text-white"><h5>Actions</h5></div>
-        <div class="col-sm-2 border border-dark bg-dark text-white"><h5>Name</h5></div>
-        <div class="col-sm-2 border border-dark bg-dark text-white"><h5>Bottle_Qty</h5></div>
-        <div class="col-sm-2 border border-dark bg-dark text-white"><h5>Sachet_Qty</h5></div>
-        <div class="col-sm-2 border border-dark bg-dark text-white"><h5>Status</h5></div>
-    </div>
-    {% for item in x %}
-    <div class="row">
-        <div class="col-sm-1 border py-1">
-            <a class="" href="{{ url_for('main.edit_request', id=item.id) }}"><i class="fa-solid fa-pencil txt-teal"></i></a>&nbsp; &nbsp;
-            <a class="" href="{{ url_for('main.display_entry', id=item.id) }}"><i class="fa-solid fa-eye txt-teal"></i></a>
+    <div class="table-responsive">
+        <table class="table table-success table-striped-columns">
+            <thead>
+                <tr>
+                    <th scope="col-sm-1">Action</th>
+                    <th scope="col-sm-2">Name</th>
+                    <th scope="col-sm-2">Bottle_Qty</th>
+                    <th scope="col-sm-2">Sachet_Qty</th>
+                    <th scope="col-sm-2">Status</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in x %}
+                <tr>
+                    <th scope="row">
+                    <a class="" href="{{ url_for('main.edit_request', id=item.id) }}"><i class="fa-solid fa-pencil txt-teal"></i></a>&nbsp; &nbsp;
+                    <a class="" href="{{ url_for('main.display_entry', id=item.id) }}"><i class="fa-solid fa-eye txt-teal"></i></a>
+                    </th>
+                    <td class="text-capitalize">{{ item.name }}</td>
+                    <td>{{ item.bottle_qty }}</td>
+                    <td>{{ item.sachet_qty }}</td>
+                    <td>{{ item.status }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+        </table>
         </div>
-        <div class="col-sm-2 border"><h5>{{ item.name }}</h5></div>
-        <div class="col-sm-2 border"><h5>{{ item.bottle_qty }}</h5></div>
-        <div class="col-sm-2 border"><h5>{{ item.sachet_qty }}</h5></div>
-        <div class="col-sm-2 border"><h5>{{ item.status }}</h5></div>
-    </div>
-    {% endfor %}
 </div>
 {% endblock %}

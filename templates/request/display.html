@@ -9,7 +9,7 @@
             {% endfor %}
         {% endif %}
     {% endwith %}
-    <h4 class="text-center">Order details created by <span class="fw-bold">{{ x.name }}</span> on <span class="fw-bold">{{ x.modified_date.strftime('%d %b, %Y at %I:%M %p') }}</span></h4>
+    <h4 class="text-center">Order details created by <span class="fw-bold text-capitalize">{{ x.name }}</span> on <span class="fw-bold">{{ x.created_date.strftime('%d %b, %Y at %I:%M %p') }}</span></h4>
     <div class="row p-3 mt-4 border bg-light rounded">
         <h6 class="fw-bolder">STATUS: <span class="text-success">{{ x.status }}</span></h6>
     </div>
@@ -24,42 +24,44 @@
         <div class="col-sm-4 border bg-light rounded me-3">
             <div class="p-3">
                 <h6>CUSTOMER DETAILS</h6>
-                <p>Name: <span class="fw-bolder">{{ x.name }}</span></p>
-                <p>Location: <span class="fw-bolder">{{ x.location }}</span></p>
+                <p>Name: <span class="fw-bolder text-capitalize">{{ x.name }}</span></p>
+                <p>Location: <span class="fw-bolder text-capitalize">{{ x.location }}</span></p>
                 <p>Phone Number: <span class="fw-bolder">{{ x.phonenum }}</span></p>
             </div>
         </div>
     </div>
     <div class="row">
         <h6 class="txt-teal">Submitted requests by {{ x.phonenum }}</h6>
-        <div class="row">
-            <div class="col-sm-6">
-                <div class="row">
-                    <div class="col-sm-1 border border-dark bg-dark text-white"><h6>Edit</h6></div>
-                    <div class="col-sm-2 border border-dark bg-dark text-white"><h6>Bottle_Qty</h6></div>
-                    <div class="col-sm-2 border border-dark bg-dark text-white"><h6>Sachet_Qty</h6></div>
-                    <div class="col-sm-2 border border-dark bg-dark text-white"><h6>Status</h6></div>
-                    <div class="col-sm-5 border border-dark bg-dark text-white"><h6>Modified_Date</h6></div>
-                </div>
-            </div>
+        <div class="table-responsive col-sm-6">
+            <table class="table table-success table-striped-columns">
+                <thead>
+                    <tr>
+                        <th scope="col-sm-1">Action</th>
+                        <th scope="col-sm-1">Bottle_Qty</th>
+                        <th scope="col-sm-1">Sachet_Qty</th>
+                        <th scope="col-sm-2">Status</th>
+                        <th scope="col-sm-2">Modified_Date</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for item in req %}
+                    <tr>
+                        <th scope="row">
+                        <a class="" href="{{ url_for('main.edit_request', id=item.id ) }}"><i class="fa-solid fa-pencil txt-teal"></i></a>&nbsp; &nbsp;
+                        <a class="" href="{{ url_for('main.display_entry', id=item.id) }}"><i class="fa-solid fa-eye txt-teal"></i></a>
+                        </th>
+                        <td>{{ item.bottle_qty }}</td>
+                        <td>{{ item.sachet_qty }}</td>
+                        <td>{{ item.status }}</td>
+                        <td>{{ item.modified_date.strftime('%d %b, %Y %I:%M %p') }}</td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+            </table>
         </div>
-        <div class="row">
-            <div class="col-sm-6">
-                {% for item in req %}
-                <div class="row">
-                    <div class="col-sm-1 border border-dark bg-secondary text-white"><a class="" href="{{ url_for('main.edit_request', id=item.id ) }}"><i class="fa-solid fa-pencil txt-teal"></i></a></div>
-                    <div class="col-sm-2 border border-dark bg-secondary text-white">{{ item.bottle_qty }}</div>
-                    <div class="col-sm-2 border border-dark bg-secondary text-white">{{ item.sachet_qty }}</div>
-                    <div class="col-sm-2 border border-dark bg-secondary text-white">{{ item.status }}</div>
-                    <div class="col-sm-5 border border-dark bg-secondary text-white">{{ item.modified_date.strftime('%d %b, %Y %I:%M %p') }}</div>
-                </div>
-                {% endfor %}
-            </div>
+        <div class="d-grid gap-2 mt-3 d-md-flex justify-content-md-end">
+            <a class="btn btn-danger btn-lg" href="{{ url_for('main.new') }}" role="button">Close</a>
         </div>
-    </div>
-    <div class="d-grid gap-2 mt-3 d-md-flex justify-content-md-end">
-        <a class="btn btn-danger btn-lg" href="{{ url_for('main.new') }}" role="button">Close</a>
-    </div>
 </div>
 
 {% endblock %}

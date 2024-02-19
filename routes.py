@@ -57,19 +57,19 @@ def admin():
 
 @main_bp.route('/dashboard', methods=('GET', 'POST'))
 def dashboard():
-    entries = db.session.query(Requests.id, Requests.name, Requests.location, Requests.phonenum, Requests.status) \
-    .filter(Requests.status.notin_(['canceled', 'delivered'])) \
-    .order_by(Requests.modified_date.desc()) \
-    .all()
+    entries = Requests.query.filter(Requests.status.notin_(['canceled', 'completed'])).order_by(desc(Requests.modified_date)).all()
 
     # Fetching count of entries based on status
-    
+    new_count = db.session.query(func.count(Requests.id)).filter(Requests.status == 'New').scalar()
+    enroute_count = db.session.query(func.count(Requests.id)).filter(Requests.status == 'On route').scalar()
+    delivered_count = db.session.query(func.count(Requests.id)).filter(Requests.status == 'Delivered').scalar()
+    canceled_count = db.session.query(func.count(Requests.id)).filter(Requests.status == 'Canceled').scalar()
     
     #Fetching Production data
     bottle_sum = db.session.query(func.sum(Production_records.bottle_qty)).scalar()
     sachet_sum = db.session.query(func.sum(Production_records.sachet_qty)).scalar()
 
-    return render_template('admin/dashboard.html', x=entries, bottled=bottle_sum, sachet=sachet_sum)
+    return render_template('admin/dashboard.html', x=entries, new=new_count, enroute=enroute_count, delivered=delivered_count, canceled=canceled_count, bottled=bottle_sum, sachet=sachet_sum)
 
 @main_bp.route('/add_production', methods=['GET', 'POST'])
 def add_production():
@@ -86,8 +86,13 @@ def add_production():
         db.session.commit()
         flash('Production form submitted successfully!!!')
         # username = session.get("username")
-        return redirect(url_for('main.production_content'))
+        return redirect(url_for('main.display_production'))
     return render_template('admin/add_production.html')
+
+@main_bp.route('/display_production/<int:id>', methods=['GET', 'POST'])
+def display_production(id,):
+    prod_to_display = Production_records.query.get_or_404(id)
+    return render_template('admin/display_production.html', x=prod_to_display)
 
 @main_bp.route('/production_content', methods=['GET', 'POST'])
 def production_content():

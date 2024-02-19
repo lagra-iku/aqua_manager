@@ -1,0 +1,30 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<div class="container mb-5 pt-3 height80">
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <p class="row text-center bg-info p-3 rounded mb-3">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <h4 class="">Production details</h4>
+    <div class="row my-5">
+        <div class="col-sm-4 border bg-light rounded">
+            <div class="p-3">
+                <p>Production quantity for Bottled water: <span class="fw-bolder">{{ x.bottle_qty }} packs</span></p>
+                <p>Production quantity for Sachet water: <span class="fw-bolder">{{ x.sachet_qty }} bags</span></p>
+                <p>Updated by: <span class="fw-bolder text-capitalize">{{ x.factory_worker }}</span></p>
+                <p>Production Date: <span class="fw-bolder text-capitalize">{{ x.created_date.strftime('%d %b, %Y at %I:%M %p') }}</span></p>
+                <p>Created Date: <span class="fw-bolder text-capitalize">{{ x.production_date.strftime('%d %b, %Y at %I:%M %p') }}</span></p>
+                <p>Last modified Date: <span class="fw-bolder text-capitalize">{{ x.modified_date.strftime('%d %b, %Y at %I:%M %p') }}</span></p>
+            </div>
+        </div>
+    </div>
+    <div class="d-grid gap-2 mt-3 d-md-flex justify-content-md-end">
+        <a class="btn btn-danger btn-lg" href="{{ url_for('main.admin') }}" role="button">Close</a>
+    </div>
+</div>
+
+{% endblock %}
