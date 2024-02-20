@@ -123,3 +123,8 @@ def not_found_error(error):
 @main_bp.errorhandler(503)
 def service_unavailable_error(error):
     return render_template('error/503.html', error=error), 503
+
+@main_bp.errorhandler(500)
+def internal_server_error(error):
+    # Render your custom error page HTML template
+    return render_template('error/500.html', error=error), 500
