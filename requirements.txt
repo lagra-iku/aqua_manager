@@ -16,3 +16,4 @@ SQLAlchemy
 typing_extensions
 Werkzeug
 bcrypt
+flask_bcrypt

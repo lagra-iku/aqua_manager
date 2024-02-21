@@ -17,6 +17,7 @@ def index():
 
 @main_bp.route('/', methods=['GET', 'POST'])
 def new():
+    username = session.get('username')
     if request.method == 'POST':
         bottle_qty = request.form['bottle_qty']
         sachet_qty = request.form['sachet_qty']
@@ -28,18 +29,20 @@ def new():
         db.session.commit()
         new_request_id = new_request.id
         flash('Request submitted successfully!!!')
-        return redirect(url_for('main.display_entry', id=new_request_id))
+        return redirect(url_for('main.display_entry', id=new_request_id, username=username))
     return render_template('request/new.html')
 
 @main_bp.route('/display/<int:id>', methods=['GET', 'POST'])
 def display_entry(id):
+    username = session.get('username')
     request_to_display = Requests.query.get_or_404(id)
     phonenum = request_to_display.phonenum
     related_requests = Requests.query.filter_by(phonenum=phonenum).all()
-    return render_template('request/display.html', x=request_to_display, req=related_requests)
+    return render_template('request/display.html', x=request_to_display, req=related_requests, username=username)
 
 @main_bp.route('/edit/<int:id>', methods=['GET', 'POST'])
 def edit_request(id):
+    username = session.get('username')
     request_to_edit = Requests.query.get_or_404(id)
     if request.method == 'POST':
         # Process the form submission
@@ -53,7 +56,7 @@ def edit_request(id):
         flash('Request updated successfully!')
         return redirect(url_for('main.display_entry', id=id))
     # Render the form with the details of the specific request
-    return render_template('request/edit.html', x=request_to_edit)
+    return render_template('request/edit.html', x=request_to_edit, username=username)
 
 # Routes for Production user story
 @main_bp.route('/admin', methods=('GET', 'POST'))
@@ -133,6 +136,7 @@ def production_content():
 
 @main_bp.route('/edit_production/<int:id>', methods=['GET', 'POST'])
 def edit_production(id):
+    username = session.get('username')
     prod_to_edit = Production_records.query.get_or_404(id)
     if request.method == 'POST':
         # Process the form submission
@@ -145,11 +149,12 @@ def edit_production(id):
         flash('Production updated successfully!')
         return redirect(url_for('main.production_content'))
     # Render the form with the details of the specific request
-    return render_template('admin/edit_production.html', x=prod_to_edit)
+    return render_template('admin/edit_production.html', x=prod_to_edit, username=username)
 
 #Route to handle search
 @main_bp.route('/search')
 def search():
+    username = session.get('username')
     query = request.args.get('query', '').strip().lower()
     results = []
                                                   
@@ -167,7 +172,7 @@ def search():
         else:
             message = f"Search results for '{query}':"
 
-    return render_template('common/search.html', results=results, message=message)
+    return render_template('common/search.html', results=results, message=message, username=username)
 
 
 @login_manager.user_loader

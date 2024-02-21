@@ -2,7 +2,7 @@
     <div class="container p-3">
         <div class="row align-items-center">
             <div class="col-sm-3">
-                <a href="{{ url_for('main.new') }}"><img src="../../static/images/logo_new.png" alt="" class="logo"></a>
+                <a href="{{ url_for('main.dashboard') }}"><img src="../../static/images/logo_new.png" alt="" class="logo"></a>
             </div>
             <div class="col-sm-6 text-left">
                 <h3 id="app-name">Aqua Manager</h3>
@@ -17,13 +17,15 @@
                             <img src="../../static/images/anonymous.png" alt="" id="profile_pic">
                         </h6>
                         <ul class="dropdown-menu p-3 text-end profile-menu">
-                            <li class=" border-bottom my-2"><a href="{{ url_for('main.admin') }}" class="text-decoration-none text-end text-dark">Admin</a></li>
-                            <li class=" border-bottom my-2"><a href="{{ url_for('main.dashboard') }}" class="text-decoration-none text-end text-dark">Dashboard</a></li>
+                            <li class=" border-bottom my-2"><a href="{{ url_for('main.admin', username=username) }}" class="text-decoration-none text-end text-dark">Admin</a></li>
+                            <li class=" border-bottom my-2"><a href="{{ url_for('main.dashboard', username=username) }}" class="text-decoration-none text-end text-dark">Dashboard</a></li>
+                            <li class=" border-bottom my-2"><a href="{{ url_for('main.profile', username=username) }}" class="text-decoration-none text-end text-dark">My Profile</a></li>
+                            <li class=" border-bottom my-2"><a href="{{ url_for('main.logout', username=username) }}" class="text-decoration-none text-end text-dark">Logout</a></li>
                         </ul>
                       </div>
                     {% else %}
-                        <a class="btn btn-outline-light mx-1 rounded" href="{{ url_for('main.admin') }}">Admin</a>
-                        <a class="btn btn-light mx-1 px-4 rounded fw-bold" href="{{ url_for('main.dashboard') }}">Dashboard</a>
+                        <a class="btn btn-outline-light mx-1 rounded" href="{{ url_for('main.register') }}">Register</a>
+                        <a class="btn btn-light mx-1 px-4 rounded fw-bold" href="{{ url_for('main.login') }}">Login</a>
                     {% endif %}
                   </div>
             </div>

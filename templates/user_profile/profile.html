@@ -2,27 +2,13 @@
 
 {% block content %}
 <div class="container main-content my-5">
-    <h1 style="color: black; align-content: center;"><span class="fw-bolder">Company: Aqua Manager Group of companies</span></h1>
-    <h2 style="color: black; align-content: center;"><span class="fw-bolder">Welcome, {{ fullname }}</span></h2>
-    <p style="color: blue; align-content: center;"><span class="fw-bolder">Email: {{ email }}</span></p>
-    <p style="color: blue; align-content: center;"><span class="fw-bolder">Username: {{ username }}</span></p>
-    
-    
-    <!-- Links to other functionalities -->
-    <!-- <div class="row float-md-left">
-        <div class="col-md-6">
-            <a href="{{ url_for('add_production') }}" class="btn btn-dark">Add New Production</a>
-        </div>
-    </div>
-    <br><br> -->
-    <ol style="color: red; font-style: italic; font-size: medium;">
-    <li>If a company, List of logged on employees</li>
-    <li>list of total registered employees</li>
-    <li>list of products currently available</li>
-    </ol>
+    <h4 style="color: black; align-content: center;"><span class="fw-bolder">Company: </span>Aqua Manager Group of companies</h4>
+    <h4 style="color: black; align-content: center;"><span class="fw-bolder">Welcome, {{ fullname }}</span></h4>
+    <p class="text-teal"><span class="fw-bolder">Email: {{ email }}</span></p>
+    <p class="text-teal"><span class="fw-bolder">Username: {{ username }}</span></p>
     <div class="row float-md-left my-5">
         <div class="col-md-6">
-            <a href="{{ url_for('logout') }}" class="btn btn-primary btn-lg">Logout</a>
+            <a href="{{ url_for('main.logout') }}" class="btn btn-primary btn-lg">Logout</a>
         </div>
     </div>
     </div>
