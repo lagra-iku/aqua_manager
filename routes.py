@@ -179,19 +179,20 @@ def register():
     if request.method == 'POST':
         username = request.form['username']
         email = request.form['email']
+        fullname = request.form['full_name']
         password = request.form['password']
         second_password = request.form['enter_password_again']
         
         if password != second_password:
-            flash('Passwords differ, Make sure passwords match!', "error")
+            flash('Passwords differ. Make sure passwords match!', "error")
             return redirect(url_for("main.register"))
         else:
-            # Hash password
+            # Hash the password before storing it in the database
             hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())    
-            # Check if username or email already exists
+            # Check if the username or email already exists
             existing_user = User_profiles.query.filter_by(username=username).first()
             if existing_user:
-                flash("Username already exists! Please choose a different username!.", "error")
+                flash("Username already exists! Please choose a different username.", "error")
                 return redirect(url_for("main.register"))
                 
             existing_email = User_profiles.query.filter_by(email=email).first()
@@ -199,8 +200,8 @@ def register():
                 flash("Email already exists! Please use a different email.", "error")
                 return redirect(url_for("main.register"))
         
-            # Create new user
-            new_user = User_profiles(username=username, email=email, password=hashed_password)
+            # Create a new user
+            new_user = User_profiles(username=username, email=email, full_name=fullname, password=hashed_password)
             db.session.add(new_user)
             db.session.commit()
         
@@ -222,6 +223,7 @@ def login():
         if user and check_password_hash(user.password, password):
             session['username'] = username
             # session['full_name'] = fullname
+            # session['email'] = email
             flash("Login successful!", "success")
             return redirect(url_for("main.dashboard"))
         else:
@@ -231,17 +233,17 @@ def login():
 
 @main_bp.route('/profile')
 def profile():
-    # Retrieve the username of the current user from the session
     username = session.get('username')
     fullname = session.get('full_name')
     email = session.get('email')
+    
     if username:
-        # Query the database to find the user with the given username
         user = User_profiles.query.filter_by(username=username).first()
         if user:
-            return render_template('user_profile/profile.html', user=user, username=username, fullname=fullname, email=email )
+            return render_template('user_profile/profile.html', user=user, username=username, fullname=fullname, email=email)
     flash('User profile not found!', 'error')
     return redirect(url_for('main.index'))
+
 
 
 @main_bp.route('/logout')
