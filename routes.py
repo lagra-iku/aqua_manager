@@ -11,10 +11,6 @@ from flask_bcrypt import check_password_hash
 
 main_bp = Blueprint('main', __name__)
 
-@main_bp.route('/')
-def index():
-    return render_template('request/new.html')
-
 @main_bp.route('/', methods=['GET', 'POST'])
 def new():
     username = session.get('username')
@@ -30,7 +26,7 @@ def new():
         new_request_id = new_request.id
         flash('Request submitted successfully!!!')
         return redirect(url_for('main.display_entry', id=new_request_id, username=username))
-    return render_template('request/new.html')
+    return render_template('request/new.html', username=username)
 
 @main_bp.route('/display/<int:id>', methods=['GET', 'POST'])
 def display_entry(id):
@@ -68,7 +64,7 @@ def admin():
         return redirect(url_for("main.login"))
     else:
         active_requests = Requests.query.filter(Requests.status.notin_(['canceled', 'completed'])).order_by(desc(Requests.modified_date)).all()
-        return render_template('admin/home.html', x=active_requests, fullname=fullname)
+        return render_template('admin/home.html', x=active_requests, fullname=fullname, username=username)
 
 @main_bp.route('/dashboard', methods=('GET', 'POST'))
 def dashboard():
