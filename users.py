@@ -1,83 +1,55 @@
-#!/usr/bin/python3
-"""Module that handles user instances of registration, login and profiles"""
-from werkzeug.security import generate_password_hash, check_password_hash
-import mysql.connector
-from configparser import ConfigParser
-config = ConfigParser()
-config.read('config.ini')
+import bcrypt
+from flask_sqlalchemy import SQLAlchemy
 
+db = SQLAlchemy()
 
-db = mysql.connector.connect(
-    host=config['mysql']['host'],
-    user=config['mysql']['user'],
-    password=config['mysql']['password']
-)
- 
-cursor = db.cursor()
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(50), unique=True, nullable=False)
+    email = db.Column(db.String(100), unique=True, nullable=False)
+    password_hash = db.Column(db.String(128), nullable=False)
+    full_name = db.Column(db.String(100))
 
-# Create database if not exists
-cursor.execute("CREATE DATABASE IF NOT EXISTS requests")
-cursor.execute("USE requests")
-
-class User:
-    def __init__(self, username, password, email, full_name):
-        self.password_hash = None
+    def __init__(self, username, password, email, full_name=None):
         self.username = username
         self.email = email
         self.full_name = full_name
         self.set_password(password)
 
     def set_password(self, password):
-        # Generate password hash using a secure hashing algorithm
-        self.password_hash = generate_password_hash(password)
+        # Generate password hash using bcrypt
+        salt = bcrypt.gensalt()
+        self.password_hash = bcrypt.hashpw(password.encode('utf-8'), salt)
 
     def check_password(self, password):
         # Check if the provided password matches the stored hash
-        return check_password_hash(self.password_hash, password)
+        return bcrypt.checkpw(password.encode('utf-8'), self.password_hash)
 
     def save_to_database(self):
-        # Insert the user data into the MySQL database
-        cursor.execute("INSERT INTO user_profiles (username, email, password) VALUES (%s, %s, %s)",
-                       (self.username, self.email, self.password_hash))
-        db.commit()
+        # Add the user instance to the database session and commit the transaction
+        db.session.add(self)
+        db.session.commit()
 
     @staticmethod
     def login(username, password):
         # Query the database to retrieve the user's data
-        cursor.execute("SELECT id, username, password FROM user_profiles WHERE username = %s", (username,))
-        user_data = cursor.fetchone()
+        user = User.query.filter_by(username=username).first()
 
-        if user_data and check_password_hash(user_data[2], password):
-            return user_data[0]  # Return the user's ID
+        if user and user.check_password(password):
+            return user 
         else:
             return None
 
     @staticmethod
     def get_profile(user_id):
         # Retrieve user data from the database
-        cursor.execute("SELECT username, email, full_name FROM user_profiles WHERE id = %s", (user_id,))
-        user_data = cursor.fetchone()
+        return User.query.get(user_id)
 
-        if user_data:
-            return {
-                'username': user_data[0],
-                'email': user_data[1],
-                'full_name': user_data[2]
-            }
-        else:
-            return None
-        
     @staticmethod
     def is_username_available(username):
         # Check if the username is already in use
-        cursor.execute("SELECT id FROM user_profiles WHERE username = %s", (username,))
-        user_data = cursor.fetchone()
+        return User.query.filter_by(username=username).first() is None
 
-        return user_data is None 
-    
     @staticmethod
     def logout():
-        # Close the cursor
-        cursor.close()
-        # Close the database connection
-        db.close()
+        pass

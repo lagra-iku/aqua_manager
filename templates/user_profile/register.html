@@ -34,7 +34,7 @@
             <div class="col bg-white text-black p-5 rounded shadow-sm">
                 <div class="row  my-5">
                     <h2>Register Here</h2>
-                    <form action="{{ url_for('register') }}" method="POST">
+                    <form action="{{ url_for('main.register') }}" method="POST">
                         {% with messages = get_flashed_messages() %}
                             {% if messages %}
                                 {% for message in messages %}
@@ -67,7 +67,7 @@
                         </div>
                         <div>
                             <div class="row text-center">
-                                <p class="">Already have a company account? <a href="{{ url_for('login') }}" class="btn p-2 mx-2 btn-light border border-dark">Login here</a></p>
+                                <p class="">Already have a company account? <a href="{{ url_for('main.login') }}" class="btn p-2 mx-2 btn-light border border-dark">Login here</a></p>
                             </div>
                     </form>
                 </div>

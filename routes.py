@@ -1,7 +1,13 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash
-from models import db, Requests, Production_records
-from sqlalchemy import desc, func, case, literal_column
+from flask import Blueprint, render_template, request, redirect, url_for, flash, session
+from models import db, Requests, Production_records, User_profiles
+from sqlalchemy import desc, func
 from datetime import datetime
+import bcrypt
+from users import User
+# from app import login_manager
+from login_loader import login_manager
+from flask_bcrypt import check_password_hash
+
 
 main_bp = Blueprint('main', __name__)
 
@@ -26,7 +32,7 @@ def new():
     return render_template('request/new.html')
 
 @main_bp.route('/display/<int:id>', methods=['GET', 'POST'])
-def display_entry(id,):
+def display_entry(id):
     request_to_display = Requests.query.get_or_404(id)
     phonenum = request_to_display.phonenum
     related_requests = Requests.query.filter_by(phonenum=phonenum).all()
@@ -65,7 +71,7 @@ def dashboard():
     delivered_count = db.session.query(func.count(Requests.id)).filter(Requests.status == 'Delivered').scalar()
     canceled_count = db.session.query(func.count(Requests.id)).filter(Requests.status == 'Canceled').scalar()
     
-    #Fetching Production data
+    # Fetching Production data
     bottle_sum = db.session.query(func.sum(Production_records.bottle_qty)).scalar()
     sachet_sum = db.session.query(func.sum(Production_records.sachet_qty)).scalar()
 
@@ -85,12 +91,11 @@ def add_production():
         db.session.add(new_prod)
         db.session.commit()
         flash('Production form submitted successfully!!!')
-        # username = session.get("username")
         return redirect(url_for('main.display_production'))
     return render_template('admin/add_production.html')
 
 @main_bp.route('/display_production/<int:id>', methods=['GET', 'POST'])
-def display_production(id,):
+def display_production(id):
     prod_to_display = Production_records.query.get_or_404(id)
     return render_template('admin/display_production.html', x=prod_to_display)
 
@@ -115,7 +120,63 @@ def edit_production(id):
     # Render the form with the details of the specific request
     return render_template('admin/edit_production.html', x=prod_to_edit)
 
-# Routes to handle 404 and 503 errors
+@login_manager.user_loader
+def load_user(user_id):
+    return User.get(int(user_id))
+
+@main_bp.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        username = request.form['username']
+        email = request.form['email']
+        password = request.form['password']
+        second_password = request.form['enter_password_again']
+        
+        if password != second_password:
+            flash('Passwords differ, Make sure passwords match!', "error")
+            return redirect(url_for("main.register"))
+        else:
+            # Hash password
+            hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())    
+            # Check if username or email already exists
+            existing_user = User_profiles.query.filter_by(username=username).first()
+            if existing_user:
+                flash("Username already exists! Please choose a different username!.", "error")
+                return redirect(url_for("main.register"))
+                
+            existing_email = User_profiles.query.filter_by(email=email).first()
+            if existing_email:
+                flash("Email already exists! Please use a different email.", "error")
+                return redirect(url_for("main.register"))
+        
+            # Create new user
+            new_user = User_profiles(username=username, email=email, password=hashed_password)
+            db.session.add(new_user)
+            db.session.commit()
+        
+            flash("Registration successful! You can now login.")
+            return redirect(url_for("main.login"))
+    return render_template('user_profile/register.html')
+
+
+@main_bp.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        
+        user = User_profiles.query.filter_by(username=username).first()
+
+        # Check if the user exists and if the provided password matches the hashed password
+        if user and check_password_hash(user.password, password):
+            session['username'] = username
+            flash("Login successful!", "success")
+            return redirect(url_for("main.dashboard"))
+        else:
+            flash("Invalid username or password. Please try again.", "error")
+    return render_template('user_profile/login.html')
+
+
 @main_bp.errorhandler(404)
 def not_found_error(error):
     return render_template('error/404.html'), 404

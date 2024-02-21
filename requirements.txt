@@ -15,3 +15,4 @@ pycodestyle
 SQLAlchemy
 typing_extensions
 Werkzeug
+bcrypt
