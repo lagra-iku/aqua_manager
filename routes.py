@@ -246,7 +246,7 @@ def profile():
 
 @main_bp.route('/logout')
 def logout():
-    session.pop('user_id', None)
+    session.clear()
     flash('You have been logged out.', 'success')
     return redirect(url_for('main.index'))
 
