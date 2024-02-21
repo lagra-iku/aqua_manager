@@ -106,8 +106,9 @@ def add_production():
             new_prod = Production_records(bottle_qty=bottle_qty, sachet_qty=sachet_qty, factory_worker=factory_worker, production_date=production_date)
             db.session.add(new_prod)
             db.session.commit()
+            new_prod_id = new_prod.id
             flash('Production form submitted successfully!!!')
-            return redirect(url_for('main.display_production'))
+            return redirect(url_for('main.display_production', id=new_prod_id))
         return render_template('admin/add_production.html', fullname=fullname)
 
 @main_bp.route('/display_production/<int:id>', methods=['GET', 'POST'])
@@ -243,7 +244,7 @@ def profile():
         if user:
             return render_template('user_profile/profile.html', user=user, username=username, fullname=fullname, email=email)
     flash('User profile not found!', 'error')
-    return redirect(url_for('main.index'))
+    return redirect(url_for('main.new'))
 
 
 
@@ -251,7 +252,7 @@ def profile():
 def logout():
     session.clear()
     flash('You have been logged out.', 'success')
-    return redirect(url_for('main.index'))
+    return redirect(url_for('main.new'))
 
 
 @main_bp.errorhandler(404)
