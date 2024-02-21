@@ -6,6 +6,9 @@ The challenge is to seamlessly connect individuals, supermarkets, and depots thr
 While Aqua Manager strives to optimize the end-to-end supply chain, it acknowledges the external factors that might pose challenges, emphasizing the need for adaptability and resilience in the face of ever-changing circumstances. 
 The challenge is not just to create a technological solution but to forge a reliable and efficient network that can withstand the unique challenges of the Nigerian market and contribute to the accessibility and transparency of pure water distribution.
 
+## Architecture of the app
+![Architecture of Aqua manager](URL "https:\\app.aquamanager.com.ng\static\images\aqua_manager_architecture.png")
+
 ## Where to find the app online?
 - [Landing Page](https:\\aquamanager.com.ng)
 - [App Page](https:\\app.aquamanager.com.ng)
@@ -26,6 +29,12 @@ To be used by pure water manufacturing companies in Naija.
 - Install flash to manage the flash messages if need be.
 - Install all other dependencies as gotten from the requirements.txt file
 - Run the app (run python app.py via terminal)
+
+## Inspiration in creating the app
+The inspiration for this pure water supply project stemmed from a personal experience and a desire to address challenges faced by one of the team members' father in managing his pure water company. His pure water company operates within a dynamic and demanding market, where efficiency, transparency, and customer satisfaction are pa
+ramount. As a business owner, he faces numerous challenges in managing the day-to-day operations of the company, including order processing, delivery logistics, and financial management. Despite his best efforts, he continues to encounter inefficiencies and bottlenecks in the existing processes.
+
+The idea took shape as we observed the growing trend of digital transformation across industries, where businesses were harnessing the power of technology to enhance efficiency, improve customer experience, and drive growth. Inspired by these developments, we embarked on a journey to develop an innovative solution tailored specifically to the needs of his pure water business. The app would serve as a centralized platform, offering insights and analytics to optimize operations, improve resource allocation, and enhance decision-making. With a bird's-eye view of the entire supply chain, he would have greater control and visibility, enabling him to address issues proactively and deliver exceptional service to customers. The project became more than just a technological endeavor; it was a testament to our commitment to innovation, entrepreneurship, and family legacy.
 
 ## MVP User Stories
 - Customer
