@@ -1,0 +1,54 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<div class="container mb-5 pt-3 height80">
+    <div class="row text-center text-teal fw-bold">
+        <h2>Track a request</h2>
+        <form action="/search" method="GET" class="mt-5">
+            <div class="d-inline-block col-md-6 mx-auto">
+                <input type="text" id="search" name="query" placeholder="Enter name or phone number" class="form-control p-2"> 
+            </div>
+            <div class="d-inline-block col-md-1 text-start">
+                <button type="submit" class="btn btn-dark p-2">Search</button>
+            </div>
+        </form>
+
+    </div>
+    <div class="row mt-5">
+        {% if message %}
+            <p>{{ message }}</p>
+        {% endif %}
+    </div>
+    {% if results %}
+    <div class="table-responsive mx-auto mb-5">
+        <table class="table table-success table-striped-columns">
+            <thead>
+                <tr>
+                    <th scope="col-sm-1">Action</th>
+                    <th scope="col-sm-2">Name</th>
+                    <th scope="col-sm-2">Phone_num</th>
+                    <th scope="col-sm-2">Bottle_Qty</th>
+                    <th scope="col-sm-2">Sachet_Qty</th>
+                    <th scope="col-sm-2">Status</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in results %}
+                <tr>
+                    <th scope="row text-">
+                    <a class="" href="{{ url_for('main.display_entry', id=item.id) }}"><i class="fa-solid fa-eye txt-teal"></i></a>
+                    </th>
+                    <td class="text-capitalize">{{ item['name'] }}</td>
+                    <td class="text-capitalize">{{ item['phonenum'] }}</td>
+                    <td>{{ item['bottle_qty'] }}</td>
+                    <td>{{ item['sachet_qty'] }}</td>
+                    <td>{{ item['status'] }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+        </table>
+        </div>
+        {% endif %}
+</div>
+
+{% endblock %}

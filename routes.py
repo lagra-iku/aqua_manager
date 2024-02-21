@@ -63,7 +63,7 @@ def admin():
 
 @main_bp.route('/dashboard', methods=('GET', 'POST'))
 def dashboard():
-    entries = Requests.query.filter(Requests.status.notin_(['canceled', 'completed'])).order_by(desc(Requests.modified_date)).all()
+    entries = Requests.query.filter(Requests.status.notin_(['Canceled', 'Delivered'])).order_by(desc(Requests.modified_date)).all()
 
     # Fetching count of entries based on status
     new_count = db.session.query(func.count(Requests.id)).filter(Requests.status == 'New').scalar()
@@ -119,6 +119,29 @@ def edit_production(id):
         return redirect(url_for('main.production_content'))
     # Render the form with the details of the specific request
     return render_template('admin/edit_production.html', x=prod_to_edit)
+
+#Route to handle search
+@main_bp.route('/search')
+def search():
+    query = request.args.get('query', '').strip().lower()
+    results = []
+                                                  
+    if not query:
+        message = "Enter a search criteria in the input box"
+    else:
+        results = Requests.query.filter(
+            db.or_(
+                Requests.name.ilike(f"%{query}%"),
+                Requests.phonenum.ilike(f"%{query}%")
+            )
+        ).all()
+        if not results:
+            message = f"No results found for '{query}'."
+        else:
+            message = f"Search results for '{query}':"
+
+    return render_template('common/search.html', results=results, message=message)
+
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -178,9 +201,13 @@ def login():
 
 
 @main_bp.errorhandler(404)
-def not_found_error(error):
+def not_found_error():
     return render_template('error/404.html'), 404
 
 @main_bp.errorhandler(503)
 def service_unavailable_error(error):
     return render_template('error/503.html', error=error), 503
+
+@main_bp.errorhandler(500)
+def internal_server_error(error):
+    return render_template('error/500.html', error=error), 500
