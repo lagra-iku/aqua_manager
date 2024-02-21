@@ -58,51 +58,78 @@ def edit_request(id):
 # Routes for Production user story
 @main_bp.route('/admin', methods=('GET', 'POST'))
 def admin():
-    active_requests = Requests.query.filter(Requests.status.notin_(['canceled', 'completed'])).order_by(desc(Requests.modified_date)).all()
-    return render_template('admin/home.html', x=active_requests)
+    username = session.get("username")
+    fullname = session.get("full_name")
+    if username == None:
+        flash("Please Login to Access this page!", "error")
+        return redirect(url_for("main.login"))
+    else:
+        active_requests = Requests.query.filter(Requests.status.notin_(['canceled', 'completed'])).order_by(desc(Requests.modified_date)).all()
+        return render_template('admin/home.html', x=active_requests, fullname=fullname)
 
 @main_bp.route('/dashboard', methods=('GET', 'POST'))
 def dashboard():
-    entries = Requests.query.filter(Requests.status.notin_(['Canceled', 'Delivered'])).order_by(desc(Requests.modified_date)).all()
+    username = session.get("username")
+    if username == None:
+        flash("Please Login to access this page", "error")
+        return redirect(url_for("main.login"))
+    else:
+        entries = Requests.query.filter(Requests.status.notin_(['Canceled', 'Delivered'])).order_by(desc(Requests.modified_date)).all()
 
-    # Fetching count of entries based on status
-    new_count = db.session.query(func.count(Requests.id)).filter(Requests.status == 'New').scalar()
-    enroute_count = db.session.query(func.count(Requests.id)).filter(Requests.status == 'On route').scalar()
-    delivered_count = db.session.query(func.count(Requests.id)).filter(Requests.status == 'Delivered').scalar()
-    canceled_count = db.session.query(func.count(Requests.id)).filter(Requests.status == 'Canceled').scalar()
+        # Fetching count of entries based on status
+        new_count = db.session.query(func.count(Requests.id)).filter(Requests.status == 'New').scalar()
+        enroute_count = db.session.query(func.count(Requests.id)).filter(Requests.status == 'On route').scalar()
+        delivered_count = db.session.query(func.count(Requests.id)).filter(Requests.status == 'Delivered').scalar()
+        canceled_count = db.session.query(func.count(Requests.id)).filter(Requests.status == 'Canceled').scalar()
     
-    # Fetching Production data
-    bottle_sum = db.session.query(func.sum(Production_records.bottle_qty)).scalar()
-    sachet_sum = db.session.query(func.sum(Production_records.sachet_qty)).scalar()
+        # Fetching Production data
+        bottle_sum = db.session.query(func.sum(Production_records.bottle_qty)).scalar()
+        sachet_sum = db.session.query(func.sum(Production_records.sachet_qty)).scalar()
 
-    return render_template('admin/dashboard.html', x=entries, new=new_count, enroute=enroute_count, delivered=delivered_count, canceled=canceled_count, bottled=bottle_sum, sachet=sachet_sum)
+        return render_template('admin/dashboard.html', x=entries, new=new_count, username=username, enroute=enroute_count, delivered=delivered_count, canceled=canceled_count, bottled=bottle_sum, sachet=sachet_sum)
 
 @main_bp.route('/add_production', methods=['GET', 'POST'])
 def add_production():
-    if request.method == 'POST':
-        bottle_qty = request.form['bottle_qty']
-        sachet_qty = request.form['sachet_qty']
-        factory_worker = request.form['factory_worker']
-        production_date_str = request.form['production_date']
-        production_date = datetime.strptime(production_date_str, '%Y-%m-%d')
+    username = session.get("username")
+    fullname = session.get("full_name")
+    if username == None:
+        flash("Please Login to access this page!", "error")
+        return redirect(url_for("main.login"))
+    else:
+        if request.method == 'POST':
+            bottle_qty = request.form['bottle_qty']
+            sachet_qty = request.form['sachet_qty']
+            factory_worker = request.form['factory_worker']
+            production_date_str = request.form['production_date']
+            production_date = datetime.strptime(production_date_str, '%Y-%m-%d')
 
-        # Insert the new production data into the production_records table
-        new_prod = Production_records(bottle_qty=bottle_qty, sachet_qty=sachet_qty, factory_worker=factory_worker, production_date=production_date)
-        db.session.add(new_prod)
-        db.session.commit()
-        flash('Production form submitted successfully!!!')
-        return redirect(url_for('main.display_production'))
-    return render_template('admin/add_production.html')
+            # Insert the new production data into the production_records table
+            new_prod = Production_records(bottle_qty=bottle_qty, sachet_qty=sachet_qty, factory_worker=factory_worker, production_date=production_date)
+            db.session.add(new_prod)
+            db.session.commit()
+            flash('Production form submitted successfully!!!')
+            return redirect(url_for('main.display_production'))
+        return render_template('admin/add_production.html', fullname=fullname)
 
 @main_bp.route('/display_production/<int:id>', methods=['GET', 'POST'])
 def display_production(id):
-    prod_to_display = Production_records.query.get_or_404(id)
-    return render_template('admin/display_production.html', x=prod_to_display)
+    username = session.get('username')
+    if username == None:
+        flash("Please Login to access this page", "error")
+        return redirect(url_for("main.login"))
+    else:
+        prod_to_display = Production_records.query.get_or_404(id)
+        return render_template('admin/display_production.html', x=prod_to_display)
 
 @main_bp.route('/production_content', methods=['GET', 'POST'])
 def production_content():
-    prod_records = Production_records.query.order_by(desc(Production_records.modified_date)).all()
-    return render_template('admin/production_content.html', x=prod_records)
+    username = session.get("username")
+    if username == None:
+        flash("Please login to access this page", "warning")
+        return redirect (url_for("main.login"))
+    else:
+        prod_records = Production_records.query.order_by(desc(Production_records.modified_date)).all()
+        return render_template('admin/production_content.html', x=prod_records, username=username)
 
 @main_bp.route('/edit_production/<int:id>', methods=['GET', 'POST'])
 def edit_production(id):
@@ -182,6 +209,7 @@ def register():
     return render_template('user_profile/register.html')
 
 
+
 @main_bp.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -189,15 +217,38 @@ def login():
         password = request.form['password']
         
         user = User_profiles.query.filter_by(username=username).first()
-
+        print(user)
         # Check if the user exists and if the provided password matches the hashed password
         if user and check_password_hash(user.password, password):
             session['username'] = username
+            # session['full_name'] = fullname
             flash("Login successful!", "success")
             return redirect(url_for("main.dashboard"))
         else:
             flash("Invalid username or password. Please try again.", "error")
     return render_template('user_profile/login.html')
+
+
+@main_bp.route('/profile')
+def profile():
+    # Retrieve the username of the current user from the session
+    username = session.get('username')
+    fullname = session.get('full_name')
+    email = session.get('email')
+    if username:
+        # Query the database to find the user with the given username
+        user = User_profiles.query.filter_by(username=username).first()
+        if user:
+            return render_template('user_profile/profile.html', user=user, username=username, fullname=fullname, email=email )
+    flash('User profile not found!', 'error')
+    return redirect(url_for('main.index'))
+
+
+@main_bp.route('/logout')
+def logout():
+    session.pop('user_id', None)
+    flash('You have been logged out.', 'success')
+    return redirect(url_for('main.index'))
 
 
 @main_bp.errorhandler(404)

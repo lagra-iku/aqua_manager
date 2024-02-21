@@ -4,7 +4,7 @@
     <div class="container">
         <div class="row">
             <h2 class="">Water Production Admin Page</h2>
-            <P style="color: blue; font-size: large; font-family: sans-serif;  font-style: italic;"><span class="txt-teal mb-5">Welcome</span></P>
+            <P style="color: blue; font-size: large; font-family: sans-serif;  font-style: italic;"><span class="txt-teal mb-5">Welcome {{ fullname }}</span></P>
         </div>
         <div class="d-grid d-md-block">
             <a href="{{ url_for('main.add_production') }}" class="btn btn-lg p-4 m-2 btn-secondary">Add Production</a>
