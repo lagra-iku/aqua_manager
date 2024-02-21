@@ -1,11 +1,11 @@
 {% extends 'index.html' %}
 
 {% block content %}
-<div class="container">
+<div class="container my-5">
     <div class="row height80 ">
-        <div class="col-sm-8 ">
-            <h2 class="">Request Form</h2>
-            <p class="txt-teal mb-5">Use this form to request for water to be delivered at your location</p>
+        <div class="col-md-8 mb-5 ">
+            <h2 class="mb-5">Fill the form below to request for water</h2>
+            <h4 class="txt-teal">Request Form</h4>
             <form action="/" method="POST">
                 <p class="fw-bold">What will you like to order?</p>
                 <div class="row">
@@ -35,6 +35,10 @@
                 </div>
 
             </form>
+        </div>
+        <div class="col-md-4 mx-auto">
+            <a class="btn btn-large btn-light mx-auto fs-3 p-4 rounded shadow-sm d-block" href="{{ url_for('main.search') }}" style="background-image:url('../../static/images/drinkingwater.png'); background-size:contain;
+            background-repeat: no-repeat; padding-left:30% !important;"><i class="fa fa-binoculars rounded-circle d-block" aria-hidden="true"></i>Track a request</a>
         </div>
     </div>
 </div>
