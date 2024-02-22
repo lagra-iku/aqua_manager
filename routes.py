@@ -112,7 +112,7 @@ def add_production():
             db.session.commit()
             flash('Production form submitted successfully!!!')
             return redirect(url_for('main.display_production'))
-        return render_template('admin/add_production.html', fullname=fullname)
+        return render_template('admin/add_production.html', fullname=fullname, username=username)
 
 @main_bp.route('/display_production/<int:id>', methods=['GET', 'POST'])
 def display_production(id):
@@ -239,12 +239,12 @@ def login():
 @main_bp.route('/profile')
 def profile():
     username = session.get('username')
-    fullname = session.get('full_name')
-    email = session.get('email')
-    
     if username:
         user = User_profiles.query.filter_by(username=username).first()
         if user:
+            fullname = session.get('full_name')
+            email = session.get('email')
+    
             return render_template('user_profile/profile.html', user=user, username=username, fullname=fullname, email=email)
     flash('User profile not found!', 'error')
     return redirect(url_for('main.index'))
