@@ -1,12 +1,11 @@
+import bcrypt
+from datetime import datetime
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
+from flask_bcrypt import check_password_hash
+from login_loader import login_manager
 from models import db, Requests, Production_records, User_profiles
 from sqlalchemy import desc, func
-from datetime import datetime
-import bcrypt
 from users import User
-# from app import login_manager
-from login_loader import login_manager
-from flask_bcrypt import check_password_hash
 
 
 main_bp = Blueprint('main', __name__)
@@ -109,7 +108,7 @@ def add_production():
             new_prod_id = new_prod.id
             flash('Production form submitted successfully!!!')
             return redirect(url_for('main.display_production', id=new_prod_id))
-        return render_template('admin/add_production.html', fullname=fullname)
+        return render_template('admin/add_production.html', fullname=fullname, username=username)
 
 @main_bp.route('/display_production/<int:id>', methods=['GET', 'POST'])
 def display_production(id):
@@ -119,7 +118,7 @@ def display_production(id):
         return redirect(url_for("main.login"))
     else:
         prod_to_display = Production_records.query.get_or_404(id)
-        return render_template('admin/display_production.html', x=prod_to_display)
+        return render_template('admin/display_production.html', x=prod_to_display, username=username)
 
 @main_bp.route('/production_content', methods=['GET', 'POST'])
 def production_content():
