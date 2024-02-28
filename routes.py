@@ -235,12 +235,11 @@ def login():
 @main_bp.route('/profile')
 def profile():
     username = session.get('username')
+    fullname = session.get('full_name')
+    email = session.get('email')
     if username:
         user = User_profiles.query.filter_by(username=username).first()
         if user:
-            fullname = session.get('full_name')
-            email = session.get('email')
-    
             return render_template('user_profile/profile.html', user=user, username=username, fullname=fullname, email=email)
     flash('User profile not found!', 'error')
     return redirect(url_for('main.new'))
