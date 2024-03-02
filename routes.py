@@ -222,9 +222,10 @@ def login():
         print(user)
         # Check if the user exists and if the provided password matches the hashed password
         if user and check_password_hash(user.password, password):
+            print(user.full_name)
             session['username'] = username
-            # session['full_name'] = fullname
-            # session['email'] = email
+            session['full_name'] = user.full_name
+            session['email'] = user.email
             flash("Login successful!", "success")
             return redirect(url_for("main.dashboard"))
         else:
@@ -236,10 +237,12 @@ def login():
 def profile():
     username = session.get('username')
     fullname = session.get('full_name')
+    print(fullname)
     email = session.get('email')
     if username:
         user = User_profiles.query.filter_by(username=username).first()
         if user:
+            print(user)
             return render_template('user_profile/profile.html', user=user, username=username, fullname=fullname, email=email)
     flash('User profile not found!', 'error')
     return redirect(url_for('main.new'))
