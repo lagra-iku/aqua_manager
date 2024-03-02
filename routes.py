@@ -237,8 +237,8 @@ def login():
 def profile():
     username = session.get('username')
     fullname = session.get('full_name')
-    print(fullname)
     email = session.get('email')
+    print(fullname, email, username)
     if username:
         user = User_profiles.query.filter_by(username=username).first()
         if user:
